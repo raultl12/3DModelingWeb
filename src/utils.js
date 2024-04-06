@@ -28,10 +28,28 @@ function changeColor(object, hexColor){
 }
 
 //Lights
+const LightType = {
+    POINT: 1,
+    DIRECTIONAL: 2,
+    SPOT: 3,
+};
+
 function addPointLight(color, intensity, objects){
     let light = new Light(color, intensity);
     objects.push(light);
     return light;
 }
 
-export {addCube, changeColor, addSphere, addCylinder, addPointLight};
+function addDirectionalLight(color, intensity, objects){
+    let light = new Light(color, intensity, LightType.DIRECTIONAL);
+    objects.push(light);
+    return light;
+}
+
+function addSpotLight(color, intensity, objects){
+    let light = new Light(color, intensity, LightType.SPOT);
+    objects.push(light);
+    return light;
+}
+
+export {addCube, changeColor, addSphere, addCylinder, addPointLight, addDirectionalLight, addSpotLight, LightType};

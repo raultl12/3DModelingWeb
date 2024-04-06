@@ -9,7 +9,7 @@ import {Light} from './src/objects/Light.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { TransformControls } from 'three/addons/controls/TransformControls.js';
 
-import { addCube, changeColor, addSphere, addCylinder, addPointLight } from './src/utils.js';
+import { addCube, changeColor, addSphere, addCylinder, addPointLight, addDirectionalLight, addSpotLight } from './src/utils.js';
 
 //Initial setup
 
@@ -77,9 +77,18 @@ document.getElementById("addCylinder").addEventListener("click", () =>{
 //Functions for adding lights
 
 document.getElementById("addPointLight").addEventListener("click", () =>{
-    currentObject = addPointLight(0xffffff, 10, objects);
+    currentObject = addPointLight(0xffffff, 30, objects);
 });
 
+document.getElementById("addDirectionalLight").addEventListener("click", () =>{
+    currentObject = addDirectionalLight(0xffffff, 30, objects);
+});
+
+document.getElementById("addSpotLight").addEventListener("click", () =>{
+    currentObject = addSpotLight(0xffffff, 30, objects);
+});
+
+/******************************************************************************************** */
 colorPicker.addEventListener('input', () => {
 	const selectedColor = colorPicker.value;
 	changeColor(currentObject, selectedColor);

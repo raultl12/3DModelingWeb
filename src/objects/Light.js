@@ -1,17 +1,39 @@
 import * as THREE from 'three';
 import { scene } from '../Scene';
+import { LightType } from '../utils';
 
 class Light {
-    constructor(color, intensity) {
+    constructor(color, intensity, type) {
 
-        //Crear una luz
-        this.light = new THREE.PointLight(color, intensity);
+        this.type = type;
+
+        switch (this.type) {
+            case LightType.POINT:
+                this.light = new THREE.PointLight(color, intensity);
+                this.helper = new THREE.PointLightHelper( this.light, 1 );
+                scene.add( this.helper );
+                break;
+            case LightType.DIRECTIONAL:
+                this.light = new THREE.DirectionalLight(color, intensity);
+
+                this.helper = new THREE.DirectionalLightHelper( this.light, 5 );
+                scene.add( this.helper );
+                break;
+            case LightType.SPOT:
+                this.light = new THREE.SpotLight(color, intensity);
+                this.helper = new THREE.SpotLightHelper( this.light );
+
+                scene.add( this.helper );
+                break;
+            default:
+                this.light = new THREE.PointLight(color, intensity);
+                this.helper = new THREE.PointLightHelper( this.light, 1 );
+                scene.add( this.helper );
+                break;
+        }
         this.light.position.set(0, 0, 0);
         
-        const sphereSize = 1;
-        this.helper = new THREE.PointLightHelper( this.light, sphereSize );
         this.helper.name = "light";
-        scene.add( this.helper );
 
         scene.add(this.light);
     }
