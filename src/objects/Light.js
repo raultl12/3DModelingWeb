@@ -1,13 +1,6 @@
 import * as THREE from 'three';
 import { scene } from '../Scene';
 
-/*
-Clase generica para crear luces
-La idea es crear un enum con los tipos de luces que se pueden crear
-Si la luz es point, añadirle un circulo, si es direccional añadirle una flecha, etc
-debe de tener una mesh para que se pueda seleccionar y mover como un objeto 3D
-*/
-
 class Light {
     constructor(color, intensity) {
 
@@ -24,7 +17,7 @@ class Light {
     }
 
     changeColor(hexColor) {
-        this.mesh.material.color.set(hexColor);
+        this.light.color.set(hexColor);
     }
 }
 
