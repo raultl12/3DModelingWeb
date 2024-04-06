@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Three.js</title>
+</head>
+<body>
+    <div id="app">
+        <canvas id="myCanvas"></canvas>
+        <div class="menu">
+            <div class="controls">
+                <h1>Controls</h1>
+                <h2>Objects</h2>
+                <button id="addCube">Add cube</button>
+                <button id="addSphere">Add Sphere</button>
+                <button id="addCylinder">Add Cylinder</button>
+
+                <h2>Light</h2>
+                <button id="addPointLight">Add point light</button>
+
+                <h2>Textures</h2>
+                <button id="addTexture">Add texture</button>
+
+                <h2>Materials</h2>
+                <button id="addMaterial">Add material</button>
+            </div>
+
+            <div class="settings">
+                <h1>Settings</h1>
+                <label for="backgroundColor">Background color</label>
+                <input type="color" name="backgroundColor" id="backgroundColor" value="#000000">
+                <label for="colorPicker">Color</label>
+                <input type="color" name="cubeColor" id="colorPicker" value="#4287f5">
+            </div>
+        </div>
+    </div>
+    <script src="./src/utils.js" type="module"></script>
+    <script src="main.js" type="module"></script>
+</body>
+</html>
