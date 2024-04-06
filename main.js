@@ -23,12 +23,15 @@ const mouse = new THREE.Vector2();
 let objects = [];
 let currentObject = null;
 let controlsEnabled = true;
+let dragging = false;
+let dragStartX = 0;
+let dragStartY = 0;
 
 scene.add(transformControls);
 const ambientLight = new THREE.AmbientLight( 0xffffff, 1);
 scene.add( ambientLight );
 
-canvas.addEventListener( 'click', onMouseClick);
+
 
 animate();
 
@@ -99,30 +102,47 @@ document.addEventListener('keydown', function(event) {
 });
 
 /*BUG-REVISAR: Se selecciona el objeto mas lejano */
-function onMouseClick( event ) {
 
-    const rect = renderer.domElement.getBoundingClientRect();
+canvas.addEventListener('mousedown', (event) => {
+    dragging = true;
+    dragStartX = event.clientX;
+    dragStartY = event.clientY;
+});
 
-    mouse.x = ( ( event.clientX - rect.left ) / ( rect.right - rect.left ) ) * 2 - 1;
-    mouse.y = - ( ( event.clientY - rect.top ) / ( rect.bottom - rect.top) ) * 2 + 1;
+canvas.addEventListener('mouseup', (event) => {
+    if (dragging) {
+        const dragEndX = event.clientX;
+        const dragEndY = event.clientY;
+        const deltaX = dragEndX - dragStartX;
+        const deltaY = dragEndY - dragStartY;
 
-	raycaster.setFromCamera( mouse, camera );
+        const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 
-	const intersects = raycaster.intersectObjects( scene.children);
-
-    for (let i = 0; i < intersects.length; i++) {
-        if (intersects[i].object.name === 'object3D') {
-            console.log(intersects[i].object);
-            currentObject = objects.find(obj => obj.mesh === intersects[i].object);
-            transformControls.attach( currentObject.mesh );
-        }
-        else if (intersects[i].object.name === 'light'){
-            console.log(intersects[i].object);
-            currentObject = objects.find(obj => obj.helper === intersects[i].object);
-            transformControls.attach( currentObject.helper );
+        if (distance < 2) {
+            //Se considera click
+            const rect = renderer.domElement.getBoundingClientRect();
+        
+            mouse.x = ( ( event.clientX - rect.left ) / ( rect.right - rect.left ) ) * 2 - 1;
+            mouse.y = - ( ( event.clientY - rect.top ) / ( rect.bottom - rect.top) ) * 2 + 1;
+        
+            raycaster.setFromCamera( mouse, camera );
+        
+            const intersects = raycaster.intersectObjects( scene.children);
+        
+            for (let i = 0; i < intersects.length; i++) {
+                if (intersects[i].object.name === 'object3D') {
+                    currentObject = objects.find(obj => obj.mesh === intersects[i].object);
+                    transformControls.attach( currentObject.mesh );
+                }
+                else if (intersects[i].object.name === 'light'){
+                    currentObject = objects.find(obj => obj.helper === intersects[i].object);
+                    transformControls.attach( currentObject.helper );
+                }
+            }
         }
     }
-}
+    dragging = false;
+});
 
 document.addEventListener('keydown', function(event) {
     //Al pulsar el . la camara se centra en el currentObject
