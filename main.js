@@ -129,7 +129,7 @@ canvas.addEventListener('mouseup', (event) => {
         
             const intersects = raycaster.intersectObjects( scene.children);
         
-            for (let i = 0; i < intersects.length; i++) {
+            for (let i = intersects.length - 1; i >= 0; i--) {
                 if (intersects[i].object.name === 'object3D') {
                     currentObject = objects.find(obj => obj.mesh === intersects[i].object);
                     transformControls.attach( currentObject.mesh );
