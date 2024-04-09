@@ -17,6 +17,14 @@ class Object3D {
     changeColor(hexColor) {
         this.mesh.material.color.set(hexColor);
     }
+
+    removeEdges(){
+        this.line.visible = false;
+    }
+
+    addEdges(){
+        this.line.visible = true;
+    }
 }
 
 export { Object3D };

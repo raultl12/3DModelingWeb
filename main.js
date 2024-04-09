@@ -186,6 +186,18 @@ document.addEventListener('keydown', function(event) {
             transformControls.detach(); 
         }
     }
+
+    //Al pulsar L, se activan o desactivan las aristas del objeto actual siempre que sea un objeto3D
+    if (event.key === 'l') {
+        if(currentObject && currentObject instanceof Object3D){
+            if(currentObject.line.visible){
+                currentObject.removeEdges();
+            }
+            else{
+                currentObject.addEdges();
+            }
+        }
+    }
 });
 
 function CenterObject(){
