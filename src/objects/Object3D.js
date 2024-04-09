@@ -25,6 +25,10 @@ class Object3D {
     addEdges(){
         this.line.visible = true;
     }
+
+    setTexture(texture){
+        this.mesh.material = new THREE.MeshStandardMaterial({ color: 0xffffff,  map: texture });
+    }
 }
 
 export { Object3D };

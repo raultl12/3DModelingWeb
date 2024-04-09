@@ -89,6 +89,31 @@ document.getElementById("addSpotLight").addEventListener("click", () =>{
 });
 
 /******************************************************************************************** */
+//Funcion para añadir una textura
+document.getElementById("addTexture").addEventListener("click", () =>{
+    if(currentObject && currentObject instanceof Object3D){
+    document.getElementById("inputFile").click();
+    }
+    /*
+    const textureLoader = new THREE.TextureLoader();
+    const texture = textureLoader.load('textures/Earth_Texture.jpg');
+    currentObject.setTexture(texture);*/
+});
+
+document.getElementById("inputFile").addEventListener("change", (event) => {
+    const archivo = event.target.files[0];
+    if (archivo) {
+        const textureLoader = new THREE.TextureLoader();
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const texture = textureLoader.load(e.target.result);
+            currentObject.setTexture(texture);
+        };
+        reader.readAsDataURL(archivo);
+    }
+});
+
+
 colorPicker.addEventListener('input', () => {
 	const selectedColor = colorPicker.value;
 	changeColor(currentObject, selectedColor);
