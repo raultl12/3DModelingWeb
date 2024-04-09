@@ -9,3 +9,4 @@ Esta aplicación web es mi Trabajo Fin de Grado para el grado de Ingeniería Inf
 * T: Hace invisibles los controles de movimiento
 * . (punto): Centra y acerca la camara a un objeto
 * supr: Borra el objeto seleccionado
+* L: Activa y desactiva la visibilidad de las aristas del objeto seleccionado
