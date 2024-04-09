@@ -92,12 +92,8 @@ document.getElementById("addSpotLight").addEventListener("click", () =>{
 //Funcion para añadir una textura
 document.getElementById("addTexture").addEventListener("click", () =>{
     if(currentObject && currentObject instanceof Object3D){
-    document.getElementById("inputFile").click();
+        document.getElementById("inputFile").click();
     }
-    /*
-    const textureLoader = new THREE.TextureLoader();
-    const texture = textureLoader.load('textures/Earth_Texture.jpg');
-    currentObject.setTexture(texture);*/
 });
 
 document.getElementById("inputFile").addEventListener("change", (event) => {
