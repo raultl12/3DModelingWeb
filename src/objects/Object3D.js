@@ -26,8 +26,24 @@ class Object3D {
         this.line.visible = true;
     }
 
-    setTexture(texture){
-        this.mesh.material = new THREE.MeshStandardMaterial({ color: 0xffffff,  map: texture });
+    setTexture(texture, type){
+        switch(type){
+            case "texture":
+                this.mesh.material.map = texture;
+                this.mesh.material.color = new THREE.Color(0xffffff);
+                break;
+            case "normal":
+                this.mesh.material.normalMap = texture;
+                break;
+            case "roughness":
+                this.mesh.material.roughnessMap = texture;
+                break;
+            case "metalness":
+                this.mesh.material.metalnessMap = texture;
+                break;
+        }
+        
+        this.mesh.material.needsUpdate = true;
     }
 }
 

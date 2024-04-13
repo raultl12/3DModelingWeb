@@ -89,9 +89,32 @@ document.getElementById("addSpotLight").addEventListener("click", () =>{
 });
 
 /******************************************************************************************** */
-//Funcion para añadir una textura
+//Funciones para añadir texturas
+let type = "texture";
+
 document.getElementById("addTexture").addEventListener("click", () =>{
     if(currentObject && currentObject instanceof Object3D){
+        document.getElementById("inputFile").click();
+    }
+});
+
+document.getElementById("addNormal").addEventListener("click", () =>{
+    if(currentObject && currentObject instanceof Object3D){
+        type = "normal";
+        document.getElementById("inputFile").click();
+    }
+});
+
+document.getElementById("addRoughness").addEventListener("click", () =>{
+    if(currentObject && currentObject instanceof Object3D){
+        type = "roughness";
+        document.getElementById("inputFile").click();
+    }
+});
+
+document.getElementById("addMetalness").addEventListener("click", () =>{
+    if(currentObject && currentObject instanceof Object3D){
+        type = "metalness";
         document.getElementById("inputFile").click();
     }
 });
@@ -103,10 +126,12 @@ document.getElementById("inputFile").addEventListener("change", (event) => {
         const reader = new FileReader();
         reader.onload = function(e) {
             const texture = textureLoader.load(e.target.result);
-            currentObject.setTexture(texture);
+            currentObject.setTexture(texture, type);
         };
         reader.readAsDataURL(archivo);
+
     }
+    document.getElementById("inputFile").value = "";
 });
 
 
