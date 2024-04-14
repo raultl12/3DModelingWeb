@@ -90,10 +90,11 @@ document.getElementById("addSpotLight").addEventListener("click", () =>{
 
 /******************************************************************************************** */
 //Funciones para añadir texturas
-let type = "texture";
+let type = null;
 
 document.getElementById("addTexture").addEventListener("click", () =>{
     if(currentObject && currentObject instanceof Object3D){
+        type = "texture";
         document.getElementById("inputFile").click();
     }
 });
@@ -131,6 +132,7 @@ document.getElementById("inputFile").addEventListener("change", (event) => {
         reader.readAsDataURL(archivo);
 
     }
+    console.log(document.getElementById("inputFile").value);
     document.getElementById("inputFile").value = "";
 });
 

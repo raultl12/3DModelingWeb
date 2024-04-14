@@ -27,23 +27,59 @@ class Object3D {
     }
 
     setTexture(texture, type){
+
+        const material = this.mesh.material;
+        
+        let newMaterial = null;
+        
         switch(type){
             case "texture":
-                this.mesh.material.map = texture;
-                this.mesh.material.color = new THREE.Color(0xffffff);
+                newMaterial = new THREE.MeshStandardMaterial(
+                    {
+                        color: new THREE.Color(0xffffff),
+                        map: texture,
+                        normalMap: material.normalMap,
+                        roughnessMap: material.roughnessMap,
+                        metalnessMap: material.metalnessMap
+                    }
+                );
                 break;
             case "normal":
-                this.mesh.material.normalMap = texture;
+                newMaterial = new THREE.MeshStandardMaterial(
+                    {
+                        color: new THREE.Color(0xffffff),
+                        map: material.map,
+                        normalMap: texture,
+                        roughnessMap: material.roughnessMap,
+                        metalnessMap: material.metalnessMap
+                    }
+                );
                 break;
             case "roughness":
-                this.mesh.material.roughnessMap = texture;
+                newMaterial = new THREE.MeshStandardMaterial(
+                    {
+                        color: new THREE.Color(0xffffff),
+                        map: material.map,
+                        normalMap: material.normalMap,
+                        roughnessMap: texture,
+                        metalnessMap: material.metalnessMap
+                    }
+                );
                 break;
             case "metalness":
-                this.mesh.material.metalnessMap = texture;
+                newMaterial = new THREE.MeshStandardMaterial(
+                    {
+                        color: new THREE.Color(0xffffff),
+                        map: material.map,
+                        normalMap: material.normalMap,
+                        roughnessMap: material.roughnessMap,
+                        metalnessMap: texture
+                    }
+                );
                 break;
         }
-        
-        this.mesh.material.needsUpdate = true;
+        this.mesh.material = newMaterial;
+        console.log(this.mesh.material);
     }
 }
 
