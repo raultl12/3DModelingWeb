@@ -18,7 +18,9 @@ import {
     addDirectionalLight,
     addSpotLight,
     MaterialProperty
- } from './src/utils.js';
+} from './src/utils.js';
+
+import { RGBELoader } from 'three/examples/jsm/Addons.js';
 
 //Initial setup
 
@@ -284,6 +286,40 @@ document.addEventListener('keydown', function(event) {
         }
     }
 });
+
+
+// Añadir HDR
+document.getElementById("addHDR").addEventListener("click", () =>{
+    document.getElementById("hdrFile").click();
+});
+
+document.getElementById("hdrFile").addEventListener("change", (event) => {
+    const archivo = event.target.files[0];
+    if (archivo) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const loader = new RGBELoader();
+            loader.load(e.target.result, function ( texture ) {
+                texture.mapping = THREE.EquirectangularReflectionMapping;
+                scene.background = texture;
+                scene.environment = texture;
+            });
+        }
+        reader.readAsDataURL(archivo);
+
+    }
+    document.getElementById("hdrFile").value = "";
+});
+
+/**
+ *         const textureLoader = new THREE.TextureLoader();
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const texture = textureLoader.load(e.target.result);
+            currentObject.setTexture(texture, type);
+        };
+        reader.readAsDataURL(archivo);
+ */
 
 function CenterObject(){
     //Primero centrar el objeto en la camara
