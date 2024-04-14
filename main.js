@@ -9,13 +9,27 @@ import {Light} from './src/objects/Light.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { TransformControls } from 'three/addons/controls/TransformControls.js';
 
-import { addCube, changeColor, addSphere, addCylinder, addPointLight, addDirectionalLight, addSpotLight } from './src/utils.js';
+import {
+    addCube,
+    changeColor,
+    addSphere,
+    addCylinder,
+    addPointLight,
+    addDirectionalLight,
+    addSpotLight,
+    MaterialProperty
+ } from './src/utils.js';
 
 //Initial setup
 
 const colorPicker = document.getElementById('colorPicker');
 const controls = new OrbitControls( camera, canvas );
 const transformControls = new TransformControls( camera, renderer.domElement );
+
+const roughnessSlider = document.getElementById('roughness'); 
+const metalnessSlider = document.getElementById('metalness');
+const emisiveIntSlider = document.getElementById('emisiveInt');
+const emisiveColor = document.getElementById('emisiveColor');
 
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
@@ -136,12 +150,35 @@ document.getElementById("inputFile").addEventListener("change", (event) => {
     document.getElementById("inputFile").value = "";
 });
 
-
+// Funciones de los sliders
 colorPicker.addEventListener('input', () => {
 	const selectedColor = colorPicker.value;
 	changeColor(currentObject, selectedColor);
 });
 
+roughnessSlider.addEventListener('input', () => {
+    if(currentObject && currentObject instanceof Object3D){
+        currentObject.setMaterialProperty(MaterialProperty.ROUGHNESS, roughnessSlider.value);
+    }
+});
+
+metalnessSlider.addEventListener('input', () => {
+    if(currentObject && currentObject instanceof Object3D){
+        currentObject.setMaterialProperty(MaterialProperty.METALNESS, metalnessSlider.value);
+    }
+});
+
+emisiveIntSlider.addEventListener('input', () => {
+    if(currentObject && currentObject instanceof Object3D){
+        currentObject.setMaterialProperty(MaterialProperty.EMISIVE, emisiveIntSlider.value);
+    }
+});
+
+emisiveColor.addEventListener('input', () => {
+    if(currentObject && currentObject instanceof Object3D){
+        currentObject.setEmisiveColor(emisiveColor.value);
+    }
+});
 
 //Soluciona problema: Al intentar mover el objeto se movia el objeto y la camara
 transformControls.addEventListener('dragging-changed', function (event) {

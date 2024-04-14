@@ -32,15 +32,41 @@
                 <button id="addMetalness">Add metalness map</button>
 
                 <h2>Material</h2>
-                <button id="addMaterial">Add material</button>
+                <div class="materialOptions">
+                    <div class="sliders">
+                    
+                        <label for="metalness">Metalness</label>
+                        <input type="range" name="metalness" id="metalness" min="0" max="1" step="0.01" value="1">
+                        
+                        <label for="roughness">Roughness</label>
+                        <input type="range" name="roughness" id="roughness" min="0" max="1" step="0.01" value="0.5">
+                        
+                        <label for="emisiveInt">Emisive intensity</label>
+                        <input type="range" name="emisiveInt" id="emisiveInt" min="0" max="1" step="0.01" value="1">
+                        
+                    </div>
+
+                    <div class="materialColors">
+                        <div class="colorLabel">
+                            <label for="colorPicker">Color</label>
+                            <input type="color" name="cubeColor" id="colorPicker" value="#4287f5">
+                        </div>
+
+                        <div class="colorLabel">
+                            <label for="emisiveColor">Emisive color</label>
+                            <input type="color" name="emisiveColor" id="emisiveColor" value="#000000">
+                        </div>
+
+                    </div>
+                    
+                </div>
             </div>
 
             <div class="settings">
                 <h1>Settings</h1>
                 <label for="backgroundColor">Background color</label>
                 <input type="color" name="backgroundColor" id="backgroundColor" value="#000000">
-                <label for="colorPicker">Color</label>
-                <input type="color" name="cubeColor" id="colorPicker" value="#4287f5">
+
             </div>
         </div>
     </div>

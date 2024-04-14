@@ -52,4 +52,21 @@ function addSpotLight(color, intensity, objects){
     return light;
 }
 
-export {addCube, changeColor, addSphere, addCylinder, addPointLight, addDirectionalLight, addSpotLight, LightType};
+// Material properties
+const MaterialProperty = {
+    ROUGHNESS: 1,
+    METALNESS: 2,
+    EMISIVE: 3,
+};
+
+export {
+    addCube,
+    changeColor,
+    addSphere,
+    addCylinder,
+    addPointLight,
+    addDirectionalLight,
+    addSpotLight, LightType,
+    MaterialProperty
+};
+    

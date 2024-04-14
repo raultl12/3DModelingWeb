@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { scene } from '../Scene';
+import { MaterialProperty } from '../utils';
 
 class Object3D {
     constructor(geometry, material) {
@@ -45,6 +46,28 @@ class Object3D {
         }
 
         this.mesh.material.needsUpdate = true;
+        console.log(this.mesh.material);
+    }
+
+
+    setMaterialProperty(property, value){
+        switch(property){
+            case MaterialProperty.ROUGHNESS:
+                this.mesh.material.roughness = value;
+                break;
+            case MaterialProperty.METALNESS:
+                this.mesh.material.metalness = value;
+                break;
+            case MaterialProperty.EMISIVE:
+                this.mesh.material.emissiveIntensity = value;
+                break;
+        }
+        this.mesh.material.needsUpdate = true;
+    }
+
+    setEmisiveColor(color){
+        this.mesh.material.emissive = new THREE.Color(color);
+        this.mesh.material.needsUpdate = true; 
     }
 }
 
