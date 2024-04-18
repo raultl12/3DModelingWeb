@@ -9,6 +9,8 @@ import {Light} from './src/objects/Light.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { TransformControls } from 'three/addons/controls/TransformControls.js';
 
+import {DrawingCanvas} from './src/objects/drawingCanvas.js';
+
 import {
     addCube,
     changeColor,
@@ -32,6 +34,13 @@ const roughnessSlider = document.getElementById('roughness');
 const metalnessSlider = document.getElementById('metalness');
 const emisiveIntSlider = document.getElementById('emisiveInt');
 const emisiveColor = document.getElementById('emisiveColor');
+
+//Revolution zone
+const revZone = document.getElementsByClassName("revolutionZone")[0];
+const revCanvas = new DrawingCanvas();
+const revDone = document.getElementById("revolutionDone");
+const revClear = document.getElementById("revolutionClear");
+
 
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
@@ -311,16 +320,6 @@ document.getElementById("hdrFile").addEventListener("change", (event) => {
     document.getElementById("hdrFile").value = "";
 });
 
-/**
- *         const textureLoader = new THREE.TextureLoader();
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const texture = textureLoader.load(e.target.result);
-            currentObject.setTexture(texture, type);
-        };
-        reader.readAsDataURL(archivo);
- */
-
 function CenterObject(){
     //Primero centrar el objeto en la camara
     var objectPosition = 
@@ -334,13 +333,31 @@ function CenterObject(){
     camera.position.set(objectPosition.x, objectPosition.y + newDistance, objectPosition.z - newDistance);   
 }
 
-/* ctrl + d para duplicar objeto
-document.addEventListener('keydown', onCopyObject);
-
-function onCopyObject(event) {
-    event.preventDefault();
-    if ((event.key === "d" || event.key === "D") && (event.ctrlKey || event.metaKey)) {
-        objects.push(currentObject.getCopy());
-        currentObject = objects[objects.length - 1];
+//Funciones para mostrar y ocultar el canvas
+document.getElementById("revolution").addEventListener("click", () =>{
+    if(revCanvas.getHidden()){
+        revCanvas.switchVisibility();
+        revZone.style.display = "block";
     }
-}*/
+    else{
+        revCanvas.switchVisibility();
+        revZone.style.display = "none";
+    }
+});
+
+revDone.addEventListener("click", () =>{
+    revCanvas.switchVisibility();
+    revZone.style.display = "none";
+});
+
+//Funciones para el canvas de revolucion
+revCanvas.getCanvas().addEventListener("mousedown", (event) => {
+    const rect = revCanvas.getCanvas().getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    revCanvas.addPoint(x, y);
+});
+
+revClear.addEventListener("click", () =>{
+    revCanvas.clear();
+});

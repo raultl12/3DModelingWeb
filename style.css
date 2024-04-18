@@ -100,3 +100,11 @@ input[type="color"]::-webkit-color-swatch-wrapper {
     justify-content: space-between;
     align-items: center;
 }
+
+#revolutionCanvas{
+    background-color: black;
+}
+
+.revolutionZone{
+    display: none;
+}
