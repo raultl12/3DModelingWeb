@@ -19,7 +19,8 @@ import {
     addPointLight,
     addDirectionalLight,
     addSpotLight,
-    MaterialProperty
+    MaterialProperty,
+    addObjectRevolution
 } from './src/utils.js';
 
 import { RGBELoader } from 'three/examples/jsm/Addons.js';
@@ -348,13 +349,16 @@ document.getElementById("revolution").addEventListener("click", () =>{
 revDone.addEventListener("click", () =>{
     revCanvas.switchVisibility();
     revZone.style.display = "none";
+    const points = revCanvas.getPoints();
+    const steps = document.getElementById("revSteps").value;
+    currentObject = addObjectRevolution(steps, points, colorPicker.value, objects);
 });
 
 //Funciones para el canvas de revolucion
 revCanvas.getCanvas().addEventListener("mousedown", (event) => {
     const rect = revCanvas.getCanvas().getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
+    const x = (event.clientX - rect.left);
+    const y = (event.clientY - rect.top);
     revCanvas.addPoint(x, y);
 });
 

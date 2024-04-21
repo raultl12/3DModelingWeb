@@ -2,6 +2,7 @@ import { Cube } from './objects/Cube';
 import {Sphere} from './objects/Sphere';
 import { Cylinder } from './objects/Cylinder';
 import { Light } from './objects/Light';
+import { ObjectRevolution } from './objects/ObjectRevolution';
 
 function addCube(size, color, objects){
     let cube = new Cube(size, color);
@@ -22,6 +23,13 @@ function addCylinder(radiusTop, radiusBottom, height, radialSegments, color, obj
     return cylinder;
 
 }
+
+function addObjectRevolution(steps, points, color, objects){
+    let revolution = new ObjectRevolution(steps, points, color);
+    objects.push(revolution);
+    return revolution;
+}
+
 
 function changeColor(object, hexColor){
     object.changeColor(hexColor);
@@ -67,6 +75,7 @@ export {
     addPointLight,
     addDirectionalLight,
     addSpotLight, LightType,
-    MaterialProperty
+    MaterialProperty,
+    addObjectRevolution
 };
     
