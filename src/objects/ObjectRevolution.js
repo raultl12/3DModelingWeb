@@ -4,25 +4,42 @@ import { Object3D } from './Object3D';
 
 class ObjectRevolution extends Object3D {
     constructor(steps, points, color) {
+
+        
         const geometry = new THREE.BufferGeometry();
 
-        // create a simple square shape. We duplicate the top left and bottom right
-        // vertices because each vertex needs to appear once per triangle.
         let vertices = generateVertexRevolution(steps, points);
-
+        
         let vertex = [];
         for(let i = 0; i < vertices.length; i++){
             vertex.push(vertices[i].x);
             vertex.push(vertices[i].y);
             vertex.push(vertices[i].z);
         }
-
-        vertices = new Float32Array(vertex);
-        console.log(vertices);
-        // itemSize = 3 because there are 3 values (components) per vertex
-        geometry.setAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
         
-        const material = new THREE.MeshStandardMaterial({ color: color});
+        vertices = new Float32Array(vertex);
+
+        let triangulos = makeTriangles(vertices, steps);
+        let triangles = [];
+        for(let i = 0; i < triangulos.length; i++){
+            triangles.push(triangulos[i].x);
+            triangles.push(triangulos[i].y);
+            triangles.push(triangulos[i].z);
+        }
+
+        const indices = triangles;
+        geometry.setIndex( indices );
+
+        // 3 porque son 3 componentes por vertice
+        geometry.setAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
+
+        // Escalar el objeto
+        geometry.scale(0.03, 0.03, 0.03);
+
+        
+        geometry.computeVertexNormals();
+        
+        const material = new THREE.MeshStandardMaterial({ color: color, side: THREE.DoubleSide});
         super(geometry, material);
     }
 
@@ -43,23 +60,41 @@ class ObjectRevolution extends Object3D {
         return vertices;
     }
 
-export { ObjectRevolution };
+    //Despues de hacer los vertices, hacer los indices de los triangulos
+    function makeTriangles(vertices, steps){
+        const numVertex = vertices.length / 3; //3 componentes por vertice
+        const m = numVertex / steps;
 
-/*
-void _object3d_revolution::vertexRevolution(int n, vector<_vertex3f> curve){
-    float salto = 2 * PI/n;
-    Vertices.clear();
-    Vertices.resize(n * curve.size());
-    int contador = 0;
+        let contador = 0;
+        let first = 0;
+        let second = 0;
+        let third = 0;
 
-    for(int i = 0; i < n; i++){
+        let triangles = [];
 
-        for(int j = 0; j < (int)curve.size(); j++){
-            Vertices[contador] = _vertex3f(curve[j].x * cos(i * salto),
-            curve[j].y, -curve[j].x * sin(i * salto));
-            contador++;
+        for (let j = 0; j < steps; ++j) {
+            for (let i = 0; i < m-1; ++i) {
+                //calculo para los triangulos pares
+
+                first = (1+j*m+i)%numVertex;
+                second = (i+j*m)%numVertex;
+                third = ((j+1)*m+i)%numVertex;
+                triangles[contador] = new THREE.Vector3(first, second, third);
+
+                //Calculo para los trinangulos impares
+                //First no cambia
+
+                second = third;
+                third = third+1;
+                contador++;
+                triangles[contador] = new THREE.Vector3(first, second, third);
+                contador++;
+
+
+            }
         }
+
+        return triangles;
     }
 
-}
-*/
+export { ObjectRevolution };

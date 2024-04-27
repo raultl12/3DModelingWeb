@@ -21,7 +21,8 @@ class DrawingCanvas{
     }
 
     getPoints(){
-        return this.points;
+        const points = this.transformPoints();
+        return points;
     }
 
     switchVisibility(){
@@ -46,12 +47,13 @@ class DrawingCanvas{
     addPoint(x, y){
         if(this.currentPoint == null){
             this.currentPoint = new THREE.Vector2(x, y);
-            this.points.push(this.currentPoint);
             this.context.beginPath();
             this.context.arc(x, y, 1, 0, 2 * Math.PI);
             this.context.fillStyle = "white";
             this.context.fill();
             this.context.closePath();
+            this.currentPoint = new THREE.Vector2(x, y);
+            this.points.push(this.currentPoint);
         }
         else{
             this.lineTo(x, y);
@@ -74,6 +76,16 @@ class DrawingCanvas{
         this.drawAxis();
         this.points = [];
         this.currentPoint = null;
+    }
+
+    transformPoints(){
+        let transformedPoints = [];
+        for(let i = 0; i < this.points.length; i++){
+            let x = this.points[i].x - this.canvas.width / 2;
+            let y = -this.points[i].y + this.canvas.height / 2;
+            transformedPoints.push(new THREE.Vector2(Math.trunc(x), Math.trunc(y)));
+        }
+        return transformedPoints;
     }
 
 }

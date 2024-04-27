@@ -295,6 +295,10 @@ document.addEventListener('keydown', function(event) {
             }
         }
     }
+
+    if(event.key === 'z'){
+        console.log(scene.background);
+    }
 });
 
 
@@ -308,17 +312,18 @@ document.getElementById("hdrFile").addEventListener("change", (event) => {
     if (archivo) {
         const reader = new FileReader();
         reader.onload = function(e) {
+            
             const loader = new RGBELoader();
             loader.load(e.target.result, function ( texture ) {
+                console.log(texture);
                 texture.mapping = THREE.EquirectangularReflectionMapping;
                 scene.background = texture;
                 scene.environment = texture;
             });
         }
-        reader.readAsDataURL(archivo);
+        //reader.readAsDataURL(archivo);
 
     }
-    document.getElementById("hdrFile").value = "";
 });
 
 function CenterObject(){
@@ -357,8 +362,9 @@ revDone.addEventListener("click", () =>{
 //Funciones para el canvas de revolucion
 revCanvas.getCanvas().addEventListener("mousedown", (event) => {
     const rect = revCanvas.getCanvas().getBoundingClientRect();
-    const x = (event.clientX - rect.left);
-    const y = (event.clientY - rect.top);
+    let x = (event.clientX - rect.left);
+    let y = (event.clientY - rect.top);
+
     revCanvas.addPoint(x, y);
 });
 
