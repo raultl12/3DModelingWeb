@@ -83,7 +83,21 @@ class DrawingCanvas{
         for(let i = 0; i < this.points.length; i++){
             let x = this.points[i].x - this.canvas.width / 2;
             let y = -this.points[i].y + this.canvas.height / 2;
-            transformedPoints.push(new THREE.Vector2(Math.trunc(x), Math.trunc(y)));
+
+            // Redondear los puntos
+            let width = this.canvas.width;
+            let height = this.canvas.height;
+            const divisions = 10;
+            //Redondear la x
+
+            let b = Math.round(x * divisions / width);
+            x = b * width / divisions;
+
+            //Redondear la y
+            b = Math.round(y * divisions / height);
+            y = b * height / divisions;
+
+            transformedPoints.push(new THREE.Vector2(x, y));
         }
         return transformedPoints;
     }

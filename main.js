@@ -355,6 +355,7 @@ revDone.addEventListener("click", () =>{
     revCanvas.switchVisibility();
     revZone.style.display = "none";
     const points = revCanvas.getPoints();
+    console.log(points);
     const steps = document.getElementById("revSteps").value;
     currentObject = addObjectRevolution(steps, points, colorPicker.value, objects);
 });
