@@ -24,6 +24,7 @@ import {
 } from './src/utils.js';
 
 import { RGBELoader } from 'three/examples/jsm/Addons.js';
+import { OBJExporter } from 'three/addons/exporters/OBJExporter.js';
 
 //Initial setup
 
@@ -43,6 +44,11 @@ const revDone = document.getElementById("revolutionDone");
 const revClear = document.getElementById("revolutionClear");
 const revBack = document.getElementById("back");
 const revDivisions = document.getElementById("revDivisions");
+
+// Exporting objs
+const exporter = new OBJExporter();
+const downloadOBJ = document.getElementById("downloadObj");
+const downloadScene = document.getElementById("downloadScene");
 
 
 const raycaster = new THREE.Raycaster();
@@ -383,4 +389,16 @@ revBack.addEventListener("click", () =>{
 
 revDivisions.addEventListener("input", () =>{
     revCanvas.setDivisions(revDivisions.value);
+});
+
+// Exporting objs
+downloadOBJ.addEventListener("click", () =>{
+    if(currentObject && currentObject instanceof Object3D){
+        currentObject.exportarOBJ();
+    }
+});
+
+downloadScene.addEventListener("click", () =>{
+    const obj = exporter.parse(scene);
+    downloadFile("scene.obj", obj);
 });

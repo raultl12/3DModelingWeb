@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { scene } from '../Scene';
 import { MaterialProperty } from '../utils';
+import { OBJExporter } from 'three/addons/exporters/OBJExporter.js';
 
 class Object3D {
     constructor(geometry, material) {
@@ -68,6 +69,29 @@ class Object3D {
     setEmisiveColor(color){
         this.mesh.material.emissive = new THREE.Color(color);
         this.mesh.material.needsUpdate = true; 
+    }
+
+    exportarOBJ() {
+        // Crear un objeto Blob con el contenido en formato .obj
+        const exporter = new OBJExporter();
+        var objetoObj = exporter.parse(this.mesh);
+    
+        var archivoBlob = new Blob([objetoObj], { type: "text/plain" });
+    
+        // Crear un objeto URL para el Blob
+        var urlArchivo = URL.createObjectURL(archivoBlob);
+    
+        // Crear un elemento <a> invisible
+        var linkDescarga = document.createElement("a");
+        linkDescarga.href = urlArchivo;
+        linkDescarga.download = "object.obj"; // Nombre del archivo
+        document.body.appendChild(linkDescarga);
+    
+        // Simular un clic en el enlace para iniciar la descarga
+        linkDescarga.click();
+    
+        // Eliminar el enlace después de la descarga
+        document.body.removeChild(linkDescarga);
     }
 }
 
