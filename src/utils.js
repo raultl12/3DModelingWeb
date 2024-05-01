@@ -25,7 +25,7 @@ function addCylinder(radiusTop, radiusBottom, height, radialSegments, color, obj
 }
 
 function addObjectRevolution(steps, points, color, objects){
-    let revolution = new ObjectRevolution(steps, points, color);
+    let revolution = new ObjectRevolution(steps, points, color, objects);
     objects.push(revolution);
     return revolution;
 }

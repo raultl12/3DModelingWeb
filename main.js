@@ -41,6 +41,8 @@ const revZone = document.getElementsByClassName("revolutionZone")[0];
 const revCanvas = new DrawingCanvas();
 const revDone = document.getElementById("revolutionDone");
 const revClear = document.getElementById("revolutionClear");
+const revBack = document.getElementById("back");
+const revDivisions = document.getElementById("revDivisions");
 
 
 const raycaster = new THREE.Raycaster();
@@ -344,6 +346,7 @@ document.getElementById("revolution").addEventListener("click", () =>{
     if(revCanvas.getHidden()){
         revCanvas.switchVisibility();
         revZone.style.display = "block";
+        document.getElementsByClassName("menu")[0].style.display = "none";
     }
     else{
         revCanvas.switchVisibility();
@@ -354,8 +357,8 @@ document.getElementById("revolution").addEventListener("click", () =>{
 revDone.addEventListener("click", () =>{
     revCanvas.switchVisibility();
     revZone.style.display = "none";
+    document.getElementsByClassName("menu")[0].style.display = "flex";
     const points = revCanvas.getPoints();
-    console.log(points);
     const steps = document.getElementById("revSteps").value;
     currentObject = addObjectRevolution(steps, points, colorPicker.value, objects);
 });
@@ -365,10 +368,19 @@ revCanvas.getCanvas().addEventListener("mousedown", (event) => {
     const rect = revCanvas.getCanvas().getBoundingClientRect();
     let x = (event.clientX - rect.left);
     let y = (event.clientY - rect.top);
-
     revCanvas.addPoint(x, y);
 });
 
 revClear.addEventListener("click", () =>{
     revCanvas.clear();
+});
+
+revBack.addEventListener("click", () =>{
+    revCanvas.switchVisibility();
+    revZone.style.display = "none";
+    document.getElementsByClassName("menu")[0].style.display = "flex";
+});
+
+revDivisions.addEventListener("input", () =>{
+    revCanvas.setDivisions(revDivisions.value);
 });

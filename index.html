@@ -71,16 +71,21 @@
                 <button id="addHDR">Add HDR</button>
 
                 <button id="revolution">Object by revolution</button>
-                <div class="revolutionZone">
-                    <div class="revButtons">
-                        <button id="revolutionDone">Done</button>
-                        <input type="text" id="revSteps" placeholder="RevolutionSteps">
-                        <button id="revolutionClear">Clear</button>
-                    </div>
-                    <canvas id="revolutionCanvas" width="300" height="300"></canvas>
-                </div>
-
             </div>
+        </div>
+        <div class="revolutionZone">
+            <div class="revButtons">
+                <button id="back">Back</button>
+                <button id="revolutionDone">Done</button>
+                <button id="revolutionClear">Clear</button>
+                <button id="addRevObj">Save</button>
+            </div>
+            <div class="revInputs">
+                <input type="number" id="revSteps" min="2" placeholder="RevolutionSteps">
+                <input type="text" id="revName" placeholder="Object name">
+                <input type="number" title="It adjust points snapping. Higher number means you may be more precise while setting the canvas points. Default = 10" id="revDivisions" min="10" placeholder="Divisions">
+            </div>
+            <canvas id="revolutionCanvas" width="600px" height="600px"></canvas>
         </div>
     </div>
     <script src="./src/utils.js" type="module"></script>

@@ -8,6 +8,7 @@ class DrawingCanvas{
         this.canvas = document.getElementById("revolutionCanvas");
         this.context = this.canvas.getContext("2d");
         this.context.lineWidth = 0.5;
+        this.divisions = 10;
         // Dibuja los ejes
         this.drawAxis();
     }
@@ -23,6 +24,10 @@ class DrawingCanvas{
     getPoints(){
         const points = this.transformPoints();
         return points;
+    }
+
+    setDivisions(num){
+        this.divisions = num;
     }
 
     switchVisibility(){
@@ -81,21 +86,21 @@ class DrawingCanvas{
     transformPoints(){
         let transformedPoints = [];
         for(let i = 0; i < this.points.length; i++){
+            console.log(this.points[i].x, this.points[i].y);
             let x = this.points[i].x - this.canvas.width / 2;
             let y = -this.points[i].y + this.canvas.height / 2;
 
             // Redondear los puntos
             let width = this.canvas.width;
             let height = this.canvas.height;
-            const divisions = 10;
             //Redondear la x
 
-            let b = Math.round(x * divisions / width);
-            x = b * width / divisions;
+            let b = Math.round(x * this.divisions / width);
+            x = b * width / this.divisions;
 
             //Redondear la y
-            b = Math.round(y * divisions / height);
-            y = b * height / divisions;
+            b = Math.round(y * this.divisions / height);
+            y = b * height / this.divisions;
 
             transformedPoints.push(new THREE.Vector2(x, y));
         }
