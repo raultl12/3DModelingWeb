@@ -73,10 +73,18 @@
                 <button id="revolution">Object by revolution</button>
             </div>
 
-            <div class="download">
-                <h2>Downloads</h2>
-                <button id="downloadObj">Download Object</button>
-                <button id="downloadScene">Download Scene</button>
+            <div class="importDownload">
+                <h2>Import / Download</h2>
+                <div class="downloadButtons">
+                    <div class="import">
+                        <input type="file" name="inputOBJ" id="inputOBJ" accept=".obj" style="display: none;"/>
+                        <button id="importOBJ">Import OBJ</button>
+                    </div>
+                    <div class="download">
+                        <button id="downloadObj">Download OBJ</button>
+                        <button id="downloadScene">Download Scene OBJ</button>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="revolutionZone">

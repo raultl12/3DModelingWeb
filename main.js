@@ -25,6 +25,8 @@ import {
 } from './src/utils.js';
 
 import { RGBELoader } from 'three/examples/jsm/Addons.js';
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
+import { clone } from 'three/examples/jsm/utils/SkeletonUtils.js';
 
 
 //Initial setup
@@ -49,6 +51,10 @@ const revDivisions = document.getElementById("revDivisions");
 // Exporting objs
 const downloadOBJ = document.getElementById("downloadObj");
 const downloadScene = document.getElementById("downloadScene");
+
+//Importing objs
+const importOBJ = document.getElementById("importOBJ");
+const inputOBJ = document.getElementById("inputOBJ");
 
 
 const raycaster = new THREE.Raycaster();
@@ -401,5 +407,62 @@ downloadOBJ.addEventListener("click", () =>{
 downloadScene.addEventListener("click", () =>{
     if(currentObject && currentObject instanceof Object3D){
         exportScene(scene);
+    }
+});
+
+importOBJ.addEventListener("click", () =>{
+    document.getElementById("inputOBJ").click();
+});
+
+inputOBJ.addEventListener("change", (event) => {
+    const archivo = event.target.files[0];
+    if (archivo) {
+        // instantiate a loader
+        const loader = new OBJLoader();
+
+        // load a resource
+        loader.load(
+            // resource URL
+            'models/object.obj',
+            // called when resource is loaded
+            function ( group ) {
+                for(let i = 0; i < group.children.length; i++){
+                    let mesh = group.children[i].clone();
+                    let material = new THREE.MeshStandardMaterial({color: 0x00ff00});
+                    let geometry = mesh.geometry.clone();
+                    let obj = new Object3D(geometry, material);
+                    objects.push(obj);
+                    currentObject = obj;
+                }
+
+            },
+            // called when loading is in progresses
+            function ( xhr ) {
+
+                console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+
+            },
+            // called when loading has errors
+            function ( error ) {
+
+                console.log( 'An error happened', error );
+
+            }
+        );
+        /*const reader = new FileReader();
+        reader.onload = function(e) {
+            const loader = new OBJLoader();
+            loader.load(e.target.result, function ( object ) {
+                object.traverse( function ( child ) {
+                    if ( child instanceof THREE.Mesh ) {
+                        const object3D = new Object3D(child);
+                        scene.add(object3D.mesh);
+                        objects.push(object3D);
+                    }
+                });
+            });
+        }
+        reader.readAsDataURL(archivo);*/
+
     }
 });
