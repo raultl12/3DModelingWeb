@@ -399,5 +399,7 @@ downloadOBJ.addEventListener("click", () =>{
 });
 
 downloadScene.addEventListener("click", () =>{
-    exportScene(scene);
+    if(currentObject && currentObject instanceof Object3D){
+        exportScene(scene);
+    }
 });

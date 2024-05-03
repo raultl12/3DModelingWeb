@@ -100,8 +100,6 @@ function exportScene(s){
 
     // Eliminar el enlace después de la descarga
     document.body.removeChild(linkDescarga);
-
-    console.log(s);
 }
 
 export {
