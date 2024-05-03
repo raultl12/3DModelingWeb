@@ -20,11 +20,12 @@ import {
     addDirectionalLight,
     addSpotLight,
     MaterialProperty,
-    addObjectRevolution
+    addObjectRevolution,
+    exportScene
 } from './src/utils.js';
 
 import { RGBELoader } from 'three/examples/jsm/Addons.js';
-import { OBJExporter } from 'three/addons/exporters/OBJExporter.js';
+
 
 //Initial setup
 
@@ -46,7 +47,6 @@ const revBack = document.getElementById("back");
 const revDivisions = document.getElementById("revDivisions");
 
 // Exporting objs
-const exporter = new OBJExporter();
 const downloadOBJ = document.getElementById("downloadObj");
 const downloadScene = document.getElementById("downloadScene");
 
@@ -399,6 +399,5 @@ downloadOBJ.addEventListener("click", () =>{
 });
 
 downloadScene.addEventListener("click", () =>{
-    const obj = exporter.parse(scene);
-    downloadFile("scene.obj", obj);
+    exportScene(scene);
 });

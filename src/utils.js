@@ -3,6 +3,9 @@ import {Sphere} from './objects/Sphere';
 import { Cylinder } from './objects/Cylinder';
 import { Light } from './objects/Light';
 import { ObjectRevolution } from './objects/ObjectRevolution';
+import { OBJExporter } from 'three/addons/exporters/OBJExporter.js';
+import { Object3D } from './objects/Object3D';
+import * as THREE from 'three';
 
 function addCube(size, color, objects){
     let cube = new Cube(size, color);
@@ -67,6 +70,40 @@ const MaterialProperty = {
     EMISIVE: 3,
 };
 
+//Exportar la escena
+function exportScene(s){
+    // Crear un objeto Blob con el contenido en formato .obj
+    const exporter = new OBJExporter();
+    var group = new THREE.Group();
+    //Obtener en un array todos los objetos de la escena
+    for(let i = 0; i < s.children.length; i++){
+        if(s.children[i].name == "object3D"){
+            group.add(s.children[i].clone());
+        }
+    }
+
+    var result = exporter.parse(group);
+
+    var archivoBlob = new Blob([result], { type: "text/plain" });
+
+    // Crear un objeto URL para el Blob
+    var urlArchivo = URL.createObjectURL(archivoBlob);
+
+    // Crear un elemento <a> invisible
+    var linkDescarga = document.createElement("a");
+    linkDescarga.href = urlArchivo;
+    linkDescarga.download = "scene.obj"; // Nombre del archivo
+    document.body.appendChild(linkDescarga);
+
+    // Simular un clic en el enlace para iniciar la descarga
+    linkDescarga.click();
+
+    // Eliminar el enlace después de la descarga
+    document.body.removeChild(linkDescarga);
+
+    console.log(s);
+}
+
 export {
     addCube,
     changeColor,
@@ -76,6 +113,7 @@ export {
     addDirectionalLight,
     addSpotLight, LightType,
     MaterialProperty,
-    addObjectRevolution
+    addObjectRevolution,
+    exportScene
 };
     
