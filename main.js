@@ -315,8 +315,12 @@ document.addEventListener('keydown', function(event) {
         }
     }
 
-    if(event.key === 'z'){
-        console.log(scene.background);
+    //Duplicar objeto con Ctrl + D
+    if (event.ctrlKey && event.key === 'c') {
+        if(currentObject){
+            currentObject = currentObject.clone();
+            objects.push(currentObject);
+        }
     }
 });
 

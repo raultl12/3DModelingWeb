@@ -112,6 +112,17 @@ class Object3D {
             document.body.removeChild(link);
         });
     }
+
+    clone(){
+        let meshClone = this.mesh.clone();
+        let geometryClone = this.geometry.clone();
+        let materialClone = this.material.clone();
+        let obj =  new Object3D(geometryClone, materialClone);
+        obj.mesh.position.set(meshClone.position.x, meshClone.position.y, meshClone.position.z);
+        obj.mesh.scale.set(meshClone.scale.x, meshClone.scale.y, meshClone.scale.z);
+        obj.mesh.rotation.set(meshClone.rotation.x, meshClone.rotation.y, meshClone.rotation.z);
+        return obj;
+    }
 }
 
 export { Object3D };
