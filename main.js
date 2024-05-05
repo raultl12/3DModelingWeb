@@ -340,7 +340,7 @@ document.getElementById("hdrFile").addEventListener("change", (event) => {
                 scene.environment = texture;
             });
         }
-        //reader.readAsDataURL(archivo);
+        reader.readAsDataURL(archivo);
 
     }
 });
