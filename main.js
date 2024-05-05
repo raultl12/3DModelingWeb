@@ -21,12 +21,13 @@ import {
     addSpotLight,
     MaterialProperty,
     addObjectRevolution,
-    exportScene
+    exportSceneOBJ,
+    exportSceneGLTF
 } from './src/utils.js';
 
 import { RGBELoader } from 'three/examples/jsm/Addons.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
-import { clone } from 'three/examples/jsm/utils/SkeletonUtils.js';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 
 //Initial setup
@@ -50,12 +51,16 @@ const revDivisions = document.getElementById("revDivisions");
 
 // Exporting objs
 const downloadOBJ = document.getElementById("downloadObj");
-const downloadScene = document.getElementById("downloadScene");
+const downloadSceneOBJ = document.getElementById("downloadScene");
+const downloadGLTF = document.getElementById("downloadGLTF");
+const donwloadSceneGLTF = document.getElementById("downloadSceneGLTF");
 
 //Importing objs
 const importOBJ = document.getElementById("importOBJ");
 const inputOBJ = document.getElementById("inputOBJ");
 
+const importGLTF = document.getElementById("importGLTF");
+const inputGLTF = document.getElementById("inputGLTF");
 
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
@@ -404,12 +409,23 @@ downloadOBJ.addEventListener("click", () =>{
     }
 });
 
-downloadScene.addEventListener("click", () =>{
+downloadSceneOBJ.addEventListener("click", () =>{
     if(currentObject && currentObject instanceof Object3D){
-        exportScene(scene);
+        exportSceneOBJ(scene);
     }
 });
 
+downloadGLTF.addEventListener("click", () =>{
+    if(currentObject && currentObject instanceof Object3D){
+        currentObject.exportarGLTF();
+    }
+});
+
+donwloadSceneGLTF.addEventListener("click", () =>{
+    exportSceneGLTF(scene);
+});
+
+// Importing objs
 importOBJ.addEventListener("click", () =>{
     document.getElementById("inputOBJ").click();
 });
@@ -420,49 +436,54 @@ inputOBJ.addEventListener("change", (event) => {
         // instantiate a loader
         const loader = new OBJLoader();
 
-        // load a resource
-        loader.load(
-            // resource URL
-            'models/object.obj',
-            // called when resource is loaded
-            function ( group ) {
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+            loader.load(e.target.result, function ( group ) {
                 for(let i = 0; i < group.children.length; i++){
                     let mesh = group.children[i].clone();
                     let material = new THREE.MeshStandardMaterial({color: 0x00ff00});
                     let geometry = mesh.geometry.clone();
+                    geometry.scale(10, 10, 10);
+                    geometry.computeVertexNormals();
                     let obj = new Object3D(geometry, material);
                     objects.push(obj);
                     currentObject = obj;
                 }
-
-            },
-            // called when loading is in progresses
-            function ( xhr ) {
-
-                console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
-
-            },
-            // called when loading has errors
-            function ( error ) {
-
-                console.log( 'An error happened', error );
-
-            }
-        );
-        /*const reader = new FileReader();
-        reader.onload = function(e) {
-            const loader = new OBJLoader();
-            loader.load(e.target.result, function ( object ) {
-                object.traverse( function ( child ) {
-                    if ( child instanceof THREE.Mesh ) {
-                        const object3D = new Object3D(child);
-                        scene.add(object3D.mesh);
-                        objects.push(object3D);
-                    }
-                });
             });
         }
-        reader.readAsDataURL(archivo);*/
+        reader.readAsDataURL(archivo);
+        inputOBJ.value = "";
+    }
+});
+
+
+importGLTF.addEventListener("click", () =>{
+    document.getElementById("inputGLTF").click();
+});
+
+inputGLTF.addEventListener("change", (event) => {
+    const archivo = event.target.files[0];
+    if (archivo) {
+        // instantiate a loader
+        const loader = new GLTFLoader();
+
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+            loader.load(e.target.result, function ( gltf ) {
+                let mesh = gltf.scene.children[0].clone();
+                let material = new THREE.MeshStandardMaterial({color: 0x00ff00});
+                let geometry = mesh.geometry.clone();
+                geometry.computeVertexNormals();
+                let obj = new Object3D(geometry, material);
+                objects.push(obj);
+                currentObject = obj;
+            });
+        }
+        reader.readAsDataURL(archivo);
+
+        inputGLTF.value = "";
 
     }
 });

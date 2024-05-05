@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { scene } from '../Scene';
 import { MaterialProperty } from '../utils';
 import { OBJExporter } from 'three/addons/exporters/OBJExporter.js';
+import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js';
 
 class Object3D {
     constructor(geometry, material) {
@@ -92,6 +93,24 @@ class Object3D {
     
         // Eliminar el enlace después de la descarga
         document.body.removeChild(linkDescarga);
+    }
+
+    exportarGLTF() {
+        const exporter = new GLTFExporter();
+        exporter.parse(this.mesh, function (result) {
+            var output = JSON.stringify(result, null, 2);
+            var blob = new Blob([output], { type: 'text/plain' });
+            var url = URL.createObjectURL(blob);
+
+            var link = document.createElement('a');
+            link.style.display = 'none';
+            document.body.appendChild(link);
+
+            link.href = url;
+            link.download = 'object.gltf';
+            link.click();
+            document.body.removeChild(link);
+        });
     }
 }
 

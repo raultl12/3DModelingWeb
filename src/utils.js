@@ -4,6 +4,7 @@ import { Cylinder } from './objects/Cylinder';
 import { Light } from './objects/Light';
 import { ObjectRevolution } from './objects/ObjectRevolution';
 import { OBJExporter } from 'three/addons/exporters/OBJExporter.js';
+import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js';
 import { Object3D } from './objects/Object3D';
 import * as THREE from 'three';
 
@@ -71,7 +72,7 @@ const MaterialProperty = {
 };
 
 //Exportar la escena
-function exportScene(s){
+function exportSceneOBJ(s){
     // Crear un objeto Blob con el contenido en formato .obj
     const exporter = new OBJExporter();
     var group = new THREE.Group();
@@ -102,6 +103,33 @@ function exportScene(s){
     document.body.removeChild(linkDescarga);
 }
 
+function exportSceneGLTF(s){
+    const exporter = new GLTFExporter();
+
+    var group = new THREE.Group();
+    //Obtener en un array todos los objetos de la escena
+    for(let i = 0; i < s.children.length; i++){
+        if(s.children[i].name == "object3D"){
+            group.add(s.children[i].clone());
+        }
+    }
+
+    exporter.parse(group, function (result) {
+        var output = JSON.stringify(result, null, 2);
+        var blob = new Blob([output], { type: 'text/plain' });
+        var url = URL.createObjectURL(blob);
+
+        var link = document.createElement('a');
+        link.style.display = 'none';
+        document.body.appendChild(link);
+
+        link.href = url;
+        link.download = 'scene.gltf';
+        link.click();
+        document.body.removeChild(link);
+    });
+}
+
 export {
     addCube,
     changeColor,
@@ -112,6 +140,7 @@ export {
     addSpotLight, LightType,
     MaterialProperty,
     addObjectRevolution,
-    exportScene
+    exportSceneOBJ,
+    exportSceneGLTF
 };
     
