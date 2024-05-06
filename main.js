@@ -28,6 +28,7 @@ import {
 import { RGBELoader } from 'three/examples/jsm/Addons.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { ObjectGroup } from './src/objects/ObjectGroup.js';
 
 
 //Initial setup
@@ -76,7 +77,9 @@ scene.add(transformControls);
 const ambientLight = new THREE.AmbientLight( 0xffffff, 1);
 scene.add( ambientLight );
 
-
+//Grupo
+let g = new ObjectGroup();
+currentObject = g.group;
 
 animate();
 
@@ -253,9 +256,10 @@ canvas.addEventListener('mouseup', (event) => {
             raycaster.setFromCamera( mouse, camera );
         
             const intersects = raycaster.intersectObjects( scene.children);
-        
+
             for (let i = intersects.length - 1; i >= 0; i--) {
                 if (intersects[i].object.name === 'object3D') {
+                    console.log(intersects[i].object);
                     currentObject = objects.find(obj => obj.mesh === intersects[i].object);
                     transformControls.attach( currentObject.mesh );
                 }
@@ -287,6 +291,9 @@ document.addEventListener('keydown', function(event) {
 
     //Borrar objeto con supr
     if (event.key === 'Delete') {
+        if(currentObject.inGroup){
+            g.remove(currentObject);
+        }
         if(currentObject){
             if(currentObject instanceof Light){
                 scene.remove(currentObject.helper);
@@ -315,11 +322,26 @@ document.addEventListener('keydown', function(event) {
         }
     }
 
-    //Duplicar objeto con Ctrl + D
+    //Duplicar objeto con Ctrl + C
     if (event.ctrlKey && event.key === 'c') {
         if(currentObject){
             currentObject = currentObject.clone();
             objects.push(currentObject);
+        }
+    }
+
+    //Al pulsar 1, poner los transform controls al grupo
+    if (event.key === '1') {
+        currentObject = g.group;
+        transformControls.attach( g.group );
+    }
+
+    // control + g para añadir el objeto actual al grupo
+    if (event.ctrlKey && event.key === 'g') {
+        event.preventDefault();
+        if(currentObject){
+            currentObject.inGroup = true;
+            g.add(currentObject);
         }
     }
 });

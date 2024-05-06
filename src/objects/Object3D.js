@@ -15,6 +15,8 @@ class Object3D {
         this.edges = new THREE.EdgesGeometry( geometry ); 
         this.line = new THREE.LineSegments(this.edges, new THREE.LineBasicMaterial( { color: 0xffffff } ) ); 
         scene.add( this.line );
+
+        this.inGroup = false;
     }
 
     changeColor(hexColor) {
