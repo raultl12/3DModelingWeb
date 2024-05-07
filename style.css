@@ -125,3 +125,8 @@ input[type="color"]::-webkit-color-swatch-wrapper {
 #revolutionCanvas{
     background-color: black;
 }
+
+.groupsZone{
+    display: none;
+    margin: 1rem;
+}

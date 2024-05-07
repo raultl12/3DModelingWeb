@@ -71,8 +71,8 @@
                 <button id="addHDR">Add HDR</button>
 
                 <button id="revolution">Object by revolution</button>
+                <button id="groups">Groups</button>
             </div>
-
             <div class="importDownload">
                 <h2>Import / Download</h2>
                 <div class="downloadButtons">
@@ -106,6 +106,17 @@
                 <input type="number" title="It adjust points snapping. Higher number means you may be more precise while setting the canvas points. Default = 10" id="revDivisions" min="10" placeholder="Divisions">
             </div>
             <canvas id="revolutionCanvas" width="600px" height="600px"></canvas>
+        </div>
+        <div class="groupsZone">
+            <h2>Groups</h2>
+            <ul id="groupList">
+                <li>none</li>
+            </ul>
+            <div class="groupButtons">
+                <button id="groupBack">Back</button>
+                <button id="addGroup">Add group</button>
+                <button id="deleteGroup">Delete group</button>
+            </div>
         </div>
     </div>
     <script src="./src/utils.js" type="module"></script>

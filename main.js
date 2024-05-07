@@ -41,6 +41,7 @@ const roughnessSlider = document.getElementById('roughness');
 const metalnessSlider = document.getElementById('metalness');
 const emisiveIntSlider = document.getElementById('emisiveInt');
 const emisiveColor = document.getElementById('emisiveColor');
+const menu = document.getElementsByClassName("menu")[0];
 
 //Revolution zone
 const revZone = document.getElementsByClassName("revolutionZone")[0];
@@ -63,6 +64,16 @@ const inputOBJ = document.getElementById("inputOBJ");
 const importGLTF = document.getElementById("importGLTF");
 const inputGLTF = document.getElementById("inputGLTF");
 
+//Groups zone
+let groups = [];
+const groupsButton = document.getElementById("groups");
+const groupZone = document.getElementsByClassName("groupsZone")[0];
+const groupsBack = document.getElementById("groupBack");
+const addGroup = document.getElementById("addGroup");
+const deleteGroup = document.getElementById("deleteGroup");
+const groupList = document.getElementById("groupList");
+var g = null;
+
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
@@ -76,10 +87,6 @@ let dragStartY = 0;
 scene.add(transformControls);
 const ambientLight = new THREE.AmbientLight( 0xffffff, 1);
 scene.add( ambientLight );
-
-//Grupo
-let g = new ObjectGroup();
-currentObject = g.group;
 
 animate();
 
@@ -332,14 +339,21 @@ document.addEventListener('keydown', function(event) {
 
     //Al pulsar 1, poner los transform controls al grupo
     if (event.key === '1') {
+        if (g === null){
+            console.log("Creando grupo");
+            g = new ObjectGroup();
+        }
+        else{
+            console.log("grupo");
+            transformControls.attach( g.group );
+        }
         currentObject = g.group;
-        transformControls.attach( g.group );
     }
 
     // control + g para añadir el objeto actual al grupo
     if (event.ctrlKey && event.key === 'g') {
         event.preventDefault();
-        if(currentObject){
+        if(g !== null && currentObject){
             currentObject.inGroup = true;
             g.add(currentObject);
         }
@@ -421,7 +435,7 @@ revClear.addEventListener("click", () =>{
 revBack.addEventListener("click", () =>{
     revCanvas.switchVisibility();
     revZone.style.display = "none";
-    document.getElementsByClassName("menu")[0].style.display = "flex";
+    menu.style.display = "flex";
 });
 
 revDivisions.addEventListener("input", () =>{
@@ -512,4 +526,35 @@ inputGLTF.addEventListener("change", (event) => {
         inputGLTF.value = "";
 
     }
+});
+
+//Groups
+groupsButton.addEventListener("click", () =>{
+    console.log("click");
+    menu.style.display = "none";
+    groupZone.style.display = "block";
+});
+
+groupsBack.addEventListener("click", () =>{
+    groupZone.style.display = "none";
+    menu.style.display = "flex";
+});
+
+addGroup.addEventListener("click", () =>{
+    console.log("Add Group");
+    /*if(g !== null){
+        groups.push(g);
+        let option = document.createElement("option");
+        option.text = "Grupo " + groups.length;
+        groupList.add(option);
+        g = null;
+    }*/
+});
+
+deleteGroup.addEventListener("click", () =>{
+    console.log("Delete Group");
+    /*if(g !== null){
+        g.clear();
+        g = null;
+    }*/
 });
