@@ -51,6 +51,12 @@ const revClear = document.getElementById("revolutionClear");
 const revBack = document.getElementById("back");
 const revDivisions = document.getElementById("revDivisions");
 
+//ImportDownload zone
+const importButton = document.getElementById("importDownload");
+const importDownloadZone = document.getElementsByClassName("importDownloadZone")[0];
+const importBack = document.getElementById("importBack");
+
+
 // Exporting objs
 const downloadOBJ = document.getElementById("downloadObj");
 const downloadSceneOBJ = document.getElementById("downloadScene");
@@ -440,6 +446,18 @@ revBack.addEventListener("click", () =>{
 
 revDivisions.addEventListener("input", () =>{
     revCanvas.setDivisions(revDivisions.value);
+});
+
+//ImportDownloadZone
+
+importButton.addEventListener("click", () =>{
+    menu.style.display = "none";
+    importDownloadZone.style.display = "block";
+});
+
+importBack.addEventListener("click", () =>{
+    importDownloadZone.style.display = "none";
+    menu.style.display = "flex";
 });
 
 // Exporting objs

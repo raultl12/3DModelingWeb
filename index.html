@@ -71,25 +71,27 @@
                 <button id="addHDR">Add HDR</button>
 
                 <button id="revolution">Object by revolution</button>
+                <button id="importDownload">Import / Download</button>
                 <button id="groups">Groups</button>
             </div>
-            <div class="importDownload">
-                <h2>Import / Download</h2>
-                <div class="downloadButtons">
-                    <div class="import">
-                        <input type="file" name="inputOBJ" id="inputOBJ" accept=".obj" style="display: none;"/>
-                        <button id="importOBJ">Import OBJ</button>
+        </div>
+        <div class="importDownloadZone">
+            <h2>Import / Download</h2>
+            <div class="downloadButtons">
+                <button id="importBack">Back</button>
+                <div class="import">
+                    <input type="file" name="inputOBJ" id="inputOBJ" accept=".obj" style="display: none;"/>
+                    <button id="importOBJ">Import OBJ</button>
 
-                        <input type="file" name="inputGLTF" id="inputGLTF" accept=".gltf" style="display: none;"/>
-                        <button id="importGLTF">Import GLTF</button>
-                    </div>
-                    <div class="download">
-                        <button id="downloadObj">Download OBJ</button>
-                        <button id="downloadScene">Download Scene OBJ</button>
+                    <input type="file" name="inputGLTF" id="inputGLTF" accept=".gltf" style="display: none;"/>
+                    <button id="importGLTF">Import GLTF</button>
+                </div>
+                <div class="download">
+                    <button id="downloadObj">Download OBJ</button>
+                    <button id="downloadScene">Download Scene OBJ</button>
 
-                        <button id="downloadGLTF">Download GLTF</button>
-                        <button id="downloadSceneGLTF">Download scene GLTF</button>
-                    </div>
+                    <button id="downloadGLTF">Download GLTF</button>
+                    <button id="downloadSceneGLTF">Download scene GLTF</button>
                 </div>
             </div>
         </div>
@@ -109,14 +111,14 @@
         </div>
         <div class="groupsZone">
             <h2>Groups</h2>
-            <ul id="groupList">
-                <li>none</li>
-            </ul>
             <div class="groupButtons">
                 <button id="groupBack">Back</button>
                 <button id="addGroup">Add group</button>
                 <button id="deleteGroup">Delete group</button>
             </div>
+            <ul id="groupList">
+                <li>none</li>
+            </ul>
         </div>
     </div>
     <script src="./src/utils.js" type="module"></script>
