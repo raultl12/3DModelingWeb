@@ -18,5 +18,11 @@ const gridHelper = new THREE.GridHelper( 1000, 1000 );
 //Add objects to the scene
 scene.add( gridHelper );
 
+document.addEventListener('keydown', function(event){
+    if(event.key === 'h'){
+        gridHelper.visible = !gridHelper.visible;
+    }
+});
+
 
 export { scene };

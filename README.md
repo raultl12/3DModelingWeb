@@ -11,3 +11,4 @@ Esta aplicación web es mi Trabajo Fin de Grado para el grado de Ingeniería Inf
 * supr: Borra el objeto seleccionado
 * L: Activa y desactiva la visibilidad de las aristas del objeto seleccionado
 * ctrl + c: Duplica el objeto seleccionado.
+* H: Activa y desactiva el grid helper.
