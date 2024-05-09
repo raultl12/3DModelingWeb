@@ -113,11 +113,13 @@
             <h2>Groups</h2>
             <div class="groupButtons">
                 <button id="groupBack">Back</button>
+                <input type="text" name="groupName" id="groupName" placeholder="Name">
                 <button id="addGroup">Add group</button>
                 <button id="deleteGroup">Delete group</button>
             </div>
+            <label id="currentGroupLabel">Current Group: </label>
             <ul id="groupList">
-                <li>none</li>
+                <li style="display: none"><button id="selectButton" name="hiddenButton"></button></li>
             </ul>
         </div>
     </div>

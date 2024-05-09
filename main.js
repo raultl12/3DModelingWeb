@@ -22,7 +22,8 @@ import {
     MaterialProperty,
     addObjectRevolution,
     exportSceneOBJ,
-    exportSceneGLTF
+    exportSceneGLTF,
+    updateGroupList
 } from './src/utils.js';
 
 import { RGBELoader } from 'three/examples/jsm/Addons.js';
@@ -71,13 +72,16 @@ const importGLTF = document.getElementById("importGLTF");
 const inputGLTF = document.getElementById("inputGLTF");
 
 //Groups zone
-let groups = [];
+let groups = new Map();
+let currentGroup = null;
 const groupsButton = document.getElementById("groups");
 const groupZone = document.getElementsByClassName("groupsZone")[0];
 const groupsBack = document.getElementById("groupBack");
 const addGroup = document.getElementById("addGroup");
 const deleteGroup = document.getElementById("deleteGroup");
+const groupName = document.getElementById("groupName");
 const groupList = document.getElementById("groupList");
+const currentGroupLabel = document.getElementById("currentGroupLabel");
 var g = null;
 
 const raycaster = new THREE.Raycaster();
@@ -348,6 +352,8 @@ document.addEventListener('keydown', function(event) {
         if (g === null){
             console.log("Creando grupo");
             g = new ObjectGroup();
+            groups.push(g);
+            console.log(groups);
         }
         else{
             console.log("grupo");
@@ -560,19 +566,27 @@ groupsBack.addEventListener("click", () =>{
 
 addGroup.addEventListener("click", () =>{
     console.log("Add Group");
-    /*if(g !== null){
-        groups.push(g);
-        let option = document.createElement("option");
-        option.text = "Grupo " + groups.length;
-        groupList.add(option);
-        g = null;
-    }*/
+    let name = groupName.value;
+    g = new ObjectGroup();
+    groups.set(name, g);
+    currentGroup = g;
+    transformControls.attach( g.group );
+    currentObject = g.group;
+    let selectButton = updateGroupList(name, groupList, currentGroupLabel);
+    selectButton.addEventListener("click", () => {
+        selectGroup(name);
+    });
+    groupName.value = "";
 });
 
 deleteGroup.addEventListener("click", () =>{
     console.log("Delete Group");
-    /*if(g !== null){
-        g.clear();
-        g = null;
-    }*/
 });
+
+function selectGroup(name){
+    g = groups.get(name);
+    currentGroup = g;
+    transformControls.attach( g.group );
+    currentObject = g.group;
+    currentGroupLabel.textContent = `Current Group: ${name}`;
+}

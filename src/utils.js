@@ -6,6 +6,7 @@ import { ObjectRevolution } from './objects/ObjectRevolution';
 import { OBJExporter } from 'three/addons/exporters/OBJExporter.js';
 import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js';
 import { Object3D } from './objects/Object3D';
+import { ObjectGroup } from './objects/ObjectGroup';
 import * as THREE from 'three';
 
 function addCube(size, color, objects){
@@ -130,6 +131,24 @@ function exportSceneGLTF(s){
     });
 }
 
+function updateGroupList(name, list, currentGroupLabel){
+    let li = document.createElement("li");
+    currentGroupLabel.textContent = `Current Group: ${name}`;
+
+    let button = document.createElement("button");
+    button.textContent = "Select";
+    button.id = "selectButton";
+    button.value = name;
+
+    li.textContent = name;
+
+    li.appendChild(button);
+
+    list.appendChild(li);
+
+    return button;
+}
+
 export {
     addCube,
     changeColor,
@@ -141,6 +160,7 @@ export {
     MaterialProperty,
     addObjectRevolution,
     exportSceneOBJ,
-    exportSceneGLTF
+    exportSceneGLTF,
+    updateGroupList,
 };
     
