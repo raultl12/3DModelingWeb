@@ -574,7 +574,11 @@ addGroup.addEventListener("click", () =>{
     currentObject = g.group;
     let selectButton = updateGroupList(name, groupList, currentGroupLabel);
     selectButton.addEventListener("click", () => {
-        selectGroup(name);
+        g = groups.get(name);
+        currentGroup = g;
+        transformControls.attach( g.group );
+        currentObject = g.group;
+        currentGroupLabel.textContent = `Current Group: ${name}`;
     });
     groupName.value = "";
 });
@@ -582,11 +586,3 @@ addGroup.addEventListener("click", () =>{
 deleteGroup.addEventListener("click", () =>{
     console.log("Delete Group");
 });
-
-function selectGroup(name){
-    g = groups.get(name);
-    currentGroup = g;
-    transformControls.attach( g.group );
-    currentObject = g.group;
-    currentGroupLabel.textContent = `Current Group: ${name}`;
-}
