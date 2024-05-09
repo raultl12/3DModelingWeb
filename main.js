@@ -565,7 +565,6 @@ groupsBack.addEventListener("click", () =>{
 });
 
 addGroup.addEventListener("click", () =>{
-    console.log("Add Group");
     let name = groupName.value;
     g = new ObjectGroup();
     groups.set(name, g);
