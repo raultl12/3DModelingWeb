@@ -83,6 +83,7 @@ const groupName = document.getElementById("groupName");
 const groupList = document.getElementById("groupList");
 const currentGroupLabel = document.getElementById("currentGroupLabel");
 var g = null;
+const addToGroup = document.getElementById("addToGroup");
 
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
@@ -349,25 +350,9 @@ document.addEventListener('keydown', function(event) {
 
     //Al pulsar 1, poner los transform controls al grupo
     if (event.key === '1') {
-        if (g === null){
-            console.log("Creando grupo");
-            g = new ObjectGroup();
-            groups.push(g);
-            console.log(groups);
-        }
-        else{
-            console.log("grupo");
-            transformControls.attach( g.group );
-        }
-        currentObject = g.group;
-    }
-
-    // control + g para añadir el objeto actual al grupo
-    if (event.ctrlKey && event.key === 'g') {
-        event.preventDefault();
-        if(g !== null && currentObject){
-            currentObject.inGroup = true;
-            g.add(currentObject);
+        if(currentGroup){
+            transformControls.attach( currentGroup.group );
+            currentObject = currentGroup.group;
         }
     }
 });
@@ -584,4 +569,11 @@ addGroup.addEventListener("click", () =>{
 
 deleteGroup.addEventListener("click", () =>{
     console.log("Delete Group");
+});
+
+addToGroup.addEventListener("click", () =>{
+    if(g !== null && currentObject instanceof Object3D && currentGroup){
+        currentObject.inGroup = true;
+        g.add(currentObject);
+    }
 });
