@@ -551,21 +551,23 @@ groupsBack.addEventListener("click", () =>{
 });
 
 addGroup.addEventListener("click", () =>{
-    let name = groupName.value;
-    g = new ObjectGroup();
-    groups.set(name, g);
-    currentGroup = g;
-    transformControls.attach( g.group );
-    currentObject = g.group;
-    let selectButton = updateGroupList(name, groupList, currentGroupLabel);
-    selectButton.addEventListener("click", () => {
-        g = groups.get(name);
+    if(groupName.value !== ""){
+        let name = groupName.value;
+        g = new ObjectGroup();
+        groups.set(name, g);
         currentGroup = g;
         transformControls.attach( g.group );
         currentObject = g.group;
-        currentGroupLabel.textContent = `Current Group: ${name}`;
-    });
-    groupName.value = "";
+        let selectButton = updateGroupList(name, groupList, currentGroupLabel);
+        selectButton.addEventListener("click", () => {
+            g = groups.get(name);
+            currentGroup = g;
+            transformControls.attach( g.group );
+            currentObject = g.group;
+            currentGroupLabel.textContent = `Current Group: ${name}`;
+        });
+        groupName.value = "";
+    }
 });
 
 deleteGroup.addEventListener("click", () =>{
