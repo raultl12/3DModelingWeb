@@ -113,3 +113,8 @@ input[type="color"]::-webkit-color-swatch-wrapper {
     display: none;
     margin: 1rem;
 }
+
+.animationZone{
+    display: none;
+    margin: 1rem;
+}

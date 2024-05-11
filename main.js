@@ -85,6 +85,11 @@ const currentGroupLabel = document.getElementById("currentGroupLabel");
 var g = null;
 const addToGroup = document.getElementById("addToGroup");
 
+//Animation zone
+const animationButton = document.getElementById("animation");
+const animationZone = document.getElementsByClassName("animationZone")[0];
+const animationBack = document.getElementById("animationBack");
+
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
@@ -119,7 +124,6 @@ function animate() {
     else if (currentObject && currentObject instanceof Light){
         transformControls.attach( currentObject.light );
     }
-    
 	renderer.render( scene, camera );
     
 }
@@ -579,4 +583,15 @@ addToGroup.addEventListener("click", () =>{
         currentObject.inGroup = true;
         g.add(currentObject);
     }
+});
+
+//Animation
+animationButton.addEventListener("click", () =>{
+    menu.style.display = "none";
+    animationZone.style.display = "block";
+});
+
+animationBack.addEventListener("click", () =>{
+    animationZone.style.display = "none";
+    menu.style.display = "flex";
 });

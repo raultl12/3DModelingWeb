@@ -75,6 +75,7 @@
                 <button id="groups">Groups</button>
                 <button id="addToGroup">Add to current group</button>
                 <label id="currentGroupLabel">Current Group: </label>
+                <button id="animation">Animation</button>
             </div>
         </div>
         <div class="importDownloadZone">
@@ -122,6 +123,28 @@
             <label id="currentGroupLabel">Current Group: </label>
             <ul id="groupList">
             </ul>
+        </div>
+
+        <div class="animationZone">
+            <h2>Animation</h2>
+            <button id="animationBack">Back</button>
+            <label>Current Object: asdasd -> </label>
+            <label>Animate <input type="checkbox" name="nimate" id="animateBox"></label>
+            <div class="rotation">
+                <h2>Rotation</h2>
+                <div class="Xaxis">
+                    <label>X <input type="checkbox" name="rotateX" id="rotateX"></label>
+                    <label>Speed X <input type="number" name="speedX" id="speedX" min="0" value="10"></label>
+                </div>
+                <div class="Yaxis">
+                    <label>Y <input type="checkbox" name="rotateY" id="rotateY"></label>
+                    <label>Speed Y <input type="number" name="speedY" id="speedY" min="0" value="10"></label>
+                </div>
+                <div class="Zaxis">
+                    <label>Z <input type="checkbox" name="rotateZ" id="rotateZ"></label>
+                    <label>Speed Z <input type="number" name="speedZ" id="speedZ" min="0" value="10"></label>
+                </div>
+            </div>
         </div>
     </div>
     <script src="./src/utils.js" type="module"></script>
