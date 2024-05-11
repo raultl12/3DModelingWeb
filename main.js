@@ -242,6 +242,7 @@ const transformTypes = ['translate', 'rotate', 'scale'];
 var currentTransformType = 1;
 document.addEventListener('keydown', function(event) {
     if (event.key === ' ') {
+        event.preventDefault();
         transformControls.setMode( transformTypes[currentTransformType] );
         currentTransformType = (currentTransformType + 1) % 3;
     }
