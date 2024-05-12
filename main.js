@@ -116,10 +116,6 @@ function animate() {
 	controls.update();
     if(currentObject && currentObject instanceof Object3D){
         transformControls.attach( currentObject.mesh );
-        currentObject.line.position.set(currentObject.mesh.position.x, currentObject.mesh.position.y, currentObject.mesh.position.z);
-        //Lo mismo para rotacion y escala
-        currentObject.line.rotation.set(currentObject.mesh.rotation.x, currentObject.mesh.rotation.y, currentObject.mesh.rotation.z);
-        currentObject.line.scale.set(currentObject.mesh.scale.x, currentObject.mesh.scale.y, currentObject.mesh.scale.z);
     }
     else if (currentObject && currentObject instanceof Light){
         transformControls.attach( currentObject.light );
