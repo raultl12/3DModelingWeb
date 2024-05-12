@@ -86,9 +86,17 @@ var g = null;
 const addToGroup = document.getElementById("addToGroup");
 
 //Animation zone
+const animationActive = document.getElementById("animationActive");
 const animationButton = document.getElementById("animation");
 const animationZone = document.getElementsByClassName("animationZone")[0];
 const animationBack = document.getElementById("animationBack");
+const rotateX = document.getElementById("rotateX");
+const rotateY = document.getElementById("rotateY");
+const rotateZ = document.getElementById("rotateZ");
+const speedX = document.getElementById("speedX");
+const speedY = document.getElementById("speedY");
+const speedZ = document.getElementById("speedZ");
+const clock = new THREE.Clock();
 
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
@@ -110,16 +118,20 @@ animate();
 //Functions
 
 function animate() {
-
+    const delta = clock.getDelta();
+    
 	requestAnimationFrame( animate );
-
+    
 	controls.update();
-    if(currentObject && currentObject instanceof Object3D){
-        transformControls.attach( currentObject.mesh );
+    if(currentObject){
+        //document.getElementById("currentObj").textContent = `Current object: ${currentObject.toStirng()}`;
+        if(animationActive.checked){
+            if (rotateX.checked) currentObject.rotateX(speedX.value * delta);
+            if (rotateY.checked) currentObject.rotateY(speedY.value * delta);
+            if (rotateZ.checked) currentObject.rotateZ(speedZ.value * delta);
+        }
     }
-    else if (currentObject && currentObject instanceof Light){
-        transformControls.attach( currentObject.light );
-    }
+
 	renderer.render( scene, camera );
     
 }
@@ -129,14 +141,17 @@ function animate() {
 
 document.getElementById("addCube").addEventListener("click", () =>{
     currentObject = addCube(1, colorPicker.value, objects);
+    transformControls.attach( currentObject.mesh );
 });
 
 document.getElementById("addSphere").addEventListener("click", () =>{
     currentObject = addSphere(1, 32, 16, colorPicker.value, objects);
+    transformControls.attach( currentObject.mesh );
 });
 
 document.getElementById("addCylinder").addEventListener("click", () =>{
     currentObject = addCylinder(1, 1, 2, 32, colorPicker.value, objects);
+    transformControls.attach( currentObject.mesh );
 });
 /******************************************************************************************* */
 
@@ -144,14 +159,17 @@ document.getElementById("addCylinder").addEventListener("click", () =>{
 
 document.getElementById("addPointLight").addEventListener("click", () =>{
     currentObject = addPointLight(0xffffff, 30, objects);
+    transformControls.attach( currentObject.light );
 });
 
 document.getElementById("addDirectionalLight").addEventListener("click", () =>{
     currentObject = addDirectionalLight(0xffffff, 30, objects);
+    transformControls.attach( currentObject.light );
 });
 
 document.getElementById("addSpotLight").addEventListener("click", () =>{
     currentObject = addSpotLight(0xffffff, 30, objects);
+    transformControls.attach( currentObject.light );
 });
 
 /******************************************************************************************** */
@@ -248,8 +266,6 @@ document.addEventListener('keydown', function(event) {
     }
 });
 
-/*BUG-REVISAR: Se selecciona el objeto mas lejano */
-
 canvas.addEventListener('mousedown', (event) => {
     dragging = true;
     dragStartX = event.clientX;
@@ -284,7 +300,7 @@ canvas.addEventListener('mouseup', (event) => {
                 }
                 else if (intersects[i].object.name === 'light'){
                     currentObject = objects.find(obj => obj.helper === intersects[i].object);
-                    transformControls.attach( currentObject.helper );
+                    transformControls.attach( currentObject.light );
                 }
             }
         }
@@ -575,7 +591,7 @@ deleteGroup.addEventListener("click", () =>{
 });
 
 addToGroup.addEventListener("click", () =>{
-    if(g !== null && currentObject instanceof Object3D && currentGroup){
+    if(g !== null && currentGroup && (currentObject instanceof Object3D || currentObject instanceof Light)){
         currentObject.inGroup = true;
         g.add(currentObject);
     }

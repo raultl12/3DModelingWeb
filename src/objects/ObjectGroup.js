@@ -11,11 +11,33 @@ class ObjectGroup{
     }
 
     add(object){
-        this.group.add(object.mesh);
+        if(object.mesh === undefined){
+            this.group.add(object.light);
+        }
+        else{
+            this.group.add(object.mesh);
+        }
     }
 
     remove(object){
-        this.group.remove(object.mesh);
+        if(object.mesh === undefined){
+            this.group.remove(object.light);
+        }
+        else{
+            this.group.remove(object.mesh);
+        }
+    }
+
+    rotateX(angle){
+        this.group.rotateX(angle);
+    }
+
+    rotateY(angle){
+        this.group.rotateY(angle);
+    }
+
+    rotateZ(angle){
+        this.group.rotateZ(angle);
     }
 }
 

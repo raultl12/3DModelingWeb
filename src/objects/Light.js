@@ -43,6 +43,18 @@ class Light {
     changeColor(hexColor) {
         this.light.color.set(hexColor);
     }
+
+    rotateX(angle){
+        this.group.rotateX(angle);
+    }
+
+    rotateY(angle){
+        this.group.rotateY(angle);
+    }
+
+    rotateZ(angle){
+        this.group.rotateZ(angle);
+    }
 }
 
 export { Light };

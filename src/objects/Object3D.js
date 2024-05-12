@@ -125,6 +125,18 @@ class Object3D {
         obj.mesh.rotation.set(meshClone.rotation.x, meshClone.rotation.y, meshClone.rotation.z);
         return obj;
     }
+
+    rotateX(angle){
+        this.mesh.rotateX(angle);
+    }
+
+    rotateY(angle){
+        this.mesh.rotateY(angle);
+    }
+
+    rotateZ(angle){
+        this.mesh.rotateZ(angle);
+    }
 }
 
 export { Object3D };
