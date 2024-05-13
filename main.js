@@ -107,6 +107,7 @@ let controlsEnabled = true;
 let dragging = false;
 let dragStartX = 0;
 let dragStartY = 0;
+const currObjLabel = document.getElementById("currentObj");
 
 scene.add(transformControls);
 const ambientLight = new THREE.AmbientLight( 0xffffff, 1);
@@ -124,7 +125,7 @@ function animate() {
     
 	controls.update();
     if(currentObject){
-        //document.getElementById("currentObj").textContent = `Current object: ${currentObject.toStirng()}`;
+        
         if(animationActive.checked){
             if (rotateX.checked) currentObject.rotateX(speedX.value * delta);
             if (rotateY.checked) currentObject.rotateY(speedY.value * delta);
@@ -142,16 +143,19 @@ function animate() {
 document.getElementById("addCube").addEventListener("click", () =>{
     currentObject = addCube(1, colorPicker.value, objects);
     transformControls.attach( currentObject.mesh );
+    currObjLabel.textContent = `Current object: ${currentObject.toString()}`;
 });
 
 document.getElementById("addSphere").addEventListener("click", () =>{
     currentObject = addSphere(1, 32, 16, colorPicker.value, objects);
     transformControls.attach( currentObject.mesh );
+    currObjLabel.textContent = `Current object: ${currentObject.toString()}`;
 });
 
 document.getElementById("addCylinder").addEventListener("click", () =>{
     currentObject = addCylinder(1, 1, 2, 32, colorPicker.value, objects);
     transformControls.attach( currentObject.mesh );
+    currObjLabel.textContent = `Current object: ${currentObject.toString()}`;
 });
 /******************************************************************************************* */
 
@@ -160,16 +164,19 @@ document.getElementById("addCylinder").addEventListener("click", () =>{
 document.getElementById("addPointLight").addEventListener("click", () =>{
     currentObject = addPointLight(0xffffff, 30, objects);
     transformControls.attach( currentObject.light );
+    currObjLabel.textContent = `Current object: ${currentObject.toString()}`;
 });
 
 document.getElementById("addDirectionalLight").addEventListener("click", () =>{
     currentObject = addDirectionalLight(0xffffff, 30, objects);
     transformControls.attach( currentObject.light );
+    currObjLabel.textContent = `Current object: ${currentObject.toString()}`;
 });
 
 document.getElementById("addSpotLight").addEventListener("click", () =>{
     currentObject = addSpotLight(0xffffff, 30, objects);
     transformControls.attach( currentObject.light );
+    currObjLabel.textContent = `Current object: ${currentObject.toString()}`;
 });
 
 /******************************************************************************************** */
@@ -303,6 +310,7 @@ canvas.addEventListener('mouseup', (event) => {
                     transformControls.attach( currentObject.light );
                 }
             }
+            currObjLabel.textContent = `Current object: ${currentObject.toString()}`;
         }
     }
     dragging = false;
@@ -370,6 +378,7 @@ document.addEventListener('keydown', function(event) {
         if(currentGroup){
             transformControls.attach( currentGroup.group );
             currentObject = currentGroup.group;
+            currObjLabel.textContent = `Current object: ${currentGroup.toString()}`;
         }
     }
 });
@@ -582,6 +591,7 @@ addGroup.addEventListener("click", () =>{
             currentObject = g.group;
             currentGroupLabel.textContent = `Current Group: ${name}`;
         });
+        currObjLabel.textContent = `Current object: ${currentGroup.toString()}`;
         groupName.value = "";
     }
 });

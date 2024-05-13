@@ -28,6 +28,10 @@ class ObjectGroup{
         }
     }
 
+    toString(){
+        return this.group.name;
+    }
+
     rotateX(angle){
         this.group.rotateX(angle);
     }

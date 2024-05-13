@@ -44,6 +44,10 @@ class Light {
         this.light.color.set(hexColor);
     }
 
+    toString(){
+        return this.helper.name;
+    }
+
     rotateX(angle){
         this.group.rotateX(angle);
     }

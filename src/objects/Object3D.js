@@ -74,6 +74,10 @@ class Object3D {
         this.mesh.material.needsUpdate = true; 
     }
 
+    toString(){
+        return this.mesh.name;
+    }
+
     exportarOBJ() {
         // Crear un objeto Blob con el contenido en formato .obj
         const exporter = new OBJExporter();
