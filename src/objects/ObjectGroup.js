@@ -8,6 +8,15 @@ class ObjectGroup{
         this.group.name = 'group';
 
         scene.add(this.group);
+
+        this.animate = false;
+        //Rotations
+        this.rotX = false;
+        this.rotY = false;
+        this.rotZ = false;
+        this.speedX = 0.01;
+        this.speedY = 0.01;
+        this.speedZ = 0.01;
     }
 
     add(object){
@@ -39,6 +48,24 @@ class ObjectGroup{
         return this.group.name;
     }
 
+    setAnimationParams(
+        animate,
+        rotateX,
+        rotateY,
+        rotateZ,
+        speedX,
+        speedY,
+        speedZ
+    ){
+        this.animate = animate;
+        this.rotX = rotateX;
+        this.rotY = rotateY;
+        this.rotZ = rotateZ;
+        this.speedX = speedX;
+        this.speedY = speedY;
+        this.speedZ = speedZ;
+    }
+
     rotateX(angle){
         this.group.rotateX(angle);
     }
@@ -49,6 +76,14 @@ class ObjectGroup{
 
     rotateZ(angle){
         this.group.rotateZ(angle);
+    }
+
+    update(delta){
+        if(this.animate){
+            if(this.rotX) this.rotateX(this.speedX * delta);
+            if(this.rotY) this.rotateY(this.speedY * delta);
+            if(this.rotZ) this.rotateZ(this.speedZ * delta);
+        }
     }
 }
 

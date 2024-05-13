@@ -38,6 +38,16 @@ class Light {
         scene.add(this.helper);
 
         scene.add(this.light);
+
+        //Animations
+        this.animate = false;
+        //Rotations
+        this.rotX = false;
+        this.rotY = false;
+        this.rotZ = false;
+        this.speedX = 0.01;
+        this.speedY = 0.01;
+        this.speedZ = 0.01;
     }
 
     changeColor(hexColor) {
@@ -48,16 +58,42 @@ class Light {
         return this.helper.name;
     }
 
+    setAnimationParams(
+        animate,
+        rotateX,
+        rotateY,
+        rotateZ,
+        speedX,
+        speedY,
+        speedZ
+    ){
+        this.animate = animate;
+        this.rotX = rotateX;
+        this.rotY = rotateY;
+        this.rotZ = rotateZ;
+        this.speedX = speedX;
+        this.speedY = speedY;
+        this.speedZ = speedZ;
+    }
+
     rotateX(angle){
-        this.group.rotateX(angle);
+        this.light.rotateX(angle);
     }
 
     rotateY(angle){
-        this.group.rotateY(angle);
+        this.light.rotateY(angle);
     }
 
     rotateZ(angle){
-        this.group.rotateZ(angle);
+        this.light.rotateZ(angle);
+    }
+
+    update(delta){
+        if(this.animate){
+            if(this.rotX) this.rotateX(this.speedX * delta);
+            if(this.rotY) this.rotateY(this.speedY * delta);
+            if(this.rotZ) this.rotateZ(this.speedZ * delta);
+        }
     }
 }
 

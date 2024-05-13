@@ -97,6 +97,7 @@ const rotateZ = document.getElementById("rotateZ");
 const speedX = document.getElementById("speedX");
 const speedY = document.getElementById("speedY");
 const speedZ = document.getElementById("speedZ");
+const saveAnimation = document.getElementById("saveAnimation");
 const clock = new THREE.Clock();
 
 const raycaster = new THREE.Raycaster();
@@ -126,11 +127,8 @@ function animate() {
     
 	controls.update();
     if(currentObject){
-        
-        if(animationActive.checked){
-            if (rotateX.checked) currentObject.rotateX(speedX.value * delta);
-            if (rotateY.checked) currentObject.rotateY(speedY.value * delta);
-            if (rotateZ.checked) currentObject.rotateZ(speedZ.value * delta);
+        for(let i = 0; i < objects.length; i++){
+            objects[i].update(delta);
         }
     }
 
@@ -379,7 +377,7 @@ document.addEventListener('keydown', function(event) {
     if (event.key === '1') {
         if(currentGroup){
             transformControls.attach( currentGroup.group );
-            currentObject = currentGroup.group;
+            currentObject = currentGroup;
             currObjLabel.textContent = `Current object: ${currentGroup.toString()}`;
         }
     }
@@ -625,4 +623,16 @@ animationButton.addEventListener("click", () =>{
 animationBack.addEventListener("click", () =>{
     animationZone.style.display = "none";
     menu.style.display = "flex";
+});
+
+saveAnimation.addEventListener("click", () =>{
+    currentObject.setAnimationParams(
+        animationActive.checked,
+        rotateX.checked,
+        rotateY.checked,
+        rotateZ.checked,
+        speedX.value,
+        speedY.value,
+        speedZ.value
+    );
 });

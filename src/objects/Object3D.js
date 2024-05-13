@@ -17,6 +17,16 @@ class Object3D {
         this.mesh.add( this.line );
 
         this.inGroup = false;
+
+        //Animations
+        this.animate = false;
+        //Rotations
+        this.rotX = false;
+        this.rotY = false;
+        this.rotZ = false;
+        this.speedX = 0.01;
+        this.speedY = 0.01;
+        this.speedZ = 0.01;
     }
 
     changeColor(hexColor) {
@@ -130,6 +140,24 @@ class Object3D {
         return obj;
     }
 
+    setAnimationParams(
+        animate,
+        rotateX,
+        rotateY,
+        rotateZ,
+        speedX,
+        speedY,
+        speedZ
+    ){
+        this.animate = animate;
+        this.rotX = rotateX;
+        this.rotY = rotateY;
+        this.rotZ = rotateZ;
+        this.speedX = speedX;
+        this.speedY = speedY;
+        this.speedZ = speedZ;
+    }
+
     rotateX(angle){
         this.mesh.rotateX(angle);
     }
@@ -140,6 +168,14 @@ class Object3D {
 
     rotateZ(angle){
         this.mesh.rotateZ(angle);
+    }
+
+    update(delta){
+        if(this.animate){
+            if(this.rotX) this.rotateX(this.speedX * delta);
+            if(this.rotY) this.rotateY(this.speedY * delta);
+            if(this.rotZ) this.rotateZ(this.speedZ * delta);
+        }
     }
 }
 
