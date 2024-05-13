@@ -12,18 +12,25 @@ class ObjectGroup{
 
     add(object){
         if(object.mesh === undefined){
-            this.group.add(object.light);
+            this.group.attach(object.light);
         }
         else{
-            this.group.add(object.mesh);
+            this.group.attach(object.mesh);
         }
     }
 
     remove(object){
+        let pos = new THREE.Vector3();
         if(object.mesh === undefined){
+            object.light.getWorldPosition(pos);
+            object.light.position.set(pos.x, pos.y, pos.z);
+            scene.add(object.light);
             this.group.remove(object.light);
         }
         else{
+            object.mesh.getWorldPosition(pos)
+            object.mesh.position.set(pos.x, pos.y, pos.z);
+            scene.add(object.mesh);
             this.group.remove(object.mesh);
         }
     }

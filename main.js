@@ -84,6 +84,7 @@ const groupList = document.getElementById("groupList");
 const currentGroupLabel = document.getElementById("currentGroupLabel");
 var g = null;
 const addToGroup = document.getElementById("addToGroup");
+const removeFromGroup = document.getElementById("removeFromGroup");
 
 //Animation zone
 const animationActive = document.getElementById("animationActive");
@@ -336,6 +337,7 @@ document.addEventListener('keydown', function(event) {
     if (event.key === 'Delete') {
         if(currentObject.inGroup){
             g.remove(currentObject);
+            currentObject.inGroup = false;
         }
         if(currentObject){
             if(currentObject instanceof Light){
@@ -604,6 +606,13 @@ addToGroup.addEventListener("click", () =>{
     if(g !== null && currentGroup && (currentObject instanceof Object3D || currentObject instanceof Light)){
         currentObject.inGroup = true;
         g.add(currentObject);
+    }
+});
+
+removeFromGroup.addEventListener("click", () =>{
+    if(g !== null && currentGroup && (currentObject instanceof Object3D || currentObject instanceof Light)){
+        g.remove(currentObject);
+        currentObject.inGroup = false;
     }
 });
 
