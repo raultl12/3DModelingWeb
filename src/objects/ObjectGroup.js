@@ -9,6 +9,8 @@ class ObjectGroup{
 
         scene.add(this.group);
 
+        this.inGroup = false;
+
         this.animate = false;
         //Rotations
         this.rotX = false;
@@ -20,8 +22,12 @@ class ObjectGroup{
     }
 
     add(object){
-        if(object.mesh === undefined){
+        console.log(object.toString());
+        if(object.toString() === 'light'){
             this.group.attach(object.light);
+        }
+        else if(object.toString() === 'group'){
+            this.group.attach(object.group);
         }
         else{
             this.group.attach(object.mesh);

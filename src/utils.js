@@ -144,9 +144,15 @@ function updateGroupList(name, list, currentGroupLabel){
 
     li.appendChild(button);
 
+    let addButton = document.createElement("button")
+    addButton.textContent = "Add to current group";
+    addButton.id = "addGtoG";
+    addButton.value = name;
+    li.appendChild(addButton);
+
     list.appendChild(li);
 
-    return button;
+    return [button, addButton];
 }
 
 export {

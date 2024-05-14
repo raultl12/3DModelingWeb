@@ -590,7 +590,7 @@ addGroup.addEventListener("click", () =>{
         currentGroup = g;
         transformControls.attach( g.group );
         currentObject = g.group;
-        let selectButton = updateGroupList(name, groupList, currentGroupLabel);
+        let [selectButton, addToGroup] = updateGroupList(name, groupList, currentGroupLabel);
         selectButton.addEventListener("click", () => {
             g = groups.get(name);
             currentGroup = g;
@@ -598,6 +598,13 @@ addGroup.addEventListener("click", () =>{
             currentObject = g.group;
             currentGroupLabel.textContent = `Current Group: ${name}`;
         });
+
+        addToGroup.addEventListener("click", () =>{
+            let selectedGroup = groups.get(name);
+            currentGroup.inGroup = true;
+            g.add(selectedGroup);
+        });
+
         currObjLabel.textContent = `Current object: ${currentGroup.toString()}`;
         groupName.value = "";
     }
