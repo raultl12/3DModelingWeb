@@ -132,6 +132,13 @@ function animate() {
         }
     }
 
+    if(currentGroup){
+        //Recorrer todo el mapa de grupos
+        for (let group of groups.values()) {
+            group.update(delta);
+        }
+    }
+
 	renderer.render( scene, camera );
     
 }
