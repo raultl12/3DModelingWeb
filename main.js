@@ -81,7 +81,7 @@ const addGroup = document.getElementById("addGroup");
 const deleteGroup = document.getElementById("deleteGroup");
 const groupName = document.getElementById("groupName");
 const groupList = document.getElementById("groupList");
-const currentGroupLabel = document.getElementById("currentGroupLabel");
+const currentGroupLabel = document.getElementsByClassName("currentGroupLabel");
 var g = null;
 const addToGroup = document.getElementById("addToGroup");
 const removeFromGroup = document.getElementById("removeFromGroup");
@@ -591,18 +591,25 @@ addGroup.addEventListener("click", () =>{
         transformControls.attach( g.group );
         currentObject = g.group;
         let [selectButton, addToGroup] = updateGroupList(name, groupList, currentGroupLabel);
+        for(let label of currentGroupLabel){
+            label.textContent = `Current Group: ${name}`;
+        }
         selectButton.addEventListener("click", () => {
             g = groups.get(name);
             currentGroup = g;
             transformControls.attach( g.group );
             currentObject = g.group;
-            currentGroupLabel.textContent = `Current Group: ${name}`;
+            for(let label of currentGroupLabel){
+                label.textContent = `Current Group: ${name}`;
+            }
         });
 
         addToGroup.addEventListener("click", () =>{
             let selectedGroup = groups.get(name);
-            currentGroup.inGroup = true;
-            g.add(selectedGroup);
+            if(selectedGroup !== g){
+                currentGroup.inGroup = true;
+                g.add(selectedGroup);
+            }
         });
 
         currObjLabel.textContent = `Current object: ${currentGroup.toString()}`;
