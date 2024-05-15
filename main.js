@@ -78,7 +78,6 @@ const groupsButton = document.getElementById("groups");
 const groupZone = document.getElementsByClassName("groupsZone")[0];
 const groupsBack = document.getElementById("groupBack");
 const addGroup = document.getElementById("addGroup");
-const deleteGroup = document.getElementById("deleteGroup");
 const groupName = document.getElementById("groupName");
 const groupList = document.getElementById("groupList");
 const currentGroupLabel = document.getElementsByClassName("currentGroupLabel");
@@ -590,7 +589,7 @@ addGroup.addEventListener("click", () =>{
         currentGroup = g;
         transformControls.attach( g.group );
         currentObject = g.group;
-        let [selectButton, addToGroup] = updateGroupList(name, groupList, currentGroupLabel);
+        let [selectButton, addToGroup, deleteButton] = updateGroupList(name, groupList, currentGroupLabel);
         for(let label of currentGroupLabel){
             label.textContent = `Current Group: ${name}`;
         }
@@ -612,13 +611,33 @@ addGroup.addEventListener("click", () =>{
             }
         });
 
+        deleteButton.addEventListener("click", () =>{
+            let allLi = groupList.getElementsByTagName("li");
+            console.log(allLi);
+            for(let li of allLi){
+                let del = false;
+                li.childNodes.forEach((child) => {
+                    if(child.value === name){
+                        del = true;
+                    }
+                });
+                if(del){
+                    groupList.removeChild(li);
+                    break;
+                }
+            }
+            groups.delete(name);
+            currentGroup = null;
+            currentObject = null;
+            transformControls.detach();
+            for(let label of currentGroupLabel){
+                label.textContent = `Current Group: `;
+            }
+        });
+
         currObjLabel.textContent = `Current object: ${currentGroup.toString()}`;
         groupName.value = "";
     }
-});
-
-deleteGroup.addEventListener("click", () =>{
-    console.log("Delete Group");
 });
 
 addToGroup.addEventListener("click", () =>{

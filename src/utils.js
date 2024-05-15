@@ -150,9 +150,15 @@ function updateGroupList(name, list, currentGroupLabel){
     addButton.value = name;
     li.appendChild(addButton);
 
+    let deleteButton = document.createElement("button");
+    deleteButton.textContent = "Delete";
+    deleteButton.id = "deleteButton";
+    deleteButton.value = name;
+    li.appendChild(deleteButton);
+
     list.appendChild(li);
 
-    return [button, addButton];
+    return [button, addButton, deleteButton];
 }
 
 export {
