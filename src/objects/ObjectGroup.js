@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { scene } from '../Scene';
-
+import { OBJExporter } from 'three/addons/exporters/OBJExporter.js';
+import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js';
 
 class ObjectGroup{
     constructor() {
@@ -52,6 +53,47 @@ class ObjectGroup{
 
     toString(){
         return this.group.name;
+    }
+
+    exportarOBJ() {
+        // Crear un objeto Blob con el contenido en formato .obj
+        const exporter = new OBJExporter();
+        var objetoObj = exporter.parse(this.group);
+    
+        var archivoBlob = new Blob([objetoObj], { type: "text/plain" });
+    
+        // Crear un objeto URL para el Blob
+        var urlArchivo = URL.createObjectURL(archivoBlob);
+    
+        // Crear un elemento <a> invisible
+        var linkDescarga = document.createElement("a");
+        linkDescarga.href = urlArchivo;
+        linkDescarga.download = "group.obj"; // Nombre del archivo
+        document.body.appendChild(linkDescarga);
+    
+        // Simular un clic en el enlace para iniciar la descarga
+        linkDescarga.click();
+    
+        // Eliminar el enlace después de la descarga
+        document.body.removeChild(linkDescarga);
+    }
+
+    exportarGLTF() {
+        const exporter = new GLTFExporter();
+        exporter.parse(this.group, function (result) {
+            var output = JSON.stringify(result, null, 2);
+            var blob = new Blob([output], { type: 'text/plain' });
+            var url = URL.createObjectURL(blob);
+
+            var link = document.createElement('a');
+            link.style.display = 'none';
+            document.body.appendChild(link);
+
+            link.href = url;
+            link.download = 'group.gltf';
+            link.click();
+            document.body.removeChild(link);
+        });
     }
 
     setAnimationParams(

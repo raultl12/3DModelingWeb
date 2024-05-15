@@ -485,20 +485,28 @@ importBack.addEventListener("click", () =>{
 
 // Exporting objs
 downloadOBJ.addEventListener("click", () =>{
-    if(currentObject && currentObject instanceof Object3D){
-        currentObject.exportarOBJ();
+    if(currentObject && !(currentObject instanceof Light)){
+        if(currentObject.toString() === 'group'){
+            currentGroup.exportarOBJ();
+        }else{
+            currentObject.exportarOBJ();
+        }
     }
 });
 
 downloadSceneOBJ.addEventListener("click", () =>{
-    if(currentObject && currentObject instanceof Object3D){
+    if(currentObject && !(currentObject instanceof Light)){
         exportSceneOBJ(scene);
     }
 });
 
 downloadGLTF.addEventListener("click", () =>{
-    if(currentObject && currentObject instanceof Object3D){
-        currentObject.exportarGLTF();
+    if(currentObject && !(currentObject instanceof Light)){
+        if(currentObject.toString() === 'group'){
+            currentGroup.exportarGLTF();
+        }else{
+            currentObject.exportarGLTF();
+        }
     }
 });
 

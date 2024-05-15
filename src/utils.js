@@ -79,7 +79,7 @@ function exportSceneOBJ(s){
     var group = new THREE.Group();
     //Obtener en un array todos los objetos de la escena
     for(let i = 0; i < s.children.length; i++){
-        if(s.children[i].name == "object3D"){
+        if((s.children[i].name == "object3D") || (s.children[i].name == "group")){
             group.add(s.children[i].clone());
         }
     }
@@ -110,7 +110,7 @@ function exportSceneGLTF(s){
     var group = new THREE.Group();
     //Obtener en un array todos los objetos de la escena
     for(let i = 0; i < s.children.length; i++){
-        if(s.children[i].name == "object3D"){
+        if((s.children[i].name == "object3D") || (s.children[i].name == "group")){
             group.add(s.children[i].clone());
         }
     }
