@@ -90,6 +90,7 @@ const animationActive = document.getElementById("animationActive");
 const animationButton = document.getElementById("animation");
 const animationZone = document.getElementsByClassName("animationZone")[0];
 const animationBack = document.getElementById("animationBack");
+//Rotations
 const rotateX = document.getElementById("rotateX");
 const rotateY = document.getElementById("rotateY");
 const rotateZ = document.getElementById("rotateZ");
@@ -97,6 +98,13 @@ const speedX = document.getElementById("speedX");
 const speedY = document.getElementById("speedY");
 const speedZ = document.getElementById("speedZ");
 const saveAnimation = document.getElementById("saveAnimation");
+
+//Translation
+const addTranslationLine = document.getElementById("addTranslationLine");
+const deleteLastTranslation = document.getElementById("deleteLastTranslation");
+const translationLine1 = document.getElementById("translationLine1");
+var translationLines = 1;
+
 const clock = new THREE.Clock();
 
 const raycaster = new THREE.Raycaster();
@@ -683,4 +691,8 @@ saveAnimation.addEventListener("click", () =>{
         speedY.value,
         speedZ.value
     );
+});
+
+addTranslationLine.addEventListener("click", () =>{
+
 });

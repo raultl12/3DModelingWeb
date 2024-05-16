@@ -135,16 +135,26 @@
                 <h2>Rotation</h2>
                 <div class="Xaxis">
                     <label>X <input type="checkbox" name="rotateX" id="rotateX"></label>
-                    <label>Speed X <input type="number" name="speedX" id="speedX" min="0" value="10"></label>
+                    <label>Speed X <input type="number" name="speedX" id="speedX" min="0" value="3"></label>
                 </div>
                 <div class="Yaxis">
                     <label>Y <input type="checkbox" name="rotateY" id="rotateY"></label>
-                    <label>Speed Y <input type="number" name="speedY" id="speedY" min="0" value="10"></label>
+                    <label>Speed Y <input type="number" name="speedY" id="speedY" min="0" value="3"></label>
                 </div>
                 <div class="Zaxis">
                     <label>Z <input type="checkbox" name="rotateZ" id="rotateZ"></label>
-                    <label>Speed Z <input type="number" name="speedZ" id="speedZ" min="0" value="10"></label>
+                    <label>Speed Z <input type="number" name="speedZ" id="speedZ" min="0" value="3"></label>
                 </div>
+            </div>
+            <div class="translation">
+                <h2>Translation</h2>
+                <div id="translationLine1">
+                    <label>From: <input type="text" placeholder="x, y, z"></label>
+                    <label>To: <input type="text" placeholder="x, y, z"></label>
+                    <label>Speed: <input type="number" min="0" value="3"></label>
+                </div>
+                <button id="addTranslationLine">New translation</button>
+                <button id="deleteLastTranslation">Delete last</button>
             </div>
         </div>
     </div>
