@@ -383,6 +383,7 @@ document.addEventListener('keydown', function(event) {
     if (event.ctrlKey && event.key === 'c') {
         if(currentObject){
             currentObject = currentObject.clone();
+            transformControls.attach( currentObject.mesh );
             objects.push(currentObject);
         }
     }
