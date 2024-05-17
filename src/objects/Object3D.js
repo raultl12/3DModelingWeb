@@ -28,19 +28,7 @@ class Object3D {
         this.speedY = 0.01;
         this.speedZ = 0.01;
 
-        //Translations
-        let t1 = {
-            from: new THREE.Vector3(0, 0, 0),
-            to: new THREE.Vector3(5, 5, 5),
-            speed: 1,
-        }
-
-        let t2 = {
-            from: new THREE.Vector3(5, 5, 5),
-            to: new THREE.Vector3(3, -2, 0),
-            speed: 1,
-        }
-        this.translations = [t1, t2];
+        this.translations = [];
 
     }
 
@@ -162,7 +150,8 @@ class Object3D {
         rotateZ,
         speedX,
         speedY,
-        speedZ
+        speedZ,
+        translations
     ){
         this.animate = animate;
         this.rotX = rotateX;
@@ -171,6 +160,7 @@ class Object3D {
         this.speedX = speedX;
         this.speedY = speedY;
         this.speedZ = speedZ;
+        this.translations = translations;
     }
 
     rotateX(angle){
@@ -192,19 +182,21 @@ class Object3D {
             if(this.rotZ) this.rotateZ(this.speedZ * delta);
 
             //Obtain axis of translaton
-            let axis = new THREE.Vector3();
-            axis.subVectors(this.translations[0].to, this.mesh.position);
-            console.log(axis);
-            let axisNormalized = axis.normalize();
-
-            //Translate
-            this.mesh.position.x += axisNormalized.x * this.translations[0].speed * delta;
-            this.mesh.position.y += axisNormalized.y * this.translations[0].speed * delta;
-            this.mesh.position.z += axisNormalized.z * this.translations[0].speed * delta;
-
-            //Check if translation is finished
-            if(this.mesh.position.distanceTo(this.translations[0].to) < 0.1){
-                this.translations.shift();
+            if(this.translations.length != 0){
+                let axis = new THREE.Vector3();
+                axis.subVectors(this.translations[0].to, this.translations[0].from);
+                let axisNormalized = axis.normalize();
+    
+                //Translate
+                this.mesh.translateOnAxis(axisNormalized, this.translations[0].speed * delta);
+    
+                //Check if translation is finished
+                if(this.mesh.position.distanceTo(this.translations[0].to) < 0.1){
+                    if(document.getElementById("loopTranslations").checked){
+                        this.translations.push(this.translations[0]);
+                    }
+                    this.translations.shift();
+                }
             }
 
         }

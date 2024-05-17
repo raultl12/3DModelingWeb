@@ -148,14 +148,11 @@
             </div>
             <div class="translation">
                 <h2>Translation</h2>
-                <div id="translationLine1">
-                    <label>From: <input type="text" placeholder="x, y, z"></label>
-                    <label>To: <input type="text" placeholder="x, y, z"></label>
-                    <label>Speed: <input type="number" min="0" value="3"></label>
-                </div>
-                <button id="addTranslationLine">New translation</button>
-                <button id="deleteLastTranslation">Delete last</button>
             </div>
+            <button id="addTranslationLine">New translation</button>
+            <button id="deleteLastTranslation">Delete last</button>
+            <button id="deleteAllTranslation">Delete all</button>
+            <label for="loopTranslations">Loop<input type="checkbox" name="loopTranslations" id="loopTranslations"></label>
         </div>
     </div>
     <script src="./src/utils.js" type="module"></script>

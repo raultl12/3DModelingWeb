@@ -23,7 +23,8 @@ import {
     addObjectRevolution,
     exportSceneOBJ,
     exportSceneGLTF,
-    updateGroupList
+    updateGroupList,
+    getTranslations
 } from './src/utils.js';
 
 import { RGBELoader } from 'three/examples/jsm/Addons.js';
@@ -101,9 +102,9 @@ const saveAnimation = document.getElementById("saveAnimation");
 
 //Translation
 const addTranslationLine = document.getElementById("addTranslationLine");
-const deleteLastTranslation = document.getElementById("deleteLastTranslation");
-const translationLine1 = document.getElementById("translationLine1");
-var translationLines = 1;
+const deleteLastTranslationLine = document.getElementById("deleteLastTranslation");
+const deleteAllTranslation = document.getElementById("deleteAllTranslation");
+const translationLines = document.getElementsByClassName("translationLine");
 
 const clock = new THREE.Clock();
 
@@ -683,6 +684,9 @@ animationBack.addEventListener("click", () =>{
 });
 
 saveAnimation.addEventListener("click", () =>{
+
+    let translations = getTranslations(translationLines);
+
     currentObject.setAnimationParams(
         animationActive.checked,
         rotateX.checked,
@@ -690,10 +694,52 @@ saveAnimation.addEventListener("click", () =>{
         rotateZ.checked,
         speedX.value,
         speedY.value,
-        speedZ.value
+        speedZ.value,
+        translations,
     );
 });
 
 addTranslationLine.addEventListener("click", () =>{
+    let div = document.createElement("div");
+    div.className = "translationLine";
 
+    let fromLabel = document.createElement("label");
+    fromLabel.textContent = "From: ";
+    let inputFrom = document.createElement("input");
+    inputFrom.type = "text";
+    inputFrom.placeholder = "x, y, z";
+    fromLabel.appendChild(inputFrom);
+
+    let toLabel = document.createElement("label");
+    toLabel.textContent = "To: ";
+    let inputTo = document.createElement("input");
+    inputTo.type = "text";
+    inputTo.placeholder = "x, y, z";
+    toLabel.appendChild(inputTo);
+
+    let speedLabel = document.createElement("label");
+    speedLabel.textContent = "Speed: ";
+    let inputSpeed = document.createElement("input");
+    inputSpeed.type = "number";
+    inputSpeed.placeholder = "Speed";
+    speedLabel.appendChild(inputSpeed);
+
+    div.appendChild(fromLabel);
+    div.appendChild(toLabel);
+    div.appendChild(speedLabel);
+    document.getElementsByClassName("translation")[0].appendChild(div);
+});
+
+deleteLastTranslationLine.addEventListener("click", () =>{
+    if(translationLines.length > 0){
+        let lastLine = translationLines[translationLines.length - 1];
+        lastLine.parentNode.removeChild(lastLine);
+    }
+});
+
+deleteAllTranslation.addEventListener("click", () =>{
+    while(translationLines.length > 0){
+        let lastLine = translationLines[translationLines.length - 1];
+        lastLine.parentNode.removeChild(lastLine);
+    }
 });

@@ -161,6 +161,28 @@ function updateGroupList(name, list, currentGroupLabel){
     return [button, addButton, deleteButton];
 }
 
+function getTranslations(translationLines){
+    let translations = [];
+    let t;
+    for(let line of translationLines){
+        let from = line.querySelectorAll('input[placeholder="x, y, z"]')[0].value;
+        let to = line.querySelectorAll('input[placeholder="x, y, z"]')[1].value;
+        let speed = line.querySelector('input[type="number"]').value;
+        
+        let v_from = from.split(",");    
+        let v_to = to.split(",");
+        t = {
+            from: new THREE.Vector3(v_from[0], v_from[1], v_from[2]),
+            to: new THREE.Vector3(v_to[0], v_to[1], v_to[2]),
+            speed: speed,
+        };
+
+        translations.push(t);
+    }
+
+    return translations;
+}
+
 export {
     addCube,
     changeColor,
@@ -174,5 +196,6 @@ export {
     exportSceneOBJ,
     exportSceneGLTF,
     updateGroupList,
+    getTranslations,
 };
     
