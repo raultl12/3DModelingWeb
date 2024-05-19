@@ -54,6 +54,10 @@ class Light {
         this.light.color.set(hexColor);
     }
 
+    setIntensity(intensity){
+        this.light.intensity = intensity;
+    }
+
     toString(){
         return this.helper.name;
     }

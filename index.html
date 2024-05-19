@@ -21,6 +21,7 @@
                 <button id="addPointLight">Add point light</button>
                 <button id="addDirectionalLight">Add directional light</button>
                 <button id="addSpotLight">Add spot light</button>
+                <label>Intensity: <input type="range" name="lightIntensity" min="0" max="200" value="1" id="lightIntensity"></label>
 
                 <h2>Textures</h2>
                 <input type="file" name="inputFile" id="inputFile" accept=".jpg, .jpeg, .png" style="display: none;"
@@ -36,7 +37,7 @@
                     <div class="sliders">
                     
                         <label for="metalness">Metalness</label>
-                        <input type="range" name="metalness" id="metalness" min="0" max="1" step="0.01" value="1">
+                        <input type="range" name="metalness" id="metalness" min="0" max="1" step="0.01" value="0">
                         
                         <label for="roughness">Roughness</label>
                         <input type="range" name="roughness" id="roughness" min="0" max="1" step="0.01" value="0.5">

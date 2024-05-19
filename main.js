@@ -43,6 +43,7 @@ const roughnessSlider = document.getElementById('roughness');
 const metalnessSlider = document.getElementById('metalness');
 const emisiveIntSlider = document.getElementById('emisiveInt');
 const emisiveColor = document.getElementById('emisiveColor');
+const lightIntensity = document.getElementById('lightIntensity');
 const menu = document.getElementsByClassName("menu")[0];
 
 //Revolution zone
@@ -271,6 +272,12 @@ emisiveColor.addEventListener('input', () => {
     }
 });
 
+lightIntensity.addEventListener('input', () => {
+    if(currentObject && currentObject instanceof Light){
+        currentObject.setIntensity(lightIntensity.value);
+    }
+});
+
 //Soluciona problema: Al intentar mover el objeto se movia el objeto y la camara
 transformControls.addEventListener('dragging-changed', function (event) {
     controls.enabled = !event.value;
@@ -318,10 +325,14 @@ canvas.addEventListener('mouseup', (event) => {
                     console.log(intersects[i].object);
                     currentObject = objects.find(obj => obj.mesh === intersects[i].object);
                     transformControls.attach( currentObject.mesh );
+                    metalnessSlider.value = currentObject.material.metalness;
+                    roughnessSlider.value = currentObject.material.roughness;
+                    emisiveIntSlider.value = currentObject.material.emissiveIntensity;
                 }
                 else if (intersects[i].object.name === 'light'){
                     currentObject = objects.find(obj => obj.helper === intersects[i].object);
                     transformControls.attach( currentObject.light );
+                    lightIntensity.value = currentObject.light.intensity;
                 }
             }
             currObjLabel.textContent = `Current object: ${currentObject.toString()}`;
