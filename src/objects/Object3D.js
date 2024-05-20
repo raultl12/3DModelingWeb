@@ -29,6 +29,8 @@ class Object3D {
         this.speedZ = 0.01;
 
         this.translations = [];
+        this.scales = [];
+        this.initialScale = this.mesh.scale.clone();
 
     }
 
@@ -151,7 +153,8 @@ class Object3D {
         speedX,
         speedY,
         speedZ,
-        translations
+        translations,
+        scales
     ){
         this.animate = animate;
         this.rotX = rotateX;
@@ -161,6 +164,7 @@ class Object3D {
         this.speedY = speedY;
         this.speedZ = speedZ;
         this.translations = translations;
+        this.scales = scales;
     }
 
     rotateX(angle){
@@ -198,6 +202,62 @@ class Object3D {
                 }
             }
 
+            if(this.scales.length != 0){
+                let axis = this.scales[0].axis;
+                let factor = this.scales[0].factor;
+                let downScaling = false;
+                if(factor < 1){
+                    downScaling = true;
+                }
+
+                let finalX = this.initialScale.x * factor;
+                let finalY = this.initialScale.y * factor;
+                let finalZ = this.initialScale.z * factor;
+
+                switch(axis){
+                    case "x":
+                        if(downScaling){
+                            this.mesh.scale.x -= factor * delta;
+                        }
+                        else{
+                            this.mesh.scale.x += factor * delta;
+                        }
+                        break;
+                    case "y":
+                        if(downScaling){
+                            this.mesh.scale.y -= factor * delta;
+                        }
+                        else{
+                            this.mesh.scale.y += factor * delta;
+                        }
+                        break;
+                    case "z":
+                        if(downScaling){
+                            this.mesh.scale.z -= factor * delta;
+                        }
+                        else{
+                            this.mesh.scale.z += factor * delta;
+                        }
+                        break;
+                }
+
+                if(downScaling && (this.mesh.scale.x < finalX || this.mesh.scale.y < finalY || this.mesh.scale.z < finalZ)){
+                    if(document.getElementById("loopScales").checked){
+                        this.scales.push(this.scales[0]);
+                    }
+                    this.scales.shift();
+                    this.initialScale = this.mesh.scale.clone();
+                }
+                else{
+                    if(!downScaling && (this.mesh.scale.x > finalX || this.mesh.scale.y > finalY || this.mesh.scale.z > finalZ)){
+                        if(document.getElementById("loopScales").checked){
+                            this.scales.push(this.scales[0]);
+                        }
+                        this.scales.shift();
+                        this.initialScale = this.mesh.scale.clone();
+                    }
+                }
+            }
         }
     }
 }

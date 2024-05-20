@@ -183,6 +183,23 @@ function getTranslations(translationLines){
     return translations;
 }
 
+function getScales(scaleLines){
+    let scales = [];
+    let s;
+    for(let line of scaleLines){
+        let axis = line.querySelector('select').value;
+        let factor = line.querySelector('input[type="number"]').value;
+        s = {
+            axis: axis,
+            factor: parseFloat(factor),
+        };
+
+        scales.push(s);
+    }
+
+    return scales;
+}
+
 export {
     addCube,
     changeColor,
@@ -197,5 +214,6 @@ export {
     exportSceneGLTF,
     updateGroupList,
     getTranslations,
+    getScales,
 };
     
