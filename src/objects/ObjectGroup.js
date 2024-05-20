@@ -20,6 +20,8 @@ class ObjectGroup{
         this.speedX = 0.01;
         this.speedY = 0.01;
         this.speedZ = 0.01;
+
+        this.translations = [];
     }
 
     add(object){
@@ -103,7 +105,8 @@ class ObjectGroup{
         rotateZ,
         speedX,
         speedY,
-        speedZ
+        speedZ,
+        translations
     ){
         this.animate = animate;
         this.rotX = rotateX;
@@ -112,6 +115,7 @@ class ObjectGroup{
         this.speedX = speedX;
         this.speedY = speedY;
         this.speedZ = speedZ;
+        this.translations = translations;
     }
 
     rotateX(angle){
@@ -131,6 +135,23 @@ class ObjectGroup{
             if(this.rotX) this.rotateX(this.speedX * delta);
             if(this.rotY) this.rotateY(this.speedY * delta);
             if(this.rotZ) this.rotateZ(this.speedZ * delta);
+
+            if(this.translations.length != 0){
+                let axis = new THREE.Vector3();
+                axis.subVectors(this.translations[0].to, this.translations[0].from);
+                let axisNormalized = axis.normalize();
+    
+                //Translate
+                this.group.translateOnAxis(axisNormalized, this.translations[0].speed * delta);
+    
+                //Check if translation is finished
+                if(this.group.position.distanceTo(this.translations[0].to) < 0.1){
+                    if(document.getElementById("loopTranslations").checked){
+                        this.translations.push(this.translations[0]);
+                    }
+                    this.translations.shift();
+                }
+            }
         }
     }
 }

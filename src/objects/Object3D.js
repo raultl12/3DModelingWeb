@@ -181,7 +181,6 @@ class Object3D {
             if(this.rotY) this.rotateY(this.speedY * delta);
             if(this.rotZ) this.rotateZ(this.speedZ * delta);
 
-            //Obtain axis of translaton
             if(this.translations.length != 0){
                 let axis = new THREE.Vector3();
                 axis.subVectors(this.translations[0].to, this.translations[0].from);
