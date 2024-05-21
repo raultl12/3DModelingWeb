@@ -22,6 +22,9 @@ class ObjectGroup{
         this.speedZ = 0.01;
 
         this.translations = [];
+
+        this.scales = [];
+        this.initialScale = this.group.scale.clone();
     }
 
     add(object){
@@ -106,7 +109,8 @@ class ObjectGroup{
         speedX,
         speedY,
         speedZ,
-        translations
+        translations,
+        scales
     ){
         this.animate = animate;
         this.rotX = rotateX;
@@ -116,6 +120,7 @@ class ObjectGroup{
         this.speedY = speedY;
         this.speedZ = speedZ;
         this.translations = translations;
+        this.scales = scales;
     }
 
     rotateX(angle){
@@ -150,6 +155,63 @@ class ObjectGroup{
                         this.translations.push(this.translations[0]);
                     }
                     this.translations.shift();
+                }
+            }
+
+            if(this.scales.length != 0){
+                let axis = this.scales[0].axis;
+                let factor = this.scales[0].factor;
+                let downScaling = false;
+                if(factor < 1){
+                    downScaling = true;
+                }
+
+                let finalX = this.initialScale.x * factor;
+                let finalY = this.initialScale.y * factor;
+                let finalZ = this.initialScale.z * factor;
+
+                switch(axis){
+                    case "x":
+                        if(downScaling){
+                            this.group.scale.x -= factor * delta;
+                        }
+                        else{
+                            this.group.scale.x += factor * delta;
+                        }
+                        break;
+                    case "y":
+                        if(downScaling){
+                            this.group.scale.y -= factor * delta;
+                        }
+                        else{
+                            this.group.scale.y += factor * delta;
+                        }
+                        break;
+                    case "z":
+                        if(downScaling){
+                            this.group.scale.z -= factor * delta;
+                        }
+                        else{
+                            this.group.scale.z += factor * delta;
+                        }
+                        break;
+                }
+
+                if(downScaling && (this.group.scale.x < finalX || this.group.scale.y < finalY || this.group.scale.z < finalZ)){
+                    if(document.getElementById("loopScales").checked){
+                        this.scales.push(this.scales[0]);
+                    }
+                    this.scales.shift();
+                    this.initialScale = this.group.scale.clone();
+                }
+                else{
+                    if(!downScaling && (this.group.scale.x > finalX || this.group.scale.y > finalY || this.group.scale.z > finalZ)){
+                        if(document.getElementById("loopScales").checked){
+                            this.scales.push(this.scales[0]);
+                        }
+                        this.scales.shift();
+                        this.initialScale = this.group.scale.clone();
+                    }
                 }
             }
         }
