@@ -702,7 +702,24 @@ animationBack.addEventListener("click", () =>{
 });
 
 saveAnimation.addEventListener("click", () =>{
+    let animations = [];
+    let a1 = {
+        rotation: new THREE.Vector3(0, THREE.MathUtils.degToRad(90), 0),
+        translation: new THREE.Vector3(5, 5, 5),
+        scale: new THREE.Vector3(2, 2, 2),
+        speed: 5,
+    }
 
+    let a2 = {
+        rotation: new THREE.Vector3(0, 0, 0),
+        translation: new THREE.Vector3(0, 0, 0),
+        scale: new THREE.Vector3(1, 1, 1),
+        speed: 5,
+    }
+    animations.push(a1);
+    animations.push(a2);
+    currentObject.setAnimationParams(animationActive.checked, animations);
+/*
     let translations = getTranslations(translationLines);
 
     let scales = getScales(scaleLines);
@@ -717,7 +734,7 @@ saveAnimation.addEventListener("click", () =>{
         speedZ.value,
         translations,
         scales
-    );
+    );*/
 });
 
 addTranslationLine.addEventListener("click", () =>{

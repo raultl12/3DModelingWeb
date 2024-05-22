@@ -21,7 +21,7 @@ class Object3D {
         //Animations
         this.animate = false;
         //Rotations
-        this.rotX = false;
+        /*this.rotX = false;
         this.rotY = false;
         this.rotZ = false;
         this.speedX = 0.01;
@@ -29,9 +29,20 @@ class Object3D {
         this.speedZ = 0.01;
 
         this.translations = [];
-        this.scales = [];
-        this.initialScale = this.mesh.scale.clone();
+        this.scales = [];*/
+        this.animations = [];
+        this.alpha = 0;
+        
+        //Rotations
+        this.angles = new THREE.Vector3(0, 0, 0);
+        this.startRotation = new THREE.Vector3(0, 0, 0);
 
+        //Translations
+        this.axisNormalized = new THREE.Vector3(0, 0, 0);
+        this.startPosition = new THREE.Vector3(0, 0, 0);
+
+        //Scales
+        this.initialScale = this.mesh.scale.clone();
     }
 
     changeColor(hexColor) {
@@ -145,7 +156,7 @@ class Object3D {
         return obj;
     }
 
-    setAnimationParams(
+    /*setAnimationParams(
         animate,
         rotateX,
         rotateY,
@@ -165,6 +176,19 @@ class Object3D {
         this.speedZ = speedZ;
         this.translations = translations;
         this.scales = scales;
+    }*/
+
+    setAnimationParams(animate, animations){
+        this.animate = animate;
+        this.animations = animations;
+
+        this.angles = animations[0].rotation.clone();
+        this.startRotation = this.mesh.rotation.clone();
+        this.startPosition = this.mesh.position.clone();
+
+        let axis = new THREE.Vector3();
+        axis.subVectors(this.animations[0].translation, this.mesh.position);
+        this.axisNormalized = axis.normalize();
     }
 
     rotateX(angle){
@@ -181,7 +205,26 @@ class Object3D {
 
     update(delta){
         if(this.animate){
-            if(this.rotX) this.rotateX(this.speedX * delta);
+            if(this.alpha < 1 && this.animations.length != 0){
+                console.log(this.alpha);
+                if(this.mesh.rotation.y < this.angles.y){
+                    //this.mesh.rotateOnAxis(this.animations[0].rotation.normalize(), this.angles.y * delta * this.animations[0].speed);
+                    this.mesh.rotation.x = THREE.MathUtils.lerp(this.startRotation.x, this.angles.x, this.alpha);
+                    this.mesh.rotation.y = THREE.MathUtils.lerp(this.startRotation.y, this.angles.y, this.alpha);
+                    this.mesh.rotation.z = THREE.MathUtils.lerp(this.startRotation.z, this.angles.z, this.alpha);
+                }
+    
+                if(this.mesh.position.distanceTo(this.animations[0].translation) > 0.1){
+                    //this.mesh.position.lerp(this.animations[0].translation, this.alpha);
+                    this.mesh.position.x = THREE.MathUtils.lerp(this.startPosition.x, this.animations[0].translation.x, this.alpha);
+                    this.mesh.position.y = THREE.MathUtils.lerp(this.startPosition.y, this.animations[0].translation.y, this.alpha);
+                    this.mesh.position.z = THREE.MathUtils.lerp(this.startPosition.z, this.animations[0].translation.z, this.alpha);
+
+                }
+    
+                this.alpha += delta;
+            }
+            /*if(this.rotX) this.rotateX(this.speedX * delta);
             if(this.rotY) this.rotateY(this.speedY * delta);
             if(this.rotZ) this.rotateZ(this.speedZ * delta);
 
@@ -257,7 +300,7 @@ class Object3D {
                         this.initialScale = this.mesh.scale.clone();
                     }
                 }
-            }
+            }*/
         }
     }
 }
