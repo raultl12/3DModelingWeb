@@ -161,6 +161,43 @@ function updateGroupList(name, list, currentGroupLabel){
     return [button, addButton, deleteButton];
 }
 
+function generateAnimations(animationsList){
+    let animations = [];
+    let a1 = {
+        rotation: new THREE.Vector3(0, THREE.MathUtils.degToRad(90), 0),
+        translation: new THREE.Vector3(5, 5, 5),
+        scale: new THREE.Vector3(2, 2, 2),
+    }
+
+    let textRotation = undefined;
+    let textTranslation = undefined;
+    let textScale = undefined;
+
+    let vectorRotation = new THREE.Vector3();
+    let vectorTranslation = new THREE.Vector3();
+    let vectorScale = new THREE.Vector3();
+    
+    for(let animation of animationsList){
+        textRotation = animation.querySelector('input[id="rotation"]');
+        textTranslation = animation.querySelector('input[id="translation"]');
+        textScale = animation.querySelector('input[id="scale"]');
+
+        vectorRotation = textRotation.value.split(",");
+        vectorTranslation = textTranslation.value.split(",");
+        vectorScale = textScale.value.split(",");
+
+        let a = {
+            rotation: new THREE.Vector3(THREE.MathUtils.degToRad(vectorRotation[0]), THREE.MathUtils.degToRad(vectorRotation[1]), THREE.MathUtils.degToRad(vectorRotation[2])),
+            translation: new THREE.Vector3(parseFloat(vectorTranslation[0]), parseFloat(vectorTranslation[1]), parseFloat(vectorTranslation[2])),
+            scale: new THREE.Vector3(parseFloat(vectorScale[0]), parseFloat(vectorScale[1]), parseFloat(vectorScale[2])),
+        };
+        animations.push(a);
+    }
+
+    return animations;
+}
+
+/*
 function getTranslations(translationLines){
     let translations = [];
     let t;
@@ -198,7 +235,7 @@ function getScales(scaleLines){
     }
 
     return scales;
-}
+}*/
 
 export {
     addCube,
@@ -213,7 +250,6 @@ export {
     exportSceneOBJ,
     exportSceneGLTF,
     updateGroupList,
-    getTranslations,
-    getScales,
+    generateAnimations
 };
     

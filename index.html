@@ -130,39 +130,52 @@
             <h2>Animation</h2>
             <button id="animationBack">Back</button>
             <label id="currentObj">Current Object: none -> </label>
-            <label>Animate <input type="checkbox" name="nimate" id="animationActive"></label>
+            <label>Animate <input type="checkbox" name="animate" id="animationActive"></label>
+            <label>Loop <input type="checkbox" name="loop" id="loopAnimation"></label>
             <button id="saveAnimation">Save</button>
-            <div class="rotation">
-                <h2>Rotation</h2>
-                <div class="Xaxis">
-                    <label>X <input type="checkbox" name="rotateX" id="rotateX"></label>
-                    <label>Speed X <input type="number" name="speedX" id="speedX" min="0" value="3"></label>
-                </div>
-                <div class="Yaxis">
-                    <label>Y <input type="checkbox" name="rotateY" id="rotateY"></label>
-                    <label>Speed Y <input type="number" name="speedY" id="speedY" min="0" value="3"></label>
-                </div>
-                <div class="Zaxis">
-                    <label>Z <input type="checkbox" name="rotateZ" id="rotateZ"></label>
-                    <label>Speed Z <input type="number" name="speedZ" id="speedZ" min="0" value="3"></label>
-                </div>
-            </div>
-            <div class="translation">
-                <h2>Translation</h2>
-            </div>
-            <button id="addTranslationLine">New translation</button>
-            <button id="deleteLastTranslation">Delete last</button>
-            <button id="deleteAllTranslation">Delete all</button>
-            <label for="loopTranslations">Loop<input type="checkbox" name="loopTranslations" id="loopTranslations"></label>
 
-            <div class="scale">
-                <h2>Scale</h2>
-
+            <div class="animation">
             </div>
-            <button id="addScaleLine">New Scale</button>
-            <button id="deleteLastScale">Delete last</button>
-            <button id="deleteAllScale">Delete all</button>
-            <label for="loopScales">Loop<input type="checkbox" name="loopScales" id="loopScales"></label>
+
+
+            <button id="newAnimation">New animation</button>
+            <button id="deleteLastAnimation">Delete last</button>
+            <button id="deleteAllAnimations">Delete all</button>
+
+            <!--
+
+                <div class="rotation">
+                    <h2>Rotation</h2>
+                    <div class="Xaxis">
+                        <label>X <input type="checkbox" name="rotateX" id="rotateX"></label>
+                        <label>Speed X <input type="number" name="speedX" id="speedX" min="0" value="3"></label>
+                    </div>
+                    <div class="Yaxis">
+                        <label>Y <input type="checkbox" name="rotateY" id="rotateY"></label>
+                        <label>Speed Y <input type="number" name="speedY" id="speedY" min="0" value="3"></label>
+                    </div>
+                    <div class="Zaxis">
+                        <label>Z <input type="checkbox" name="rotateZ" id="rotateZ"></label>
+                        <label>Speed Z <input type="number" name="speedZ" id="speedZ" min="0" value="3"></label>
+                    </div>
+                </div>
+                <div class="translation">
+                    <h2>Translation</h2>
+                </div>
+                <button id="addTranslationLine">New translation</button>
+                <button id="deleteLastTranslation">Delete last</button>
+                <button id="deleteAllTranslation">Delete all</button>
+                <label for="loopTranslations">Loop<input type="checkbox" name="loopTranslations" id="loopTranslations"></label>
+    
+                <div class="scale">
+                    <h2>Scale</h2>
+    
+                </div>
+                <button id="addScaleLine">New Scale</button>
+                <button id="deleteLastScale">Delete last</button>
+                <button id="deleteAllScale">Delete all</button>
+                <label for="loopScales">Loop<input type="checkbox" name="loopScales" id="loopScales"></label>
+            -->
         </div>
     </div>
     <script src="./src/utils.js" type="module"></script>

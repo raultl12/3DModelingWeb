@@ -24,8 +24,7 @@ import {
     exportSceneOBJ,
     exportSceneGLTF,
     updateGroupList,
-    getTranslations,
-    getScales
+    generateAnimations
 } from './src/utils.js';
 
 import { RGBELoader } from 'three/examples/jsm/Addons.js';
@@ -93,8 +92,14 @@ const animationActive = document.getElementById("animationActive");
 const animationButton = document.getElementById("animation");
 const animationZone = document.getElementsByClassName("animationZone")[0];
 const animationBack = document.getElementById("animationBack");
+const animationLoop = document.getElementById("loopAnimation");
+
+const newAnimation = document.getElementById("newAnimation");
+const deleteLastAnimation = document.getElementById("deleteLastAnimation");
+const deleteAllAnimations = document.getElementById("deleteAllAnimations");
+const animationsBlocks = document.getElementsByClassName("animationBlock");
 //Rotations
-const rotateX = document.getElementById("rotateX");
+/*const rotateX = document.getElementById("rotateX");
 const rotateY = document.getElementById("rotateY");
 const rotateZ = document.getElementById("rotateZ");
 const speedX = document.getElementById("speedX");
@@ -113,7 +118,7 @@ const addScaleLine = document.getElementById("addScaleLine");
 const deleteLastScaleLine = document.getElementById("deleteLastScale");
 const deleteAllScale = document.getElementById("deleteAllScale");
 const scaleLines = document.getElementsByClassName("scaleLine");
-
+*/
 const clock = new THREE.Clock();
 
 const raycaster = new THREE.Raycaster();
@@ -702,23 +707,8 @@ animationBack.addEventListener("click", () =>{
 });
 
 saveAnimation.addEventListener("click", () =>{
-    let animations = [];
-    let a1 = {
-        rotation: new THREE.Vector3(0, THREE.MathUtils.degToRad(90), 0),
-        translation: new THREE.Vector3(5, 5, 5),
-        scale: new THREE.Vector3(2, 2, 2),
-        speed: 5,
-    }
-
-    let a2 = {
-        rotation: new THREE.Vector3(0, 0, 0),
-        translation: new THREE.Vector3(0, 0, 0),
-        scale: new THREE.Vector3(1, 1, 1),
-        speed: 5,
-    }
-    animations.push(a1);
-    animations.push(a2);
-    currentObject.setAnimationParams(animationActive.checked, animations);
+    let animations = generateAnimations(animationsBlocks);
+    currentObject.setAnimationParams(animationActive.checked, animations, animationLoop.checked);
 /*
     let translations = getTranslations(translationLines);
 
@@ -737,6 +727,58 @@ saveAnimation.addEventListener("click", () =>{
     );*/
 });
 
+
+newAnimation.addEventListener("click", () =>{
+    let div = document.createElement("div");
+    div.className = "animationBlock";
+
+    let rotationLabel = document.createElement("label");
+    rotationLabel.textContent = "Rotation: ";
+    let inputRotation = document.createElement("input");
+    inputRotation.id = "rotation";
+    inputRotation.type = "text";
+    inputRotation.placeholder = "x, y, z";
+    rotationLabel.appendChild(inputRotation);
+
+    let translationLabel = document.createElement("label");
+    translationLabel.textContent = "Translation: ";
+    let inputTranslation = document.createElement("input");
+    inputTranslation.id = "translation";
+    inputTranslation.type = "text";
+    inputTranslation.placeholder = "x, y, z";
+    translationLabel.appendChild(inputTranslation);
+
+    let scaleLabel = document.createElement("label");
+    scaleLabel.textContent = "Scale: ";
+    let inputScale = document.createElement("input");
+    inputScale.id = "scale";
+    inputScale.type = "text";
+    inputScale.placeholder = "x, y, z";
+    scaleLabel.appendChild(inputScale);
+
+    div.appendChild(rotationLabel);
+    div.appendChild(translationLabel);
+    div.appendChild(scaleLabel);
+    document.getElementsByClassName("animation")[0].appendChild(div);
+});
+
+deleteLastAnimation.addEventListener("click", () =>{
+    let allBlocks = document.getElementsByClassName("animationBlock");
+    if(allBlocks.length > 0){
+        let lastBlock = allBlocks[allBlocks.length - 1];
+        lastBlock.parentNode.removeChild(lastBlock);
+    }
+});
+
+deleteAllAnimations.addEventListener("click", () =>{
+    let allBlocks = document.getElementsByClassName("animationBlock");
+    while(allBlocks.length > 0){
+        let lastBlock = allBlocks[allBlocks.length - 1];
+        lastBlock.parentNode.removeChild(lastBlock);
+    }
+});
+
+/*
 addTranslationLine.addEventListener("click", () =>{
     let div = document.createElement("div");
     div.className = "translationLine";
@@ -842,4 +884,4 @@ deleteAllScale.addEventListener("click", () =>{
         let lastLine = scaleLines[scaleLines.length - 1];
         lastLine.parentNode.removeChild(lastLine);
     }
-});
+});*/

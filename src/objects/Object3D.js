@@ -43,6 +43,10 @@ class Object3D {
 
         //Scales
         this.initialScale = this.mesh.scale.clone();
+        this.startScale = this.mesh.scale.clone();
+        this.finalScale = this.mesh.scale.clone();
+
+        this.loop = false;
     }
 
     changeColor(hexColor) {
@@ -178,17 +182,22 @@ class Object3D {
         this.scales = scales;
     }*/
 
-    setAnimationParams(animate, animations){
+    setAnimationParams(animate, animations, loop){
         this.animate = animate;
         this.animations = animations;
 
         this.angles = animations[0].rotation.clone();
         this.startRotation = this.mesh.rotation.clone();
         this.startPosition = this.mesh.position.clone();
+        this.finalScale = new THREE.Vector3(this.initialScale.x * this.animations[0].scale.x, 
+                                            this.initialScale.y * this.animations[0].scale.y,
+                                            this.initialScale.z * this.animations[0].scale.z);
 
         let axis = new THREE.Vector3();
         axis.subVectors(this.animations[0].translation, this.mesh.position);
         this.axisNormalized = axis.normalize();
+
+        this.loop = loop;
     }
 
     rotateX(angle){
@@ -206,12 +215,19 @@ class Object3D {
     update(delta){
         if(this.animate){
             if(this.alpha < 1 && this.animations.length != 0){
-                console.log(this.alpha);
+
+                if(this.mesh.scale.x != this.finalScale.x || this.mesh.scale.y != this.finalScale.y || this.mesh.scale.z != this.finalScale.z){
+                    this.mesh.scale.x = THREE.MathUtils.lerp(this.startScale.x, this.finalScale.x, this.alpha);
+                    this.mesh.scale.y = THREE.MathUtils.lerp(this.startScale.y, this.finalScale.y, this.alpha);
+                    this.mesh.scale.z = THREE.MathUtils.lerp(this.startScale.z, this.finalScale.z, this.alpha);
+                }
+                
+
                 if(this.mesh.rotation.y < this.angles.y){
                     //this.mesh.rotateOnAxis(this.animations[0].rotation.normalize(), this.angles.y * delta * this.animations[0].speed);
-                    this.mesh.rotation.x = THREE.MathUtils.lerp(this.startRotation.x, this.angles.x, this.alpha);
-                    this.mesh.rotation.y = THREE.MathUtils.lerp(this.startRotation.y, this.angles.y, this.alpha);
-                    this.mesh.rotation.z = THREE.MathUtils.lerp(this.startRotation.z, this.angles.z, this.alpha);
+                    this.mesh.rotation.x = (THREE.MathUtils.lerp(this.startRotation.x, this.angles.x, this.alpha)) % THREE.MathUtils.degToRad(360);
+                    this.mesh.rotation.y = (THREE.MathUtils.lerp(this.startRotation.y, this.angles.y, this.alpha)) % THREE.MathUtils.degToRad(360);
+                    this.mesh.rotation.z = (THREE.MathUtils.lerp(this.startRotation.z, this.angles.z, this.alpha)) % THREE.MathUtils.degToRad(360);
                 }
     
                 if(this.mesh.position.distanceTo(this.animations[0].translation) > 0.1){
@@ -223,6 +239,27 @@ class Object3D {
                 }
     
                 this.alpha += delta;
+            }
+            else{
+                if(this.animations.length-1 != 0){
+                    this.alpha = 0;
+                    if(this.loop){
+                        this.animations.push(this.animations[0]);
+                    }
+                    this.animations.shift();
+
+                    this.angles = this.animations[0].rotation.clone();
+                    this.startRotation = this.mesh.rotation.clone();
+                    this.startPosition = this.mesh.position.clone();
+                    this.startScale = this.mesh.scale.clone();
+                    this.finalScale = new THREE.Vector3(this.initialScale.x * this.animations[0].scale.x, 
+                                                        this.initialScale.y * this.animations[0].scale.y,
+                                                        this.initialScale.z * this.animations[0].scale.z);
+    
+                    let axis = new THREE.Vector3();
+                    axis.subVectors(this.animations[0].translation, this.mesh.position);
+                    this.axisNormalized = axis.normalize();
+                }
             }
             /*if(this.rotX) this.rotateX(this.speedX * delta);
             if(this.rotY) this.rotateY(this.speedY * delta);
