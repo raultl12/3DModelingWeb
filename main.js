@@ -420,6 +420,13 @@ document.addEventListener('keydown', function(event) {
             currObjLabel.textContent = `Current object: ${currentGroup.toString()}`;
         }
     }
+
+    //DEBUG. Al pulsar q, mostrar rotacion
+    if (event.key === 'q') {
+        if(currentObject){
+            console.log(currentObject.mesh.rotation);
+        }
+    }
 });
 
 
@@ -707,28 +714,19 @@ animationBack.addEventListener("click", () =>{
 });
 
 saveAnimation.addEventListener("click", () =>{
+    if(!currentObject){
+        return;
+    }
     let animations = generateAnimations(animationsBlocks);
     currentObject.setAnimationParams(animationActive.checked, animations, animationLoop.checked);
-/*
-    let translations = getTranslations(translationLines);
-
-    let scales = getScales(scaleLines);
-
-    currentObject.setAnimationParams(
-        animationActive.checked,
-        rotateX.checked,
-        rotateY.checked,
-        rotateZ.checked,
-        speedX.value,
-        speedY.value,
-        speedZ.value,
-        translations,
-        scales
-    );*/
 });
 
 
 newAnimation.addEventListener("click", () =>{
+    if(!currentObject){
+        return;
+    }
+
     let div = document.createElement("div");
     div.className = "animationBlock";
 
@@ -738,6 +736,7 @@ newAnimation.addEventListener("click", () =>{
     inputRotation.id = "rotation";
     inputRotation.type = "text";
     inputRotation.placeholder = "x, y, z";
+    inputRotation.value = currentObject.getRotationStringDegrees();
     rotationLabel.appendChild(inputRotation);
 
     let translationLabel = document.createElement("label");
@@ -746,6 +745,7 @@ newAnimation.addEventListener("click", () =>{
     inputTranslation.id = "translation";
     inputTranslation.type = "text";
     inputTranslation.placeholder = "x, y, z";
+    inputTranslation.value = currentObject.getPositionString();
     translationLabel.appendChild(inputTranslation);
 
     let scaleLabel = document.createElement("label");
@@ -754,6 +754,7 @@ newAnimation.addEventListener("click", () =>{
     inputScale.id = "scale";
     inputScale.type = "text";
     inputScale.placeholder = "x, y, z";
+    inputScale.value = currentObject.getScaleString();
     scaleLabel.appendChild(inputScale);
 
     div.appendChild(rotationLabel);
@@ -777,111 +778,3 @@ deleteAllAnimations.addEventListener("click", () =>{
         lastBlock.parentNode.removeChild(lastBlock);
     }
 });
-
-/*
-addTranslationLine.addEventListener("click", () =>{
-    let div = document.createElement("div");
-    div.className = "translationLine";
-
-    let fromLabel = document.createElement("label");
-    fromLabel.textContent = "From: ";
-    let inputFrom = document.createElement("input");
-    inputFrom.type = "text";
-    inputFrom.placeholder = "x, y, z";
-    fromLabel.appendChild(inputFrom);
-
-    let toLabel = document.createElement("label");
-    toLabel.textContent = "To: ";
-    let inputTo = document.createElement("input");
-    inputTo.type = "text";
-    inputTo.placeholder = "x, y, z";
-    toLabel.appendChild(inputTo);
-
-    let speedLabel = document.createElement("label");
-    speedLabel.textContent = "Speed: ";
-    let inputSpeed = document.createElement("input");
-    inputSpeed.type = "number";
-    inputSpeed.placeholder = "Speed";
-    speedLabel.appendChild(inputSpeed);
-
-    div.appendChild(fromLabel);
-    div.appendChild(toLabel);
-    div.appendChild(speedLabel);
-    document.getElementsByClassName("translation")[0].appendChild(div);
-});
-
-deleteLastTranslationLine.addEventListener("click", () =>{
-    if(translationLines.length > 0){
-        let lastLine = translationLines[translationLines.length - 1];
-        lastLine.parentNode.removeChild(lastLine);
-    }
-});
-
-deleteAllTranslation.addEventListener("click", () =>{
-    while(translationLines.length > 0){
-        let lastLine = translationLines[translationLines.length - 1];
-        lastLine.parentNode.removeChild(lastLine);
-    }
-});
-
-//Scale
-addScaleLine.addEventListener("click", () =>{
-    let div = document.createElement("div");
-    div.className = "scaleLine";
-
-    let axisLabel = document.createElement("label");
-    axisLabel.textContent = "Axis: ";
-
-    let selectAxis = document.createElement("select");
-    selectAxis.name = "Axis";
-    selectAxis.id = "scaleAxis";
-
-    let optionX = document.createElement("option");
-    optionX.value = "x";
-    optionX.textContent = "X";
-
-    let optionY = document.createElement("option");
-    optionY.value = "y";
-    optionY.textContent = "Y";
-
-    let optionZ = document.createElement("option");
-    optionZ.value = "z";
-    optionZ.textContent = "Z";
-
-    selectAxis.appendChild(optionX);
-    selectAxis.appendChild(optionY);
-    selectAxis.appendChild(optionZ);
-    axisLabel.appendChild(selectAxis);
-
-    let factorLabel = document.createElement("label");
-    factorLabel.textContent = "Factor: ";
-
-    let inputFactor = document.createElement("input");
-    inputFactor.type = "number";
-    inputFactor.name = "scaleFactor";
-    inputFactor.id = "scaleFactor";
-    inputFactor.min = "0.1";
-    inputFactor.max = "10";
-    inputFactor.step = "0.1";
-    inputFactor.value = "2";
-
-    factorLabel.appendChild(inputFactor);
-
-    div.appendChild(axisLabel);
-    div.appendChild(factorLabel);
-    document.getElementsByClassName("scale")[0].appendChild(div);
-});
-
-deleteLastScaleLine.addEventListener("click", () =>{
-    if(scaleLines.length > 0){
-        let lastLine = scaleLines[scaleLines.length - 1];
-        lastLine.parentNode.removeChild(lastLine);
-    }
-});
-
-deleteAllScale.addEventListener("click", () =>{
-    while(scaleLines.length > 0){
-        let lastLine = scaleLines[scaleLines.length - 1];
-        lastLine.parentNode.removeChild(lastLine);
-    }
-});*/

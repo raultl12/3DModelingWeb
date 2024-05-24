@@ -20,16 +20,6 @@ class Object3D {
 
         //Animations
         this.animate = false;
-        //Rotations
-        /*this.rotX = false;
-        this.rotY = false;
-        this.rotZ = false;
-        this.speedX = 0.01;
-        this.speedY = 0.01;
-        this.speedZ = 0.01;
-
-        this.translations = [];
-        this.scales = [];*/
         this.animations = [];
         this.alpha = 0;
         
@@ -160,29 +150,12 @@ class Object3D {
         return obj;
     }
 
-    /*setAnimationParams(
-        animate,
-        rotateX,
-        rotateY,
-        rotateZ,
-        speedX,
-        speedY,
-        speedZ,
-        translations,
-        scales
-    ){
-        this.animate = animate;
-        this.rotX = rotateX;
-        this.rotY = rotateY;
-        this.rotZ = rotateZ;
-        this.speedX = speedX;
-        this.speedY = speedY;
-        this.speedZ = speedZ;
-        this.translations = translations;
-        this.scales = scales;
-    }*/
-
     setAnimationParams(animate, animations, loop){
+
+        this.mesh.position.set(animations[0].translation.x, animations[0].translation.y, animations[0].translation.z);
+        this.mesh.rotation.set(animations[0].rotation.x, animations[0].rotation.y, animations[0].rotation.z);
+        this.mesh.scale.set(this.initialScale.x * animations[0].scale.x, this.initialScale.y * animations[0].scale.y, this.initialScale.z * animations[0].scale.z);
+
         this.animate = animate;
         this.animations = animations;
 
@@ -200,44 +173,55 @@ class Object3D {
         this.loop = loop;
     }
 
-    rotateX(angle){
-        this.mesh.rotateX(angle);
+    getRotationStringDegrees(){
+        let x = 0;
+        let y = 0;
+        let z = 0;
+
+        let xDeg = THREE.MathUtils.radToDeg(this.mesh.rotation.x);
+        let yDeg = THREE.MathUtils.radToDeg(this.mesh.rotation.y);
+        let zDeg = THREE.MathUtils.radToDeg(this.mesh.rotation.z);
+
+        x = Math.round((xDeg + Number.EPSILON) * 100) / 100;
+        y = Math.round((yDeg + Number.EPSILON) * 100) / 100;
+        z = Math.round((zDeg + Number.EPSILON) * 100) / 100;
+        //z = (Math.round(THREE.MathUtils.radToDeg(this.mesh.rotation.z)*100) / 100 + 360) % 360;
+
+        return x + ", " + y + ", " + z;
     }
 
-    rotateY(angle){
-        this.mesh.rotateY(angle);
+    getPositionString(){
+        let x = Math.round((this.mesh.position.x + Number.EPSILON) * 100) / 100;
+        let y = Math.round((this.mesh.position.y + Number.EPSILON) * 100) / 100;
+        let z = Math.round((this.mesh.position.z + Number.EPSILON) * 100) / 100;
+
+        return x + ", " + y + ", " + z;
     }
 
-    rotateZ(angle){
-        this.mesh.rotateZ(angle);
+    getScaleString(){
+        let x = Math.round((this.mesh.scale.x + Number.EPSILON) * 100) / 100;
+        let y = Math.round((this.mesh.scale.y + Number.EPSILON) * 100) / 100;
+        let z = Math.round((this.mesh.scale.z + Number.EPSILON) * 100) / 100;
+
+        return x + ", " + y + ", " + z;
     }
 
     update(delta){
         if(this.animate){
             if(this.alpha < 1 && this.animations.length != 0){
-
-                if(this.mesh.scale.x != this.finalScale.x || this.mesh.scale.y != this.finalScale.y || this.mesh.scale.z != this.finalScale.z){
-                    this.mesh.scale.x = THREE.MathUtils.lerp(this.startScale.x, this.finalScale.x, this.alpha);
-                    this.mesh.scale.y = THREE.MathUtils.lerp(this.startScale.y, this.finalScale.y, this.alpha);
-                    this.mesh.scale.z = THREE.MathUtils.lerp(this.startScale.z, this.finalScale.z, this.alpha);
-                }
+                
+                this.mesh.scale.x = THREE.MathUtils.lerp(this.startScale.x, this.finalScale.x, this.alpha);
+                this.mesh.scale.y = THREE.MathUtils.lerp(this.startScale.y, this.finalScale.y, this.alpha);
+                this.mesh.scale.z = THREE.MathUtils.lerp(this.startScale.z, this.finalScale.z, this.alpha);
                 
 
-                if(this.mesh.rotation.y < this.angles.y){
-                    //this.mesh.rotateOnAxis(this.animations[0].rotation.normalize(), this.angles.y * delta * this.animations[0].speed);
-                    this.mesh.rotation.x = (THREE.MathUtils.lerp(this.startRotation.x, this.angles.x, this.alpha)) % THREE.MathUtils.degToRad(360);
-                    this.mesh.rotation.y = (THREE.MathUtils.lerp(this.startRotation.y, this.angles.y, this.alpha)) % THREE.MathUtils.degToRad(360);
-                    this.mesh.rotation.z = (THREE.MathUtils.lerp(this.startRotation.z, this.angles.z, this.alpha)) % THREE.MathUtils.degToRad(360);
-                }
-    
-                if(this.mesh.position.distanceTo(this.animations[0].translation) > 0.1){
-                    //this.mesh.position.lerp(this.animations[0].translation, this.alpha);
-                    this.mesh.position.x = THREE.MathUtils.lerp(this.startPosition.x, this.animations[0].translation.x, this.alpha);
-                    this.mesh.position.y = THREE.MathUtils.lerp(this.startPosition.y, this.animations[0].translation.y, this.alpha);
-                    this.mesh.position.z = THREE.MathUtils.lerp(this.startPosition.z, this.animations[0].translation.z, this.alpha);
+                this.mesh.rotation.x = THREE.MathUtils.lerp(this.startRotation.x, this.angles.x, this.alpha);
+                this.mesh.rotation.y = THREE.MathUtils.lerp(this.startRotation.y, this.angles.y, this.alpha);
+                this.mesh.rotation.z = THREE.MathUtils.lerp(this.startRotation.z, this.angles.z, this.alpha);
 
-                }
-    
+                this.mesh.position.x = THREE.MathUtils.lerp(this.startPosition.x, this.animations[0].translation.x, this.alpha);
+                this.mesh.position.y = THREE.MathUtils.lerp(this.startPosition.y, this.animations[0].translation.y, this.alpha);
+                this.mesh.position.z = THREE.MathUtils.lerp(this.startPosition.z, this.animations[0].translation.z, this.alpha);    
                 this.alpha += delta;
             }
             else{
@@ -247,6 +231,16 @@ class Object3D {
                         this.animations.push(this.animations[0]);
                     }
                     this.animations.shift();
+
+                    if(this.mesh.rotation.x > 2*Math.PI){
+                        this.mesh.rotation.x = 0;
+                    }
+                    if(this.mesh.rotation.y > 2*Math.PI){
+                        this.mesh.rotation.y = 0;
+                    }
+                    if(this.mesh.rotation.z > 2*Math.PI){
+                        this.mesh.rotation.z = 0;
+                    }
 
                     this.angles = this.animations[0].rotation.clone();
                     this.startRotation = this.mesh.rotation.clone();
@@ -261,83 +255,6 @@ class Object3D {
                     this.axisNormalized = axis.normalize();
                 }
             }
-            /*if(this.rotX) this.rotateX(this.speedX * delta);
-            if(this.rotY) this.rotateY(this.speedY * delta);
-            if(this.rotZ) this.rotateZ(this.speedZ * delta);
-
-            if(this.translations.length != 0){
-                let axis = new THREE.Vector3();
-                axis.subVectors(this.translations[0].to, this.translations[0].from);
-                let axisNormalized = axis.normalize();
-    
-                //Translate
-                this.mesh.translateOnAxis(axisNormalized, this.translations[0].speed * delta);
-    
-                //Check if translation is finished
-                if(this.mesh.position.distanceTo(this.translations[0].to) < 0.1){
-                    if(document.getElementById("loopTranslations").checked){
-                        this.translations.push(this.translations[0]);
-                    }
-                    this.translations.shift();
-                }
-            }
-
-            if(this.scales.length != 0){
-                let axis = this.scales[0].axis;
-                let factor = this.scales[0].factor;
-                let downScaling = false;
-                if(factor < 1){
-                    downScaling = true;
-                }
-
-                let finalX = this.initialScale.x * factor;
-                let finalY = this.initialScale.y * factor;
-                let finalZ = this.initialScale.z * factor;
-
-                switch(axis){
-                    case "x":
-                        if(downScaling){
-                            this.mesh.scale.x -= factor * delta;
-                        }
-                        else{
-                            this.mesh.scale.x += factor * delta;
-                        }
-                        break;
-                    case "y":
-                        if(downScaling){
-                            this.mesh.scale.y -= factor * delta;
-                        }
-                        else{
-                            this.mesh.scale.y += factor * delta;
-                        }
-                        break;
-                    case "z":
-                        if(downScaling){
-                            this.mesh.scale.z -= factor * delta;
-                        }
-                        else{
-                            this.mesh.scale.z += factor * delta;
-                        }
-                        break;
-                }
-
-                if(downScaling && (this.mesh.scale.x < finalX || this.mesh.scale.y < finalY || this.mesh.scale.z < finalZ)){
-                    if(document.getElementById("loopScales").checked){
-                        this.scales.push(this.scales[0]);
-                    }
-                    this.scales.shift();
-                    this.initialScale = this.mesh.scale.clone();
-                }
-                else{
-                    if(!downScaling && (this.mesh.scale.x > finalX || this.mesh.scale.y > finalY || this.mesh.scale.z > finalZ)){
-                        if(document.getElementById("loopScales").checked){
-                            this.scales.push(this.scales[0]);
-                        }
-                        this.scales.shift();
-                        this.initialScale = this.mesh.scale.clone();
-                    }
-                }
-            }*/
         }
     }
 }

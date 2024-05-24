@@ -118,3 +118,19 @@ input[type="color"]::-webkit-color-swatch-wrapper {
     display: none;
     margin: 1rem;
 }
+
+.animation{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.animationBlock{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    border: 1px solid #f1f7ed;
+    border-radius: 3px;
+    padding: 1rem;
+    margin: 1rem;
+}
