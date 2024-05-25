@@ -163,15 +163,11 @@ function updateGroupList(name, list, currentGroupLabel){
 
 function generateAnimations(animationsList){
     let animations = [];
-    let a1 = {
-        rotation: new THREE.Vector3(0, THREE.MathUtils.degToRad(90), 0),
-        translation: new THREE.Vector3(5, 5, 5),
-        scale: new THREE.Vector3(2, 2, 2),
-    }
 
     let textRotation = undefined;
     let textTranslation = undefined;
     let textScale = undefined;
+    let infRotation = undefined;
 
     let vectorRotation = new THREE.Vector3();
     let vectorTranslation = new THREE.Vector3();
@@ -190,7 +186,9 @@ function generateAnimations(animationsList){
             rotation: new THREE.Vector3(THREE.MathUtils.degToRad(vectorRotation[0]), THREE.MathUtils.degToRad(vectorRotation[1]), THREE.MathUtils.degToRad(vectorRotation[2])),
             translation: new THREE.Vector3(parseFloat(vectorTranslation[0]), parseFloat(vectorTranslation[1]), parseFloat(vectorTranslation[2])),
             scale: new THREE.Vector3(parseFloat(vectorScale[0]), parseFloat(vectorScale[1]), parseFloat(vectorScale[2])),
+            infiniteRotation: animation.querySelector('select[id="infRotation"]').value,
         };
+        console.log(a);
         animations.push(a);
     }
 

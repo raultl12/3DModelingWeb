@@ -208,13 +208,27 @@ class Object3D {
 
     update(delta){
         if(this.animate){
+            if(this.animations.length != 0 && this.animations[0].infiniteRotation != "none"){
+                switch(this.animations[0].infiniteRotation){
+                    case "x":
+                        //this.mesh.rotateX(delta);
+                        this.mesh.rotation.x += delta;
+                        break;
+                    case "y":
+                        this.mesh.rotateY(delta);
+                        break;
+                    case "z":
+                        this.mesh.rotateZ(delta);
+                        break;
+                }
+            }
+
             if(this.alpha < 1 && this.animations.length != 0){
                 
                 this.mesh.scale.x = THREE.MathUtils.lerp(this.startScale.x, this.finalScale.x, this.alpha);
                 this.mesh.scale.y = THREE.MathUtils.lerp(this.startScale.y, this.finalScale.y, this.alpha);
                 this.mesh.scale.z = THREE.MathUtils.lerp(this.startScale.z, this.finalScale.z, this.alpha);
                 
-
                 this.mesh.rotation.x = THREE.MathUtils.lerp(this.startRotation.x, this.angles.x, this.alpha);
                 this.mesh.rotation.y = THREE.MathUtils.lerp(this.startRotation.y, this.angles.y, this.alpha);
                 this.mesh.rotation.z = THREE.MathUtils.lerp(this.startRotation.z, this.angles.z, this.alpha);

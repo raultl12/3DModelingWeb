@@ -757,9 +757,33 @@ newAnimation.addEventListener("click", () =>{
     inputScale.value = currentObject.getScaleString();
     scaleLabel.appendChild(inputScale);
 
+    let infRotation = document.createElement("label");
+    infRotation.textContent = "Infinite rotation: ";
+    let inputInfRotation = document.createElement("select");
+    inputInfRotation.id = "infRotation";
+    let option1 = document.createElement("option");
+    option1.value = "none";
+    option1.textContent = "None";
+    let option2 = document.createElement("option");
+    option2.value = "x";
+    option2.textContent = "X";
+    let option3 = document.createElement("option");
+    option3.value = "y";
+    option3.textContent = "Y";
+    let option4 = document.createElement("option");
+    option4.value = "z";
+    option4.textContent = "Z";
+
+    inputInfRotation.appendChild(option1);
+    inputInfRotation.appendChild(option2);
+    inputInfRotation.appendChild(option3);
+    inputInfRotation.appendChild(option4);
+    infRotation.appendChild(inputInfRotation);
+
     div.appendChild(rotationLabel);
     div.appendChild(translationLabel);
     div.appendChild(scaleLabel);
+    div.appendChild(infRotation);
     document.getElementsByClassName("animation")[0].appendChild(div);
 });
 
