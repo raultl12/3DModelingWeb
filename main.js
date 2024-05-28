@@ -98,27 +98,6 @@ const newAnimation = document.getElementById("newAnimation");
 const deleteLastAnimation = document.getElementById("deleteLastAnimation");
 const deleteAllAnimations = document.getElementById("deleteAllAnimations");
 const animationsBlocks = document.getElementsByClassName("animationBlock");
-//Rotations
-/*const rotateX = document.getElementById("rotateX");
-const rotateY = document.getElementById("rotateY");
-const rotateZ = document.getElementById("rotateZ");
-const speedX = document.getElementById("speedX");
-const speedY = document.getElementById("speedY");
-const speedZ = document.getElementById("speedZ");
-const saveAnimation = document.getElementById("saveAnimation");
-
-//Translation
-const addTranslationLine = document.getElementById("addTranslationLine");
-const deleteLastTranslationLine = document.getElementById("deleteLastTranslation");
-const deleteAllTranslation = document.getElementById("deleteAllTranslation");
-const translationLines = document.getElementsByClassName("translationLine");
-
-//Scale
-const addScaleLine = document.getElementById("addScaleLine");
-const deleteLastScaleLine = document.getElementById("deleteLastScale");
-const deleteAllScale = document.getElementById("deleteAllScale");
-const scaleLines = document.getElementsByClassName("scaleLine");
-*/
 const clock = new THREE.Clock();
 
 const raycaster = new THREE.Raycaster();
@@ -714,7 +693,7 @@ animationBack.addEventListener("click", () =>{
 });
 
 saveAnimation.addEventListener("click", () =>{
-    if(!currentObject){
+    if(!currentObject || currentObject instanceof Light){
         return;
     }
     let animations = generateAnimations(animationsBlocks);
@@ -723,7 +702,7 @@ saveAnimation.addEventListener("click", () =>{
 
 
 newAnimation.addEventListener("click", () =>{
-    if(!currentObject){
+    if(!currentObject || currentObject instanceof Light){
         return;
     }
 

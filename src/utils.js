@@ -167,7 +167,6 @@ function generateAnimations(animationsList){
     let textRotation = undefined;
     let textTranslation = undefined;
     let textScale = undefined;
-    let infRotation = undefined;
 
     let vectorRotation = new THREE.Vector3();
     let vectorTranslation = new THREE.Vector3();

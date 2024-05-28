@@ -12,19 +12,25 @@ class ObjectGroup{
 
         this.inGroup = false;
 
+        //Animations
         this.animate = false;
+        this.animations = [];
+        this.alpha = 0;
+        
         //Rotations
-        this.rotX = false;
-        this.rotY = false;
-        this.rotZ = false;
-        this.speedX = 0.01;
-        this.speedY = 0.01;
-        this.speedZ = 0.01;
+        this.angles = new THREE.Vector3(0, 0, 0);
+        this.startRotation = new THREE.Vector3(0, 0, 0);
 
-        this.translations = [];
+        //Translations
+        this.axisNormalized = new THREE.Vector3(0, 0, 0);
+        this.startPosition = new THREE.Vector3(0, 0, 0);
 
-        this.scales = [];
+        //Scales
         this.initialScale = this.group.scale.clone();
+        this.startScale = this.group.scale.clone();
+        this.finalScale = this.group.scale.clone();
+
+        this.loop = false;
     }
 
     add(object){
@@ -101,117 +107,122 @@ class ObjectGroup{
         });
     }
 
-    setAnimationParams(
-        animate,
-        rotateX,
-        rotateY,
-        rotateZ,
-        speedX,
-        speedY,
-        speedZ,
-        translations,
-        scales
-    ){
+    setAnimationParams(animate, animations, loop){
+
+        this.group.position.set(animations[0].translation.x, animations[0].translation.y, animations[0].translation.z);
+        this.group.rotation.set(animations[0].rotation.x, animations[0].rotation.y, animations[0].rotation.z);
+        this.group.scale.set(this.initialScale.x * animations[0].scale.x, this.initialScale.y * animations[0].scale.y, this.initialScale.z * animations[0].scale.z);
+
         this.animate = animate;
-        this.rotX = rotateX;
-        this.rotY = rotateY;
-        this.rotZ = rotateZ;
-        this.speedX = speedX;
-        this.speedY = speedY;
-        this.speedZ = speedZ;
-        this.translations = translations;
-        this.scales = scales;
+        this.animations = animations;
+
+        this.angles = animations[0].rotation.clone();
+        this.startRotation = this.group.rotation.clone();
+        this.startPosition = this.group.position.clone();
+        this.finalScale = new THREE.Vector3(this.initialScale.x * this.animations[0].scale.x, 
+                                            this.initialScale.y * this.animations[0].scale.y,
+                                            this.initialScale.z * this.animations[0].scale.z);
+
+        let axis = new THREE.Vector3();
+        axis.subVectors(this.animations[0].translation, this.group.position);
+        this.axisNormalized = axis.normalize();
+
+        this.loop = loop;
     }
 
-    rotateX(angle){
-        this.group.rotateX(angle);
+    getRotationStringDegrees(){
+        let x = 0;
+        let y = 0;
+        let z = 0;
+
+        let xDeg = THREE.MathUtils.radToDeg(this.group.rotation.x);
+        let yDeg = THREE.MathUtils.radToDeg(this.group.rotation.y);
+        let zDeg = THREE.MathUtils.radToDeg(this.group.rotation.z);
+
+        x = Math.round((xDeg + Number.EPSILON) * 100) / 100;
+        y = Math.round((yDeg + Number.EPSILON) * 100) / 100;
+        z = Math.round((zDeg + Number.EPSILON) * 100) / 100;
+        //z = (Math.round(THREE.MathUtils.radToDeg(this.group.rotation.z)*100) / 100 + 360) % 360;
+
+        return x + ", " + y + ", " + z;
     }
 
-    rotateY(angle){
-        this.group.rotateY(angle);
+    getPositionString(){
+        let x = Math.round((this.group.position.x + Number.EPSILON) * 100) / 100;
+        let y = Math.round((this.group.position.y + Number.EPSILON) * 100) / 100;
+        let z = Math.round((this.group.position.z + Number.EPSILON) * 100) / 100;
+
+        return x + ", " + y + ", " + z;
     }
 
-    rotateZ(angle){
-        this.group.rotateZ(angle);
+    getScaleString(){
+        let x = Math.round((this.group.scale.x + Number.EPSILON) * 100) / 100;
+        let y = Math.round((this.group.scale.y + Number.EPSILON) * 100) / 100;
+        let z = Math.round((this.group.scale.z + Number.EPSILON) * 100) / 100;
+
+        return x + ", " + y + ", " + z;
     }
 
     update(delta){
         if(this.animate){
-            if(this.rotX) this.rotateX(this.speedX * delta);
-            if(this.rotY) this.rotateY(this.speedY * delta);
-            if(this.rotZ) this.rotateZ(this.speedZ * delta);
-
-            if(this.translations.length != 0){
-                let axis = new THREE.Vector3();
-                axis.subVectors(this.translations[0].to, this.translations[0].from);
-                let axisNormalized = axis.normalize();
-    
-                //Translate
-                this.group.translateOnAxis(axisNormalized, this.translations[0].speed * delta);
-    
-                //Check if translation is finished
-                if(this.group.position.distanceTo(this.translations[0].to) < 0.1){
-                    if(document.getElementById("loopTranslations").checked){
-                        this.translations.push(this.translations[0]);
-                    }
-                    this.translations.shift();
+            if(this.animations.length != 0 && this.animations[0].infiniteRotation != "none"){
+                switch(this.animations[0].infiniteRotation){
+                    case "x":
+                        this.group.rotateX(delta * this.animations[0].speed);
+                        break;
+                    case "y":
+                        this.group.rotateY(delta * this.animations[0].speed);
+                        break;
+                    case "z":
+                        this.group.rotateZ(delta * this.animations[0].speed);
+                        break;
                 }
             }
 
-            if(this.scales.length != 0){
-                let axis = this.scales[0].axis;
-                let factor = this.scales[0].factor;
-                let downScaling = false;
-                if(factor < 1){
-                    downScaling = true;
-                }
+            if(this.alpha < 1 && this.animations.length != 0){
+                
+                this.group.scale.x = THREE.MathUtils.lerp(this.startScale.x, this.finalScale.x, this.alpha);
+                this.group.scale.y = THREE.MathUtils.lerp(this.startScale.y, this.finalScale.y, this.alpha);
+                this.group.scale.z = THREE.MathUtils.lerp(this.startScale.z, this.finalScale.z, this.alpha);
+                
+                this.group.rotation.x = THREE.MathUtils.lerp(this.startRotation.x, this.angles.x, this.alpha);
+                this.group.rotation.y = THREE.MathUtils.lerp(this.startRotation.y, this.angles.y, this.alpha);
+                this.group.rotation.z = THREE.MathUtils.lerp(this.startRotation.z, this.angles.z, this.alpha);
 
-                let finalX = this.initialScale.x * factor;
-                let finalY = this.initialScale.y * factor;
-                let finalZ = this.initialScale.z * factor;
-
-                switch(axis){
-                    case "x":
-                        if(downScaling){
-                            this.group.scale.x -= factor * delta;
-                        }
-                        else{
-                            this.group.scale.x += factor * delta;
-                        }
-                        break;
-                    case "y":
-                        if(downScaling){
-                            this.group.scale.y -= factor * delta;
-                        }
-                        else{
-                            this.group.scale.y += factor * delta;
-                        }
-                        break;
-                    case "z":
-                        if(downScaling){
-                            this.group.scale.z -= factor * delta;
-                        }
-                        else{
-                            this.group.scale.z += factor * delta;
-                        }
-                        break;
-                }
-
-                if(downScaling && (this.group.scale.x < finalX || this.group.scale.y < finalY || this.group.scale.z < finalZ)){
-                    if(document.getElementById("loopScales").checked){
-                        this.scales.push(this.scales[0]);
+                this.group.position.x = THREE.MathUtils.lerp(this.startPosition.x, this.animations[0].translation.x, this.alpha);
+                this.group.position.y = THREE.MathUtils.lerp(this.startPosition.y, this.animations[0].translation.y, this.alpha);
+                this.group.position.z = THREE.MathUtils.lerp(this.startPosition.z, this.animations[0].translation.z, this.alpha);    
+                this.alpha += delta * this.animations[0].speed;
+            }
+            else{
+                if(this.animations.length-1 != 0){
+                    this.alpha = 0;
+                    if(this.loop){
+                        this.animations.push(this.animations[0]);
                     }
-                    this.scales.shift();
-                    this.initialScale = this.group.scale.clone();
-                }
-                else{
-                    if(!downScaling && (this.group.scale.x > finalX || this.group.scale.y > finalY || this.group.scale.z > finalZ)){
-                        if(document.getElementById("loopScales").checked){
-                            this.scales.push(this.scales[0]);
-                        }
-                        this.scales.shift();
-                        this.initialScale = this.group.scale.clone();
+                    this.animations.shift();
+
+                    if(this.group.rotation.x > 2*Math.PI){
+                        this.group.rotation.x = 0;
                     }
+                    if(this.group.rotation.y > 2*Math.PI){
+                        this.group.rotation.y = 0;
+                    }
+                    if(this.group.rotation.z > 2*Math.PI){
+                        this.group.rotation.z = 0;
+                    }
+
+                    this.angles = this.animations[0].rotation.clone();
+                    this.startRotation = this.group.rotation.clone();
+                    this.startPosition = this.group.position.clone();
+                    this.startScale = this.group.scale.clone();
+                    this.finalScale = new THREE.Vector3(this.initialScale.x * this.animations[0].scale.x, 
+                                                        this.initialScale.y * this.animations[0].scale.y,
+                                                        this.initialScale.z * this.animations[0].scale.z);
+    
+                    let axis = new THREE.Vector3();
+                    axis.subVectors(this.animations[0].translation, this.group.position);
+                    this.axisNormalized = axis.normalize();
                 }
             }
         }
