@@ -187,6 +187,7 @@ function generateAnimations(animationsList){
             translation: new THREE.Vector3(parseFloat(vectorTranslation[0]), parseFloat(vectorTranslation[1]), parseFloat(vectorTranslation[2])),
             scale: new THREE.Vector3(parseFloat(vectorScale[0]), parseFloat(vectorScale[1]), parseFloat(vectorScale[2])),
             infiniteRotation: animation.querySelector('select[id="infRotation"]').value,
+            speed: parseFloat(animation.querySelector('input[id="speed"]').value),
         };
         console.log(a);
         animations.push(a);

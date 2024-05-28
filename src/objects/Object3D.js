@@ -211,14 +211,13 @@ class Object3D {
             if(this.animations.length != 0 && this.animations[0].infiniteRotation != "none"){
                 switch(this.animations[0].infiniteRotation){
                     case "x":
-                        //this.mesh.rotateX(delta);
-                        this.mesh.rotation.x += delta;
+                        this.mesh.rotateX(delta * this.animations[0].speed);
                         break;
                     case "y":
-                        this.mesh.rotateY(delta);
+                        this.mesh.rotateY(delta * this.animations[0].speed);
                         break;
                     case "z":
-                        this.mesh.rotateZ(delta);
+                        this.mesh.rotateZ(delta * this.animations[0].speed);
                         break;
                 }
             }
@@ -236,7 +235,7 @@ class Object3D {
                 this.mesh.position.x = THREE.MathUtils.lerp(this.startPosition.x, this.animations[0].translation.x, this.alpha);
                 this.mesh.position.y = THREE.MathUtils.lerp(this.startPosition.y, this.animations[0].translation.y, this.alpha);
                 this.mesh.position.z = THREE.MathUtils.lerp(this.startPosition.z, this.animations[0].translation.z, this.alpha);    
-                this.alpha += delta;
+                this.alpha += delta * this.animations[0].speed;
             }
             else{
                 if(this.animations.length-1 != 0){
