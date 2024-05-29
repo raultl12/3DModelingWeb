@@ -167,25 +167,29 @@ function generateAnimations(animationsList){
     let textRotation = undefined;
     let textTranslation = undefined;
     let textScale = undefined;
+    let textInfRotation = undefined;
 
     let vectorRotation = new THREE.Vector3();
     let vectorTranslation = new THREE.Vector3();
     let vectorScale = new THREE.Vector3();
+    let vectorInfRotation = new THREE.Vector3();
     
     for(let animation of animationsList){
         textRotation = animation.querySelector('input[id="rotation"]');
         textTranslation = animation.querySelector('input[id="translation"]');
         textScale = animation.querySelector('input[id="scale"]');
+        textInfRotation = animation.querySelector('input[id="infRotation"]');
 
         vectorRotation = textRotation.value.split(",");
         vectorTranslation = textTranslation.value.split(",");
         vectorScale = textScale.value.split(",");
+        vectorInfRotation = textInfRotation.value.split(",");
 
         let a = {
             rotation: new THREE.Vector3(THREE.MathUtils.degToRad(vectorRotation[0]), THREE.MathUtils.degToRad(vectorRotation[1]), THREE.MathUtils.degToRad(vectorRotation[2])),
             translation: new THREE.Vector3(parseFloat(vectorTranslation[0]), parseFloat(vectorTranslation[1]), parseFloat(vectorTranslation[2])),
             scale: new THREE.Vector3(parseFloat(vectorScale[0]), parseFloat(vectorScale[1]), parseFloat(vectorScale[2])),
-            infiniteRotation: animation.querySelector('select[id="infRotation"]').value,
+            infiniteRotation: new THREE.Vector3(parseFloat(vectorInfRotation[0]), parseFloat(vectorInfRotation[1]), parseFloat(vectorInfRotation[2])).normalize(),
             speed: parseFloat(animation.querySelector('input[id="speed"]').value),
         };
         console.log(a);

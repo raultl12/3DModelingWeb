@@ -165,19 +165,13 @@ class ObjectGroup{
 
     update(delta){
         if(this.animate){
-            if(this.animations.length != 0 && this.animations[0].infiniteRotation != "none"){
-                switch(this.animations[0].infiniteRotation){
-                    case "x":
-                        this.group.rotateX(delta * this.animations[0].speed);
-                        break;
-                    case "y":
-                        this.group.rotateY(delta * this.animations[0].speed);
-                        break;
-                    case "z":
-                        this.group.rotateZ(delta * this.animations[0].speed);
-                        break;
-                }
-            }
+            if(this.animations.length != 0 && 
+                this.animations[0].infiniteRotation[0] != 0 && 
+                this.animations[0].infiniteRotation[1] != 0 && 
+                this.animations[0].infiniteRotation[2] != 0)
+             {
+                 this.group.rotateOnWorldAxis(this.animations[0].infiniteRotation, delta * this.animations[0].speed);
+             }
 
             if(this.alpha < 1 && this.animations.length != 0){
                 

@@ -208,18 +208,12 @@ class Object3D {
 
     update(delta){
         if(this.animate){
-            if(this.animations.length != 0 && this.animations[0].infiniteRotation != "none"){
-                switch(this.animations[0].infiniteRotation){
-                    case "x":
-                        this.mesh.rotateX(delta * this.animations[0].speed);
-                        break;
-                    case "y":
-                        this.mesh.rotateY(delta * this.animations[0].speed);
-                        break;
-                    case "z":
-                        this.mesh.rotateZ(delta * this.animations[0].speed);
-                        break;
-                }
+            if(this.animations.length != 0 && 
+               this.animations[0].infiniteRotation[0] != 0 && 
+               this.animations[0].infiniteRotation[1] != 0 && 
+               this.animations[0].infiniteRotation[2] != 0)
+            {
+                this.mesh.rotateOnWorldAxis(this.animations[0].infiniteRotation, delta * this.animations[0].speed);
             }
 
             if(this.alpha < 1 && this.animations.length != 0){
