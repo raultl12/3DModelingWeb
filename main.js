@@ -758,23 +758,28 @@ newAnimation.addEventListener("click", () =>{
     option4.value = "z";
     option4.textContent = "Z";
 
+
+    let speedLabel = document.createElement("label");
+    speedLabel.textContent = "Speed: ";
+
     let speed = document.createElement("input");
     speed.id = "speed";
     speed.type = "number";
     speed.placeholder = "Speed";
     speed.value = "1";
+    speedLabel.appendChild(speed);
     
     inputInfRotation.appendChild(option1);
     inputInfRotation.appendChild(option2);
     inputInfRotation.appendChild(option3);
     inputInfRotation.appendChild(option4);
     infRotation.appendChild(inputInfRotation);
-    infRotation.appendChild(speed);
 
     div.appendChild(rotationLabel);
     div.appendChild(translationLabel);
     div.appendChild(scaleLabel);
     div.appendChild(infRotation);
+    div.appendChild(speedLabel);
     document.getElementsByClassName("animation")[0].appendChild(div);
 });
 
