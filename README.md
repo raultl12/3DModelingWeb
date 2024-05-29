@@ -13,3 +13,4 @@ Esta aplicación web es mi Trabajo Fin de Grado para el grado de Ingeniería Inf
 * ctrl + c: Duplica el objeto seleccionado.
 * H: Activa y desactiva el grid helper.
 * 1: Selecciona el grupo actual para poder trabajar con él.
+* a: Activa y desactiva la visualización de los ejes.

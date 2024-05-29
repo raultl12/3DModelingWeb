@@ -11,7 +11,8 @@ backgroundColor.addEventListener('change', () => {
 });
 
 
-
+const axesHelper = new THREE.AxesHelper( 5 );
+scene.add( axesHelper );
 
 const gridHelper = new THREE.GridHelper( 1000, 1000 );
 
@@ -21,6 +22,10 @@ scene.add( gridHelper );
 document.addEventListener('keydown', function(event){
     if(event.key === 'h'){
         gridHelper.visible = !gridHelper.visible;
+    }
+
+    if(event.key === 'a'){
+        axesHelper.visible = !axesHelper.visible;
     }
 });
 

@@ -399,13 +399,6 @@ document.addEventListener('keydown', function(event) {
             currObjLabel.textContent = `Current object: ${currentGroup.toString()}`;
         }
     }
-
-    //DEBUG. Al pulsar q, mostrar rotacion
-    if (event.key === 'q') {
-        if(currentObject){
-            console.log(currentObject.mesh.rotation);
-        }
-    }
 });
 
 
