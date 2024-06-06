@@ -142,7 +142,6 @@ class ObjectGroup{
         x = Math.round((xDeg + Number.EPSILON) * 100) / 100;
         y = Math.round((yDeg + Number.EPSILON) * 100) / 100;
         z = Math.round((zDeg + Number.EPSILON) * 100) / 100;
-        //z = (Math.round(THREE.MathUtils.radToDeg(this.group.rotation.z)*100) / 100 + 360) % 360;
 
         return x + ", " + y + ", " + z;
     }
@@ -170,7 +169,7 @@ class ObjectGroup{
                 this.animations[0].infiniteRotation[1] != 0 && 
                 this.animations[0].infiniteRotation[2] != 0)
              {
-                 this.group.rotateOnWorldAxis(this.animations[0].infiniteRotation, delta * this.animations[0].speed);
+                this.group.rotateOnAxis(this.animations[0].infiniteRotation, delta * this.animations[0].speed);
              }
 
             if(this.alpha < 1 && this.animations.length != 0){

@@ -213,7 +213,7 @@ class Object3D {
                this.animations[0].infiniteRotation[1] != 0 && 
                this.animations[0].infiniteRotation[2] != 0)
             {
-                this.mesh.rotateOnWorldAxis(this.animations[0].infiniteRotation, delta * this.animations[0].speed);
+                this.mesh.rotateOnAxis(this.animations[0].infiniteRotation, delta * this.animations[0].speed);
             }
 
             if(this.alpha < 1 && this.animations.length != 0){
