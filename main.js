@@ -100,6 +100,19 @@ const deleteAllAnimations = document.getElementById("deleteAllAnimations");
 const animationsBlocks = document.getElementsByClassName("animationBlock");
 const clock = new THREE.Clock();
 
+//Database zone
+var loggedUser = undefined;
+const databaseButton = document.getElementById("database");
+const databaseZone = document.getElementsByClassName("databaseZone")[0];
+const databaseBack = document.getElementById("databaseBack");
+const databaseLogin = document.getElementById("databaseLogin");
+const loggedUserLabel = document.getElementById("loggedUser")
+
+//Login
+const loginZone = document.getElementById("loginZone");
+const loginBack = document.getElementById("loginBack");
+const loginForm = document.getElementById("loginForm");
+
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
@@ -771,5 +784,78 @@ deleteAllAnimations.addEventListener("click", () =>{
     while(allBlocks.length > 0){
         let lastBlock = allBlocks[allBlocks.length - 1];
         lastBlock.parentNode.removeChild(lastBlock);
+    }
+});
+
+//Database
+databaseButton.addEventListener("click", () =>{
+    menu.style.display = "none";
+    databaseZone.style.display = "block";
+});
+
+databaseBack.addEventListener("click", () =>{
+    databaseZone.style.display = "none";
+    menu.style.display = "flex";
+});
+
+databaseLogin.addEventListener("click", () =>{
+    databaseZone.style.display = "none";
+    if(!loggedUser){
+        loginZone.style.display = "block";
+    }
+    else{
+        //Hacer logout
+        loggedUser = undefined;
+        loggedUserLabel.textContent = `Logged user: no user`;
+
+        fetch("http://localhost:3000/api/logout", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include'
+        })
+        menu.style.display = "flex";
+    }
+});
+
+loginBack.addEventListener("click", () =>{
+    loginZone.style.display = "none";
+    databaseZone.style.display = "block";
+});
+
+loginForm.addEventListener("submit", (event) =>{
+    event.preventDefault();
+    const formData = new FormData(loginForm);
+    const user = formData.get("name");
+    const password = formData.get("password");
+
+    console.log(user, password);
+
+    if(user && password){
+        //Hacer el fetch para login
+        fetch("http://localhost:3000/api/login", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({user, password}),
+            credentials: 'include'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.status === "ok"){
+                loggedUser = user;
+                loginZone.style.display = "none";
+                databaseZone.style.display = "block";
+                loggedUserLabel.textContent = `Logged user: ${loggedUser}`;
+            }
+            else{
+                alert("Usuario o contraseña incorrectos");
+            }
+        });
+    }
+    else{
+        alert("Usuario o contraseña incorrectos");
     }
 });

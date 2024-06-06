@@ -78,6 +78,7 @@
                 <button id="removeFromGroup">Remove from group</button>
                 <label class="currentGroupLabel">Current Group: </label>
                 <button id="animation">Animation</button>
+                <button id="database">Database</button>
             </div>
         </div>
         <div class="importDownloadZone">
@@ -140,8 +141,29 @@
             
             <div class="animation">
             </div>
+        </div>
 
+        <div class="databaseZone">
+            <h2>Database</h2>
+            <Label id="loggedUser">Logged user: no user</Label>
+            <button id="databaseBack">Back</button>
+            <button id="databaseLogin">Login/Logout</button>
+            <button id="databaseSave">Save</button>
+            <button id="databaseLoad">Load</button>
+            <ul id="databaseList">
+            </ul>
+        </div>
 
+        <div id="loginZone">
+            <h2>Login</h2>
+            <button id="loginBack">Back</button>
+            <form action="" method="post" id="loginForm">
+                <label for="username">Username</label>
+                <input type="text" name="name" id="name">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password">
+                <button type="submit" id="login">Login</button>
+            </form>
         </div>
     </div>
     <script src="./src/utils.js" type="module"></script>

@@ -134,3 +134,13 @@ input[type="color"]::-webkit-color-swatch-wrapper {
     padding: 1rem;
     margin: 1rem;
 }
+
+.databaseZone{
+    display: none;
+    margin: 1rem;
+}
+
+#loginZone{
+    display: none;
+    margin: 1rem;
+}
