@@ -24,7 +24,8 @@ import {
     exportSceneOBJ,
     exportSceneGLTF,
     updateGroupList,
-    generateAnimations
+    generateAnimations,
+    updateScenesList,
 } from './src/utils.js';
 
 import { RGBELoader } from 'three/examples/jsm/Addons.js';
@@ -106,7 +107,9 @@ const databaseButton = document.getElementById("database");
 const databaseZone = document.getElementsByClassName("databaseZone")[0];
 const databaseBack = document.getElementById("databaseBack");
 const databaseLogin = document.getElementById("databaseLogin");
-const loggedUserLabel = document.getElementById("loggedUser")
+const loggedUserLabel = document.getElementById("loggedUser");
+const databaseSave = document.getElementById("databaseSave");
+let databaseList = document.getElementById("databaseList");
 
 //Login
 const loginZone = document.getElementById("loginZone");
@@ -123,6 +126,7 @@ let dragging = false;
 let dragStartX = 0;
 let dragStartY = 0;
 const currObjLabel = document.getElementById("currentObj");
+let currentScene = undefined;
 
 scene.add(transformControls);
 const ambientLight = new THREE.AmbientLight( 0xffffff, 1);
@@ -791,6 +795,52 @@ deleteAllAnimations.addEventListener("click", () =>{
 databaseButton.addEventListener("click", () =>{
     menu.style.display = "none";
     databaseZone.style.display = "block";
+    if(loggedUser){
+        loggedUserLabel.textContent = `Logged user: ${loggedUser}`;
+        //Obtener las escenas del usuario
+        fetch("http://localhost:3000/api/scenes", {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.status === "ok"){
+                console.log(data.scenes);
+                for(let sceneFromDB of data.scenes){
+                    let [loadButton, deleteButton] = updateScenesList(databaseList, sceneFromDB);
+
+                    loadButton.addEventListener("click", () =>{
+                        console.log("loading...", sceneFromDB.id);
+                        currentScene = {
+                            id:sceneFromDB.id,
+                            name:sceneFromDB.name,
+                            content:sceneFromDB.content
+                        }
+                        console.log(currentScene);
+                        const loader = new THREE.ObjectLoader();
+                        let json = JSON.parse(sceneFromDB.content);
+
+                        let materials = loader.parseMaterials(json.materials);
+                        let animations = loader.parseAnimations(json.animations);
+                        let geometries = loader.parseGeometries(json.geometries);
+                        let objects = loader.parseObjects(json.objects, geometries, materials, animations);
+
+                        console.log(objects);
+                    });
+
+                    deleteButton.addEventListener("click", () =>{
+                        console.log("deleting");
+                    });
+                }
+            }
+            else{
+                alert("Error al obtener las escenas");
+            }
+        });
+    }
 });
 
 databaseBack.addEventListener("click", () =>{
@@ -847,7 +897,8 @@ loginForm.addEventListener("submit", (event) =>{
             if(data.status === "ok"){
                 loggedUser = user;
                 loginZone.style.display = "none";
-                databaseZone.style.display = "block";
+                databaseZone.style.display = "none";
+                menu.style.display = "flex";
                 loggedUserLabel.textContent = `Logged user: ${loggedUser}`;
             }
             else{
@@ -857,5 +908,30 @@ loginForm.addEventListener("submit", (event) =>{
     }
     else{
         alert("Usuario o contraseña incorrectos");
+    }
+});
+
+databaseSave.addEventListener("click", () =>{
+    if(loggedUser){
+        let sceneData = scene.toJSON();
+        let sceneString = JSON.stringify(sceneData);
+        
+        fetch("http://localhost:3000/api/scenes", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({scene: sceneString}),
+            credentials: 'include'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.status === "ok"){
+                alert("Escena guardada correctamente");
+            }
+            else{
+                alert("Error al guardar la escena");
+            }
+        });
     }
 });

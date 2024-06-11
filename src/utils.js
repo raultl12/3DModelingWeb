@@ -199,45 +199,39 @@ function generateAnimations(animationsList){
     return animations;
 }
 
-/*
-function getTranslations(translationLines){
-    let translations = [];
-    let t;
-    for(let line of translationLines){
-        let from = line.querySelectorAll('input[placeholder="x, y, z"]')[0].value;
-        let to = line.querySelectorAll('input[placeholder="x, y, z"]')[1].value;
-        let speed = line.querySelector('input[type="number"]').value;
-        
-        let v_from = from.split(",");    
-        let v_to = to.split(",");
-        t = {
-            from: new THREE.Vector3(v_from[0], v_from[1], v_from[2]),
-            to: new THREE.Vector3(v_to[0], v_to[1], v_to[2]),
-            speed: speed,
-        };
+function updateScenesList(scenesList, scene){
+    let li = document.createElement("li");
 
-        translations.push(t);
-    }
+    //Input hidden con el id de la escena
+    let inputId = document.createElement("input");
+    inputId.type = "hidden";
+    inputId.name = "sceneId";
+    inputId.id = "sceneId";
+    inputId.value = scene.id;
+    
+    let input = document.createElement("input");
+    input.type = "text";
+    input.name = "databaseName";
+    input.id = "databaseName";
+    input.value = scene.name;
 
-    return translations;
+    let loadButton = document.createElement("button");
+    loadButton.id = "loadScene";
+    loadButton.textContent = "Load";
+
+    let deleteButton = document.createElement("button");
+    deleteButton.id = "deleteScene";
+    deleteButton.textContent = "Delete";
+
+    li.appendChild(inputId);
+    li.appendChild(input);
+    li.appendChild(loadButton);
+    li.appendChild(deleteButton);
+
+    scenesList.appendChild(li);
+
+    return [loadButton, deleteButton];
 }
-
-function getScales(scaleLines){
-    let scales = [];
-    let s;
-    for(let line of scaleLines){
-        let axis = line.querySelector('select').value;
-        let factor = line.querySelector('input[type="number"]').value;
-        s = {
-            axis: axis,
-            factor: parseFloat(factor),
-        };
-
-        scales.push(s);
-    }
-
-    return scales;
-}*/
 
 export {
     addCube,
@@ -252,6 +246,7 @@ export {
     exportSceneOBJ,
     exportSceneGLTF,
     updateGroupList,
-    generateAnimations
+    generateAnimations,
+    updateScenesList,
 };
     
