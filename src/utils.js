@@ -233,6 +233,37 @@ function updateScenesList(scenesList, scene){
     return [loadButton, deleteButton];
 }
 
+function sceneToJSON(objs){
+    let objects = [];
+    let objectGroups = [];
+    let lights = [];
+
+    for(let i = 0; i < objs.length; i++){
+        let child = objs[i];
+        if(child instanceof Object3D){
+            objects.push(child.toJson());
+        }
+        else if(child instanceof ObjectGroup){
+            objectGroups.push(child.toJson());
+        }
+        else if(child instanceof Light){
+            lights.push(child.toJson());
+        }
+    }
+
+    let json = {
+        objects: objects,
+        objectGroups: objectGroups,
+        lights: lights,
+    };
+
+    return json;
+}
+
+function sceneFromJSON(json){
+
+}
+
 export {
     addCube,
     changeColor,
@@ -248,5 +279,6 @@ export {
     updateGroupList,
     generateAnimations,
     updateScenesList,
+    sceneToJSON,
 };
     

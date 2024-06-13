@@ -52,7 +52,15 @@ class Light {
         return this.helper.name;
     }
 
-    update(delta){
+    update(delta){}
+
+    toJSON(){
+        return {
+            type: this.type,
+            color: this.light.color,
+            intensity: this.light.intensity,
+            position: this.light.position,
+        }
     }
 }
 

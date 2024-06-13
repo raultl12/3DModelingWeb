@@ -26,6 +26,7 @@ import {
     updateGroupList,
     generateAnimations,
     updateScenesList,
+    sceneToJSON
 } from './src/utils.js';
 
 import { RGBELoader } from 'three/examples/jsm/Addons.js';
@@ -415,6 +416,11 @@ document.addEventListener('keydown', function(event) {
             currentObject = currentGroup;
             currObjLabel.textContent = `Current object: ${currentGroup.toString()}`;
         }
+    }
+
+    //Al pulsar j, scene to json
+    if (event.key === 'j') {
+        console.log(sceneToJSON(objects));
     }
 });
 
