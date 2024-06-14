@@ -8,6 +8,10 @@ import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js';
 import { Object3D } from './objects/Object3D';
 import { ObjectGroup } from './objects/ObjectGroup';
 import * as THREE from 'three';
+import { scene } from './Scene';
+import { camera } from './Camera';
+import { renderer } from './Renderer';
+import { TransformControls } from 'three/addons/controls/TransformControls.js';
 
 function addCube(size, color, objects){
     let cube = new Cube(size, color);
@@ -235,33 +239,87 @@ function updateScenesList(scenesList, scene){
 
 function sceneToJSON(objs){
     let objects = [];
-    let objectGroups = [];
     let lights = [];
 
     for(let i = 0; i < objs.length; i++){
         let child = objs[i];
         if(child instanceof Object3D){
-            objects.push(child.toJson());
-        }
-        else if(child instanceof ObjectGroup){
-            objectGroups.push(child.toJson());
+            objects.push(child.toJSON());
         }
         else if(child instanceof Light){
-            lights.push(child.toJson());
+            lights.push(child.toJSON());
         }
     }
 
     let json = {
         objects: objects,
-        objectGroups: objectGroups,
         lights: lights,
     };
 
     return json;
 }
 
-function sceneFromJSON(json){
+function sceneFromJSON(json, sceneObjects){
+    clearScene();
+    let objects = json.objects;
+    let lights = json.lights;
+    let obj = undefined;
+    let light = undefined;
 
+    for(let i = 0; i < objects.length; i++){
+        
+        switch(objects[i].geometryType){
+            case "BoxGeometry":
+                obj = new Cube(1, objects[i].color);
+                break;
+            case "SphereGeometry":
+                obj = new Sphere(1, 32, 16, objects[i].color);
+                break;
+            case "CylinderGeometry":
+                obj = new Cylinder(1, 1, 2, 32, objects[i].color);
+                break;
+        }
+
+        obj.mesh.position.set(objects[i].position.x, objects[i].position.y, objects[i].position.z);
+        obj.mesh.rotation.set(objects[i].rotation.x, objects[i].rotation.y, objects[i].rotation.z);
+        obj.mesh.scale.set(objects[i].scale.x, objects[i].scale.y, objects[i].scale.z);
+        obj.mesh.material.color.set(objects[i].color);
+
+        sceneObjects.push(obj);
+    }
+
+    for(let i = 0; i < lights.length; i++){
+
+        switch(lights[i].type){
+            case LightType.POINT:
+                light = new Light(lights[i].color, lights[i].intensity);
+                break;
+            case LightType.DIRECTIONAL:
+                light = new Light(lights[i].color, lights[i].intensity, LightType.DIRECTIONAL);
+                break;
+            case LightType.SPOT:
+                light = new Light(lights[i].color, lights[i].intensity, LightType.SPOT);
+                break;
+            default:
+                light = new Light(lights[i].color, lights[i].intensity);
+                break;
+        }
+
+        light.light.position.set(lights[i].position.x, lights[i].position.y, lights[i].position.z);
+        sceneObjects.push(light);
+    }
+}
+
+function clearScene(){
+    scene.clear();
+    const axesHelper = new THREE.AxesHelper( 5 );
+    scene.add( axesHelper );
+    
+    const gridHelper = new THREE.GridHelper( 1000, 1000 );
+    scene.add( gridHelper );
+
+    const ambientLight = new THREE.AmbientLight( 0xffffff, 1);
+    scene.add( ambientLight );
 }
 
 export {
@@ -280,5 +338,6 @@ export {
     generateAnimations,
     updateScenesList,
     sceneToJSON,
+    sceneFromJSON,
 };
     

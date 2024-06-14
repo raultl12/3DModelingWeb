@@ -26,7 +26,8 @@ import {
     updateGroupList,
     generateAnimations,
     updateScenesList,
-    sceneToJSON
+    sceneToJSON,
+    sceneFromJSON
 } from './src/utils.js';
 
 import { RGBELoader } from 'three/examples/jsm/Addons.js';
@@ -331,8 +332,16 @@ canvas.addEventListener('mouseup', (event) => {
 
             for (let i = intersects.length - 1; i >= 0; i--) {
                 if (intersects[i].object.name === 'object3D') {
-                    console.log(intersects[i].object);
-                    currentObject = objects.find(obj => obj.mesh === intersects[i].object);
+                    console.log("Objeto de interseccion: ", intersects[i].object);
+                    console.log("Objetos: ", objects);
+                    //currentObject = objects.find(obj => obj.mesh === intersects[i].object);
+                    for (let j = 0; j < objects.length; j++) {
+                        if (objects[j].mesh === intersects[i].object) {
+                            currentObject = objects[j];
+                            break;
+                        }
+                    }
+                    console.log("Objeto tocado: ", currentObject);
                     transformControls.attach( currentObject.mesh );
                     metalnessSlider.value = currentObject.material.metalness;
                     roughnessSlider.value = currentObject.material.roughness;
@@ -420,7 +429,14 @@ document.addEventListener('keydown', function(event) {
 
     //Al pulsar j, scene to json
     if (event.key === 'j') {
-        console.log(sceneToJSON(objects));
+        currentObject = null;
+        let json = sceneToJSON(objects);
+        objects = [];
+        sceneFromJSON(json, objects);
+        scene.add(transformControls);
+        currentObject = objects[0];
+        transformControls.attach( currentObject.mesh );
+        console.log("Objetos de la escena: ", objects);
     }
 });
 

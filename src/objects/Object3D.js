@@ -267,14 +267,11 @@ class Object3D {
 
     toJSON(){
         return {
-            geometry: this.geometry.toJSON(),
-            material: this.material.toJSON(),
-            mesh: this.mesh.toJSON(),
-            edges: this.edges.toJSON(),
-            line: this.line.toJSON(),
+            geometryType: this.geometry.type,
             position: this.mesh.position,
             rotation: this.mesh.rotation,
             scale: this.mesh.scale,
+            color: this.mesh.material.color,
         };
     }
 }
