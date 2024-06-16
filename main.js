@@ -794,6 +794,7 @@ databaseButton.addEventListener("click", () =>{
     menu.style.display = "none";
     databaseZone.style.display = "block";
     if(loggedUser){
+        databaseList.innerHTML = "";
         loggedUserLabel.textContent = `Logged user: ${loggedUser}`;
 
         fetch("http://localhost:3000/api/scenes", {
@@ -821,7 +822,26 @@ databaseButton.addEventListener("click", () =>{
                     });
 
                     deleteButton.addEventListener("click", () =>{
-                        console.log("deleting");
+                        fetch("http://localhost:3000/api/scenes", {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({id: sceneFromDB.id}),
+                            credentials: 'include'
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if(data.status === "ok"){
+                                databaseList.removeChild(loadButton.parentNode);
+                            }
+                            else{
+                                alert("Error al borrar la escena");
+                            }
+
+                        });
+
+
                     });
                 }
             }
@@ -845,6 +865,7 @@ databaseLogin.addEventListener("click", () =>{
     else{
         loggedUser = undefined;
         loggedUserLabel.textContent = `Logged user: no user`;
+        databaseList.innerHTML = "";
 
         fetch("http://localhost:3000/api/logout", {
             method: 'POST',
