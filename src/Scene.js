@@ -16,7 +16,6 @@ scene.add( axesHelper );
 
 const gridHelper = new THREE.GridHelper( 1000, 1000 );
 
-//Add objects to the scene
 scene.add( gridHelper );
 
 document.addEventListener('keydown', function(event){

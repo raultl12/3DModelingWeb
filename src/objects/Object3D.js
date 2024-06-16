@@ -70,7 +70,6 @@ class Object3D {
         }
 
         this.mesh.material.needsUpdate = true;
-        console.log(this.mesh.material);
     }
 
 
@@ -99,25 +98,20 @@ class Object3D {
     }
 
     exportarOBJ() {
-        // Crear un objeto Blob con el contenido en formato .obj
         const exporter = new OBJExporter();
         var objetoObj = exporter.parse(this.mesh);
     
         var archivoBlob = new Blob([objetoObj], { type: "text/plain" });
     
-        // Crear un objeto URL para el Blob
         var urlArchivo = URL.createObjectURL(archivoBlob);
     
-        // Crear un elemento <a> invisible
         var linkDescarga = document.createElement("a");
         linkDescarga.href = urlArchivo;
-        linkDescarga.download = "object.obj"; // Nombre del archivo
+        linkDescarga.download = "object.obj";
         document.body.appendChild(linkDescarga);
     
-        // Simular un clic en el enlace para iniciar la descarga
         linkDescarga.click();
     
-        // Eliminar el enlace después de la descarga
         document.body.removeChild(linkDescarga);
     }
 
@@ -185,7 +179,6 @@ class Object3D {
         x = Math.round((xDeg + Number.EPSILON) * 100) / 100;
         y = Math.round((yDeg + Number.EPSILON) * 100) / 100;
         z = Math.round((zDeg + Number.EPSILON) * 100) / 100;
-        //z = (Math.round(THREE.MathUtils.radToDeg(this.mesh.rotation.z)*100) / 100 + 360) % 360;
 
         return x + ", " + y + ", " + z;
     }

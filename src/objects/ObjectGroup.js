@@ -34,7 +34,6 @@ class ObjectGroup{
     }
 
     add(object){
-        console.log(object.toString());
         if(object.toString() === 'light'){
             this.group.attach(object.light);
         }
@@ -67,25 +66,20 @@ class ObjectGroup{
     }
 
     exportarOBJ() {
-        // Crear un objeto Blob con el contenido en formato .obj
         const exporter = new OBJExporter();
         var objetoObj = exporter.parse(this.group);
     
         var archivoBlob = new Blob([objetoObj], { type: "text/plain" });
     
-        // Crear un objeto URL para el Blob
         var urlArchivo = URL.createObjectURL(archivoBlob);
     
-        // Crear un elemento <a> invisible
         var linkDescarga = document.createElement("a");
         linkDescarga.href = urlArchivo;
-        linkDescarga.download = "group.obj"; // Nombre del archivo
+        linkDescarga.download = "group.obj";
         document.body.appendChild(linkDescarga);
     
-        // Simular un clic en el enlace para iniciar la descarga
         linkDescarga.click();
     
-        // Eliminar el enlace después de la descarga
         document.body.removeChild(linkDescarga);
     }
 

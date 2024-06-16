@@ -9,7 +9,7 @@ class DrawingCanvas{
         this.context = this.canvas.getContext("2d");
         this.context.lineWidth = 0.5;
         this.divisions = 10;
-        // Dibuja los ejes
+
         this.drawAxis();
     }
 
@@ -86,19 +86,15 @@ class DrawingCanvas{
     transformPoints(){
         let transformedPoints = [];
         for(let i = 0; i < this.points.length; i++){
-            console.log(this.points[i].x, this.points[i].y);
             let x = this.points[i].x - this.canvas.width / 2;
             let y = -this.points[i].y + this.canvas.height / 2;
 
-            // Redondear los puntos
             let width = this.canvas.width;
             let height = this.canvas.height;
-            //Redondear la x
 
             let b = Math.round(x * this.divisions / width);
             x = b * width / this.divisions;
 
-            //Redondear la y
             b = Math.round(y * this.divisions / height);
             y = b * height / this.divisions;
 
