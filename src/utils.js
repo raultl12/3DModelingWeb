@@ -196,7 +196,6 @@ function generateAnimations(animationsList){
             infiniteRotation: new THREE.Vector3(parseFloat(vectorInfRotation[0]), parseFloat(vectorInfRotation[1]), parseFloat(vectorInfRotation[2])).normalize(),
             speed: parseFloat(animation.querySelector('input[id="speed"]').value),
         };
-        console.log(a);
         animations.push(a);
     }
 
@@ -222,10 +221,12 @@ function updateScenesList(scenesList, scene){
     let loadButton = document.createElement("button");
     loadButton.id = "loadScene";
     loadButton.textContent = "Load";
+    loadButton.value = scene.id;
 
     let deleteButton = document.createElement("button");
     deleteButton.id = "deleteScene";
     deleteButton.textContent = "Delete";
+    deleteButton.value = scene.id;
 
     li.appendChild(inputId);
     li.appendChild(input);
@@ -259,15 +260,15 @@ function sceneToJSON(objs){
     return json;
 }
 
-function sceneFromJSON(json, sceneObjects){
+function sceneFromJSON(json){
     clearScene();
+    console.log("Json en sceneFromJSON: ", json);
     let objects = json.objects;
     let lights = json.lights;
-    let obj = undefined;
-    let light = undefined;
+    let obj = null;
+    let objArray = [];
 
     for(let i = 0; i < objects.length; i++){
-        
         switch(objects[i].geometryType){
             case "BoxGeometry":
                 obj = new Cube(1, objects[i].color);
@@ -281,33 +282,34 @@ function sceneFromJSON(json, sceneObjects){
         }
 
         obj.mesh.position.set(objects[i].position.x, objects[i].position.y, objects[i].position.z);
-        obj.mesh.rotation.set(objects[i].rotation.x, objects[i].rotation.y, objects[i].rotation.z);
+        obj.mesh.rotation.set(objects[i].rotation._x, objects[i].rotation._y, objects[i].rotation._z);
         obj.mesh.scale.set(objects[i].scale.x, objects[i].scale.y, objects[i].scale.z);
-        obj.mesh.material.color.set(objects[i].color);
 
-        sceneObjects.push(obj);
+        objArray.push(obj);
     }
 
     for(let i = 0; i < lights.length; i++){
 
         switch(lights[i].type){
             case LightType.POINT:
-                light = new Light(lights[i].color, lights[i].intensity);
+                obj = new Light(lights[i].color, lights[i].intensity);
                 break;
             case LightType.DIRECTIONAL:
-                light = new Light(lights[i].color, lights[i].intensity, LightType.DIRECTIONAL);
+                obj = new Light(lights[i].color, lights[i].intensity, LightType.DIRECTIONAL);
                 break;
             case LightType.SPOT:
-                light = new Light(lights[i].color, lights[i].intensity, LightType.SPOT);
+                obj = new Light(lights[i].color, lights[i].intensity, LightType.SPOT);
                 break;
             default:
-                light = new Light(lights[i].color, lights[i].intensity);
+                obj = new Light(lights[i].color, lights[i].intensity);
                 break;
         }
 
-        light.light.position.set(lights[i].position.x, lights[i].position.y, lights[i].position.z);
-        sceneObjects.push(light);
+        obj.light.position.set(lights[i].position.x, lights[i].position.y, lights[i].position.z);
+        objArray.push(obj);
     }
+
+    return objArray;
 }
 
 function clearScene(){
@@ -339,5 +341,6 @@ export {
     updateScenesList,
     sceneToJSON,
     sceneFromJSON,
+    clearScene,
 };
     

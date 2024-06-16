@@ -27,7 +27,9 @@ import {
     generateAnimations,
     updateScenesList,
     sceneToJSON,
-    sceneFromJSON
+    sceneFromJSON,
+    clearScene,
+    LightType,
 } from './src/utils.js';
 
 import { RGBELoader } from 'three/examples/jsm/Addons.js';
@@ -35,6 +37,9 @@ import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { ObjectGroup } from './src/objects/ObjectGroup.js';
 
+import { Cube } from './src/objects/Cube.js';
+import { Sphere } from './src/objects/Sphere.js';
+import { Cylinder } from './src/objects/Cylinder.js';
 
 //Initial setup
 
@@ -129,6 +134,7 @@ let dragStartX = 0;
 let dragStartY = 0;
 const currObjLabel = document.getElementById("currentObj");
 let currentScene = undefined;
+let userScenes = [];
 
 scene.add(transformControls);
 const ambientLight = new THREE.AmbientLight( 0xffffff, 1);
@@ -332,8 +338,6 @@ canvas.addEventListener('mouseup', (event) => {
 
             for (let i = intersects.length - 1; i >= 0; i--) {
                 if (intersects[i].object.name === 'object3D') {
-                    console.log("Objeto de interseccion: ", intersects[i].object);
-                    console.log("Objetos: ", objects);
                     //currentObject = objects.find(obj => obj.mesh === intersects[i].object);
                     for (let j = 0; j < objects.length; j++) {
                         if (objects[j].mesh === intersects[i].object) {
@@ -341,7 +345,6 @@ canvas.addEventListener('mouseup', (event) => {
                             break;
                         }
                     }
-                    console.log("Objeto tocado: ", currentObject);
                     transformControls.attach( currentObject.mesh );
                     metalnessSlider.value = currentObject.material.metalness;
                     roughnessSlider.value = currentObject.material.roughness;
@@ -427,16 +430,8 @@ document.addEventListener('keydown', function(event) {
         }
     }
 
-    //Al pulsar j, scene to json
-    if (event.key === 'j') {
-        currentObject = null;
-        let json = sceneToJSON(objects);
-        objects = [];
-        sceneFromJSON(json, objects);
-        scene.add(transformControls);
-        currentObject = objects[0];
-        transformControls.attach( currentObject.mesh );
-        console.log("Objetos de la escena: ", objects);
+    if(event.key === 's'){
+        console.log(scene);
     }
 });
 
@@ -630,7 +625,6 @@ inputGLTF.addEventListener("change", (event) => {
 
 //Groups
 groupsButton.addEventListener("click", () =>{
-    console.log("click");
     menu.style.display = "none";
     groupZone.style.display = "block";
 });
@@ -672,7 +666,6 @@ addGroup.addEventListener("click", () =>{
 
         deleteButton.addEventListener("click", () =>{
             let allLi = groupList.getElementsByTagName("li");
-            console.log(allLi);
             for(let li of allLi){
                 let del = false;
                 li.childNodes.forEach((child) => {
@@ -830,27 +823,18 @@ databaseButton.addEventListener("click", () =>{
         .then(response => response.json())
         .then(data => {
             if(data.status === "ok"){
-                console.log(data.scenes);
                 for(let sceneFromDB of data.scenes){
                     let [loadButton, deleteButton] = updateScenesList(databaseList, sceneFromDB);
 
                     loadButton.addEventListener("click", () =>{
-                        console.log("loading...", sceneFromDB.id);
-                        currentScene = {
-                            id:sceneFromDB.id,
-                            name:sceneFromDB.name,
-                            content:sceneFromDB.content
-                        }
-                        console.log(currentScene);
-                        const loader = new THREE.ObjectLoader();
-                        let json = JSON.parse(sceneFromDB.content);
 
-                        let materials = loader.parseMaterials(json.materials);
-                        let animations = loader.parseAnimations(json.animations);
-                        let geometries = loader.parseGeometries(json.geometries);
-                        let objects = loader.parseObjects(json.objects, geometries, materials, animations);
+                        let parsedContent = JSON.parse(sceneFromDB.content);
 
-                        console.log(objects);
+                        objects = [];
+                        objects = sceneFromJSON(parsedContent);
+                        scene.add(transformControls);
+                        currentObject = objects[0];
+                        transformControls.attach( currentObject.mesh );
                     });
 
                     deleteButton.addEventListener("click", () =>{
@@ -934,8 +918,21 @@ loginForm.addEventListener("submit", (event) =>{
 });
 
 databaseSave.addEventListener("click", () =>{
+    /*
+        //Al pulsar j, scene to json
+        if (event.key === 'j') {
+            currentObject = null;
+            let json = sceneToJSON(objects);
+            objects = [];
+            sceneFromJSON(json, objects);
+            scene.add(transformControls);
+            currentObject = objects[0];
+            transformControls.attach( currentObject.mesh );
+        }
+    */
     if(loggedUser){
-        let sceneData = scene.toJSON();
+        currentObject = null;
+        let sceneData = sceneToJSON(objects);
         let sceneString = JSON.stringify(sceneData);
         
         fetch("http://localhost:3000/api/scenes", {
