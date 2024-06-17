@@ -808,7 +808,7 @@ databaseButton.addEventListener("click", () =>{
         .then(data => {
             if(data.status === "ok"){
                 for(let sceneFromDB of data.scenes){
-                    let [loadButton, deleteButton] = updateScenesList(databaseList, sceneFromDB);
+                    let [loadButton, deleteButton, nameInput] = updateScenesList(databaseList, sceneFromDB);
 
                     loadButton.addEventListener("click", () =>{
 
@@ -840,8 +840,26 @@ databaseButton.addEventListener("click", () =>{
                             }
 
                         });
+                    });
 
-
+                    nameInput.addEventListener("change", () =>{
+                        fetch("http://localhost:3000/api/scenes", {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({id: sceneFromDB.id, name: nameInput.value}),
+                            credentials: 'include'
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if(data.status === "ok"){
+                                alert("Nombre actualizado correctamente");
+                            }
+                            else{
+                                alert("Error al actualizar el nombre");
+                            }
+                        });
                     });
                 }
             }

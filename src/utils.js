@@ -226,7 +226,7 @@ function updateScenesList(scenesList, scene){
 
     scenesList.appendChild(li);
 
-    return [loadButton, deleteButton];
+    return [loadButton, deleteButton, input];
 }
 
 function sceneToJSON(objs){
