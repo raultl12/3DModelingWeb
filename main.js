@@ -111,6 +111,7 @@ const databaseLogin = document.getElementById("databaseLogin");
 const loggedUserLabel = document.getElementById("loggedUser");
 const databaseSave = document.getElementById("databaseSave");
 let databaseList = document.getElementById("databaseList");
+let currentSceneId = null;
 
 //Login
 const loginZone = document.getElementById("loginZone");
@@ -819,6 +820,7 @@ databaseButton.addEventListener("click", () =>{
                         scene.add(transformControls);
                         currentObject = objects[0];
                         transformControls.attach( currentObject.mesh );
+                        currentSceneId = sceneFromDB.id;
                     });
 
                     deleteButton.addEventListener("click", () =>{
@@ -937,16 +939,15 @@ loginForm.addEventListener("submit", (event) =>{
 
 databaseSave.addEventListener("click", () =>{
     if(loggedUser){
-        currentObject = null;
         let sceneData = sceneToJSON(objects);
         let sceneString = JSON.stringify(sceneData);
-        
+
         fetch("http://localhost:3000/api/scenes", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({scene: sceneString}),
+            body: JSON.stringify({scene: sceneString, id: currentSceneId}),
             credentials: 'include'
         })
         .then(response => response.json())
