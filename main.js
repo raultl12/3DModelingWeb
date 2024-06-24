@@ -189,7 +189,7 @@ document.getElementById("addPointLight").addEventListener("click", () =>{
     transformControls.attach( currentObject.light );
     currObjLabel.textContent = `Current object: ${currentObject.toString()}`;
 });
-
+/*
 document.getElementById("addDirectionalLight").addEventListener("click", () =>{
     currentObject = addDirectionalLight(0xffffff, 30, objects);
     transformControls.attach( currentObject.light );
@@ -200,7 +200,7 @@ document.getElementById("addSpotLight").addEventListener("click", () =>{
     currentObject = addSpotLight(0xffffff, 30, objects);
     transformControls.attach( currentObject.light );
     currObjLabel.textContent = `Current object: ${currentObject.toString()}`;
-});
+});*/
 
 /******************************************************************************************** */
 //Functions for adding textures

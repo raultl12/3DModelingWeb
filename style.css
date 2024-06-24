@@ -50,7 +50,7 @@ input[type="color"]::-webkit-color-swatch-wrapper {
 }
 
 #myCanvas{
-    width: 50%;
+    width: 80%;
     height: 100vh;
     position: relative;
     margin: 0;
@@ -127,12 +127,17 @@ input[type="color"]::-webkit-color-swatch-wrapper {
 .animationBlock{
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
     border: 1px solid #f1f7ed;
     border-radius: 3px;
     padding: 1rem;
     margin: 1rem;
+}
+
+.animationBlock label{
+    display: flex;
+    flex-direction: column;
 }
 
 .databaseZone{

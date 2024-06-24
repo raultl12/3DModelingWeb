@@ -11,7 +11,7 @@ backgroundColor.addEventListener('change', () => {
 });
 
 
-const axesHelper = new THREE.AxesHelper( 5 );
+const axesHelper = new THREE.AxesHelper( 50 );
 scene.add( axesHelper );
 
 const gridHelper = new THREE.GridHelper( 1000, 1000 );

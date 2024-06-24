@@ -19,8 +19,10 @@
 
                 <h2>Lights</h2>
                 <button id="addPointLight">Add point light</button>
+                <!---
                 <button id="addDirectionalLight">Add directional light</button>
                 <button id="addSpotLight">Add spot light</button>
+                -->
                 <label>Intensity: <input type="range" name="lightIntensity" min="0" max="200" value="1" id="lightIntensity"></label>
 
                 <h2>Textures</h2>
@@ -106,11 +108,11 @@
                 <button id="back">Back</button>
                 <button id="revolutionDone">Done</button>
                 <button id="revolutionClear">Clear</button>
-                <button id="addRevObj">Save</button>
+                <!--<button id="addRevObj">Save</button>-->
             </div>
             <div class="revInputs">
                 <input type="number" id="revSteps" min="2" placeholder="RevolutionSteps">
-                <input type="text" id="revName" placeholder="Object name">
+                <!--<input type="text" id="revName" placeholder="Object name">-->
                 <input type="number" title="It adjust points snapping. Higher number means you may be more precise while setting the canvas points. Default = 10" id="revDivisions" min="10" placeholder="Divisions">
             </div>
             <canvas id="revolutionCanvas" width="600px" height="600px"></canvas>

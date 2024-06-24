@@ -3,10 +3,12 @@ import { scene } from '../Scene';
 import { LightType } from '../utils';
 
 class Light {
-    constructor(color, intensity, type) {
-
+    constructor(color, intensity) {
+        this.type = LightType.POINT;
+        this.light = new THREE.PointLight(color, intensity);
+        this.helper = new THREE.PointLightHelper( this.light, 1 );
+        /*
         this.type = type;
-
         switch (this.type) {
             case LightType.POINT:
                 this.light = new THREE.PointLight(color, intensity);
@@ -30,7 +32,7 @@ class Light {
                 this.helper = new THREE.PointLightHelper( this.light, 1 );
                 
                 break;
-        }
+        }*/
         
         this.light.position.set(0, 0, 0);
         
