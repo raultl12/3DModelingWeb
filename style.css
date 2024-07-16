@@ -50,7 +50,7 @@ input[type="color"]::-webkit-color-swatch-wrapper {
 }
 
 #myCanvas{
-    width: 80%;
+    width: 75%;
     height: 100vh;
     position: relative;
     margin: 0;
