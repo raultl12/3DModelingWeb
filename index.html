@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three.js</title>
+  <script type="module" crossorigin src="https://raultl12.github.io/3DModelingWeb/assets/index-CxGnnql0.js"></script>
+  <link rel="stylesheet" crossorigin href="https://raultl12.github.io/3DModelingWeb/assets/index-CZAoKV7F.css">
+</head>
+<body>
+    <div id="app">
+        <canvas id="myCanvas"></canvas>
+        <div class="menu">
+            <div class="controls">
+                <h1>Controls</h1>
+                <h2>Objects</h2>
+                <button id="addCube">Add cube</button>
+                <button id="addSphere">Add Sphere</button>
+                <button id="addCylinder">Add Cylinder</button>
+
+                <h2>Lights</h2>
+                <button id="addPointLight">Add point light</button>
+                <!---
+                <button id="addDirectionalLight">Add directional light</button>
+                <button id="addSpotLight">Add spot light</button>
+                -->
+                <label>Intensity: <input type="range" name="lightIntensity" min="0" max="200" value="1" id="lightIntensity"></label>
+
+                <h2>Textures</h2>
+                <input type="file" name="inputFile" id="inputFile" accept=".jpg, .jpeg, .png" style="display: none;"
+                data-tipo="texture"/>
+                
+                <button id="addTexture">Add texture</button>
+                <button id="addNormal">Add normal map</button>
+                <button id="addRoughness">Add roughness map</button>
+                <button id="addMetalness">Add metalness map</button>
+
+                <h2>Material</h2>
+                <div class="materialOptions">
+                    <div class="sliders">
+                    
+                        <label for="metalness">Metalness</label>
+                        <input type="range" name="metalness" id="metalness" min="0" max="1" step="0.01" value="0">
+                        
+                        <label for="roughness">Roughness</label>
+                        <input type="range" name="roughness" id="roughness" min="0" max="1" step="0.01" value="0.5">
+                        
+                        <label for="emisiveInt">Emisive intensity</label>
+                        <input type="range" name="emisiveInt" id="emisiveInt" min="0" max="1" step="0.01" value="1">
+                        
+                    </div>
+
+                    <div class="materialColors">
+                        <div class="colorLabel">
+                            <label for="colorPicker">Color</label>
+                            <input type="color" name="cubeColor" id="colorPicker" value="#4287f5">
+                        </div>
+
+                        <div class="colorLabel">
+                            <label for="emisiveColor">Emisive color</label>
+                            <input type="color" name="emisiveColor" id="emisiveColor" value="#000000">
+                        </div>
+
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="settings">
+                <h2>Settings</h2>
+                <label for="backgroundColor">Background color</label>
+                <input type="color" name="backgroundColor" id="backgroundColor" value="#000000">
+
+                <input type="file" name="hdrFile" id="hdrFile" accept=".hdr" style="display: none;"/>
+                <button id="addHDR">Add HDR</button>
+
+                <button id="revolution">Object by revolution</button>
+                <button id="importDownload">Import / Export</button>
+                <button id="groups">Groups</button>
+                <button id="addToGroup">Add to current group</button>
+                <button id="removeFromGroup">Remove from group</button>
+                <label class="currentGroupLabel">Current Group: </label>
+                <button id="animation">Animation</button>
+                <button id="database">Database</button>
+            </div>
+        </div>
+        <div class="importDownloadZone">
+            <h2>Import / Export</h2>
+            <div class="downloadButtons">
+                <button id="importBack">Back</button>
+                <div class="import">
+                    <input type="file" name="inputOBJ" id="inputOBJ" accept=".obj" style="display: none;"/>
+                    <button id="importOBJ">Import OBJ</button>
+
+                    <input type="file" name="inputGLTF" id="inputGLTF" accept=".gltf" style="display: none;"/>
+                    <button id="importGLTF">Import GLTF</button>
+                </div>
+                <div class="download">
+                    <button id="downloadObj">Export OBJ</button>
+                    <button id="downloadScene">Export Scene OBJ</button>
+
+                    <button id="downloadGLTF">Export GLTF</button>
+                    <button id="downloadSceneGLTF">Export scene GLTF</button>
+                </div>
+            </div>
+        </div>
+        <div class="revolutionZone">
+            <div class="revButtons">
+                <button id="back">Back</button>
+                <button id="revolutionDone">Done</button>
+                <button id="revolutionClear">Clear</button>
+                <!--<button id="addRevObj">Save</button>-->
+            </div>
+            <div class="revInputs">
+                <input type="number" id="revSteps" min="2" placeholder="RevolutionSteps">
+                <!--<input type="text" id="revName" placeholder="Object name">-->
+                <input type="number" title="It adjust points snapping. Higher number means you may be more precise while setting the canvas points. Default = 10" id="revDivisions" min="10" placeholder="Divisions">
+            </div>
+            <canvas id="revolutionCanvas" width="600px" height="600px"></canvas>
+        </div>
+        <div class="groupsZone">
+            <h2>Groups</h2>
+            <div class="groupButtons">
+                <button id="groupBack">Back</button>
+                <input type="text" name="groupName" id="groupName" placeholder="Name">
+                <button id="addGroup">Add group</button>
+            </div>
+            <label class="currentGroupLabel">Current Group: </label>
+            <ul id="groupList">
+            </ul>
+        </div>
+
+        <div class="animationZone">
+            <h2>Animation</h2>
+            <button id="animationBack">Back</button>
+            <label id="currentObj">Current Object: none -> </label>
+            <label>Animate <input type="checkbox" name="animate" id="animationActive"></label>
+            <label>Loop <input type="checkbox" name="loop" id="loopAnimation"></label>
+            <button id="saveAnimation">Save</button>
+
+            <button id="newAnimation">New animation</button>
+            <button id="deleteLastAnimation">Delete last</button>
+            <button id="deleteAllAnimations">Delete all</button>
+            
+            <div class="animation">
+            </div>
+        </div>
+
+        <div class="databaseZone">
+            <p>No hay dinero para esta parte</p>
+            <button id="databaseBack">Back</button>
+            <!---<h2>Database</h2>
+            <Label id="loggedUser">Logged user: no user</Label>
+            <button id="databaseLogin">Login/Logout</button>
+            <button id="databaseSave">Save</button>
+            <br>
+            <label>Scenes</label>
+            <ul id="databaseList">
+            </ul>--->
+        </div>
+
+        <div id="loginZone">
+            <h2>Login</h2>
+            <button id="loginBack">Back</button>
+            <form action="" method="post" id="loginForm">
+                <label for="username">Username</label>
+                <input type="text" name="name" id="name">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password">
+                <button type="submit" id="login">Login</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
